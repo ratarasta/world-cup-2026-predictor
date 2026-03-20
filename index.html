@@ -3,122 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 World Cup Predictor</title>
+    <title>2026 World Cup Predictor Pro</title>
     <style>
         body { background-color: #0b0b0b; color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; }
-        h1 { text-align: center; color: #00ff88; }
+        h1 { text-align: center; color: #00ff88; margin-bottom: 30px; }
         
-        /* Group Selection Styling */
-        .group-stage { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 50px; background: #111; padding: 20px; border-radius: 10px; }
-        .group-box { background: #1a1a1a; padding: 10px; border: 1px solid #333; border-radius: 5px; }
-        .group-box h4 { margin: 0 0 10px 0; color: #00ff88; font-size: 14px; }
-        select { width: 100%; background: #222; color: white; border: 1px solid #444; padding: 5px; margin-bottom: 5px; cursor: pointer; }
+        .group-stage { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+            gap: 10px; 
+            margin-bottom: 40px; 
+            background: #111; 
+            padding: 15px; 
+            border-radius: 8px; 
+        }
+        .group-box { background: #1a1a1a; padding: 10px; border: 1px solid #333; border-radius: 4px; }
+        .group-box h4 { margin: 0 0 8px 0; color: #00ff88; font-size: 13px; text-align: center; }
+        
+        select { 
+            width: 100%; background: #222; color: white; border: 1px solid #444; 
+            padding: 4px; margin-bottom: 4px; font-size: 11px; border-radius: 3px;
+        }
 
-        /* Bracket Styling */
-        .tournament-wrapper { display: flex; justify-content: center; align-items: center; gap: 20px; }
-        .bracket-side { display: flex; gap: 20px; }
-        .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 160px; height: 800px; }
-        .matchup { background: #1a1a1a; border: 1px solid #333; border-radius: 4px; width: 150px; margin: 5px 0; }
-        .team { padding: 10px; cursor: pointer; border-bottom: 1px solid #2a2a2a; font-size: 11px; transition: 0.2s; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; gap: 15px; overflow-x: auto; padding-bottom: 50px; }
+        .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 150px; height: 950px; }
+        .round h3 { font-size: 12px; color: #888; text-align: center; margin-bottom: 10px; }
+
+        .matchup { background: #1a1a1a; border: 1px solid #333; border-radius: 4px; width: 140px; margin: 4px 0; }
+        .team { padding: 8px; cursor: pointer; border-bottom: 1px solid #2a2a2a; font-size: 10px; transition: 0.2s; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .team:hover { background: #333; color: #00ff88; }
         .winner { background: #113825 !important; color: #00ff88 !important; font-weight: bold; }
-        .empty { color: #666; font-style: italic; }
-        .center-stage { text-align: center; min-width: 220px; }
-        .final-match { border: 3px solid #00ff88; width: 200px; margin: 30px 0; }
+        .empty { color: #555; font-style: italic; }
+
+        .center-stage { text-align: center; min-width: 200px; padding-top: 100px; }
+        .final-match { border: 2px solid #00ff88; width: 180px; margin: 20px auto; }
+        
+        .best-3rd-container { background: #111; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px dashed #444; }
+        .best-3rd-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
     </style>
 </head>
 <body>
 
-    <h1>2026 World Cup Predictor</h1>
+    <h1>FIFA World Cup 2026 Predictor</h1>
 
-    <div class="group-stage" id="group-selectors">
-        </div>
+    <div class="group-stage" id="group-selectors"></div>
+
+    <div class="best-3rd-container">
+        <h4 style="text-align: center; margin-top: 0; color: #00ff88;">Select the 8 Best 3rd Place Teams</h4>
+        <div class="best-3rd-grid" id="third-place-selectors">
+            </div>
+    </div>
 
     <div class="tournament-wrapper">
-        <div class="bracket-side">
-            <div class="round">
-                <h3>R32</h3>
-                <div class="matchup"><div id="slot_A2" class="team empty" onclick="advance(this, 'L_R16_1_T')">2nd Grp A</div><div id="slot_B2" class="team empty" onclick="advance(this, 'L_R16_1_T')">2nd Grp B</div></div>
-                <div class="matchup"><div id="slot_F1" class="team empty" onclick="advance(this, 'L_R16_1_B')">1st Grp F</div><div id="slot_C2" class="team empty" onclick="advance(this, 'L_R16_1_B')">2nd Grp C</div></div>
-                <div class="matchup"><div id="slot_E1" class="team empty" onclick="advance(this, 'L_R16_2_T')">1st Grp E</div><div class="team empty">Best 3rd</div></div>
-                <div class="matchup"><div id="slot_I1" class="team empty" onclick="advance(this, 'L_R16_2_B')">1st Grp I</div><div class="team empty">Best 3rd</div></div>
-                <div class="matchup"><div id="slot_C1" class="team empty" onclick="advance(this, 'L_R16_3_T')">1st Grp C</div><div id="slot_F2" class="team empty" onclick="advance(this, 'L_R16_3_T')">2nd Grp F</div></div>
-                <div class="matchup"><div id="slot_E2" class="team empty" onclick="advance(this, 'L_R16_3_B')">2nd Grp E</div><div id="slot_I2" class="team empty" onclick="advance(this, 'L_R16_3_B')">2nd Grp I</div></div>
-                <div class="matchup"><div id="slot_A1" class="team empty" onclick="advance(this, 'L_R16_4_T')">1st Grp A</div><div class="team empty">Best 3rd</div></div>
-                <div class="matchup"><div id="slot_L1" class="team empty" onclick="advance(this, 'L_R16_4_B')">1st Grp L</div><div class="team empty">Best 3rd</div></div>
-            </div>
-            <div class="round">
-                <h3>R16</h3>
-                <div class="matchup"><div id="L_R16_1_T" class="team empty" onclick="advance(this, 'L_QF_1_T')">TBD</div><div id="L_R16_1_B" class="team empty" onclick="advance(this, 'L_QF_1_T')">TBD</div></div>
-                <div class="matchup"><div id="L_R16_2_T" class="team empty" onclick="advance(this, 'L_QF_1_B')">TBD</div><div id="L_R16_2_B" class="team empty" onclick="advance(this, 'L_QF_1_B')">TBD</div></div>
-                <div class="matchup"><div id="L_R16_3_T" class="team empty" onclick="advance(this, 'L_QF_2_T')">TBD</div><div id="L_R16_3_B" class="team empty" onclick="advance(this, 'L_QF_2_T')">TBD</div></div>
-                <div class="matchup"><div id="L_R16_4_T" class="team empty" onclick="advance(this, 'L_QF_2_B')">TBD</div><div id="L_R16_4_B" class="team empty" onclick="advance(this, 'L_QF_2_B')">TBD</div></div>
-            </div>
+        <div class="round">
+            <h3>R32</h3>
+            <div class="matchup"><div id="slot_A2" class="team empty" onclick="adv(this,'L16_1_T')">2A</div><div id="slot_B2" class="team empty" onclick="adv(this,'L16_1_T')">2B</div></div>
+            <div class="matchup"><div id="slot_F1" class="team empty" onclick="adv(this,'L16_1_B')">1F</div><div id="slot_C2" class="team empty" onclick="adv(this,'L16_1_B')">2C</div></div>
+            <div class="matchup"><div id="slot_E1" class="team empty" onclick="adv(this,'L16_2_T')">1E</div><div id="slot_3rd_1" class="team empty" onclick="adv(this,'L16_2_T')">3rd 1</div></div>
+            <div class="matchup"><div id="slot_I1" class="team empty" onclick="adv(this,'L16_2_B')">1I</div><div id="slot_3rd_2" class="team empty" onclick="adv(this,'L16_2_B')">3rd 2</div></div>
+            <div class="matchup"><div id="slot_C1" class="team empty" onclick="adv(this,'L16_3_T')">1C</div><div id="slot_F2" class="team empty" onclick="adv(this,'L16_3_T')">2F</div></div>
+            <div class="matchup"><div id="slot_E2" class="team empty" onclick="adv(this,'L16_3_B')">2E</div><div id="slot_I2" class="team empty" onclick="adv(this,'L16_3_B')">2I</div></div>
+            <div class="matchup"><div id="slot_A1" class="team empty" onclick="adv(this,'L16_4_T')">1A</div><div id="slot_3rd_3" class="team empty" onclick="adv(this,'L16_4_T')">3rd 3</div></div>
+            <div class="matchup"><div id="slot_L1" class="team empty" onclick="adv(this,'L16_4_B')">1L</div><div id="slot_3rd_4" class="team empty" onclick="adv(this,'L16_4_B')">3rd 4</div></div>
+        </div>
+
+        <div class="round">
+            <h3>R16</h3>
+            <div class="matchup"><div id="L16_1_T" class="team empty" onclick="adv(this,'L_QF1_T')">TBD</div><div id="L16_1_B" class="team empty" onclick="adv(this,'L16_1_B')">TBD</div></div>
+            <div class="matchup"><div id="L16_2_T" class="team empty" onclick="adv(this,'L_QF1_B')">TBD</div><div id="L16_2_B" class="team empty" onclick="adv(this,'L16_2_B')">TBD</div></div>
+            <div class="matchup"><div id="L16_3_T" class="team empty" onclick="adv(this,'L_QF2_T')">TBD</div><div id="L16_3_B" class="team empty" onclick="adv(this,'L16_3_B')">TBD</div></div>
+            <div class="matchup"><div id="L16_4_T" class="team empty" onclick="adv(this,'L_QF2_B')">TBD</div><div id="L16_4_B" class="team empty" onclick="adv(this,'L16_4_B')">TBD</div></div>
         </div>
 
         <div class="center-stage">
-            <h2>FINAL</h2>
+            <h3>FINAL</h3>
             <div class="matchup final-match">
-                <div id="FINAL_L" class="team empty" onclick="this.classList.add('winner')">FINALIST 1</div>
-                <div id="FINAL_R" class="team empty" onclick="this.classList.add('winner')">FINALIST 2</div>
+                <div id="FINAL_L" class="team empty" onclick="this.classList.add('winner')">FINALIST L</div>
+                <div id="FINAL_R" class="team empty" onclick="this.classList.add('winner')">FINALIST R</div>
             </div>
-            <p style="font-size: 10px; color: #444;">Select 1st and 2nd in groups above to begin.</p>
         </div>
 
-        <div class="bracket-side">
-            <div class="round">
-                <h3>R32</h3>
-                <div class="matchup"><div id="slot_K2" class="team empty" onclick="advance(this, 'R_R16_1_T')">2nd Grp K</div><div id="slot_L2" class="team empty" onclick="advance(this, 'R_R16_1_T')">2nd Grp L</div></div>
-                <div class="matchup"><div id="slot_D1" class="team empty" onclick="advance(this, 'R_R16_2_T')">1st Grp D</div><div class="team empty">Best 3rd</div></div>
-            </div>
+        <div class="round">
+            <h3>R16</h3>
+            <div class="matchup"><div id="R16_1_T" class="team empty" onclick="adv(this,'R_QF1_T')">TBD</div><div id="R16_1_B" class="team empty" onclick="adv(this,'R_QF1_T')">TBD</div></div>
+            <div class="matchup"><div id="R16_2_T" class="team empty" onclick="adv(this,'R_QF1_B')">TBD</div><div id="R16_2_B" class="team empty" onclick="adv(this,'R_QF1_B')">TBD</div></div>
+            <div class="matchup"><div id="R16_3_T" class="team empty" onclick="adv(this,'R_QF2_T')">TBD</div><div id="R16_3_B" class="team empty" onclick="adv(this,'R_QF2_T')">TBD</div></div>
+            <div class="matchup"><div id="R16_4_T" class="team empty" onclick="adv(this,'R_QF2_B')">TBD</div><div id="R16_4_B" class="team empty" onclick="adv(this,'R_QF2_B')">TBD</div></div>
+        </div>
+
+        <div class="round">
+            <h3>R32</h3>
+            <div class="matchup"><div id="slot_K2" class="team empty" onclick="adv(this,'R16_1_T')">2K</div><div id="slot_L2" class="team empty" onclick="adv(this,'R16_1_T')">2L</div></div>
+            <div class="matchup"><div id="slot_H1" class="team empty" onclick="adv(this,'R16_1_B')">1H</div><div id="slot_J2" class="team empty" onclick="adv(this,'R16_1_B')">2J</div></div>
+            <div class="matchup"><div id="slot_D1" class="team empty" onclick="adv(this,'R16_2_T')">1D</div><div id="slot_3rd_5" class="team empty" onclick="adv(this,'R16_2_T')">3rd 5</div></div>
+            <div class="matchup"><div id="slot_G1" class="team empty" onclick="adv(this,'R16_2_B')">1G</div><div id="slot_3rd_6" class="team empty" onclick="adv(this,'R16_2_B')">3rd 6</div></div>
+            <div class="matchup"><div id="slot_J1" class="team empty" onclick="adv(this,'R16_3_T')">1J</div><div id="slot_H2" class="team empty" onclick="adv(this,'R16_3_T')">2H</div></div>
+            <div class="matchup"><div id="slot_D2" class="team empty" onclick="adv(this,'R16_3_B')">2D</div><div id="slot_G2" class="team empty" onclick="adv(this,'R16_3_B')">2G</div></div>
+            <div class="matchup"><div id="slot_B1" class="team empty" onclick="adv(this,'R16_4_T')">1B</div><div id="slot_3rd_7" class="team empty" onclick="adv(this,'R16_4_T')">3rd 7</div></div>
+            <div class="matchup"><div id="slot_K1" class="team empty" onclick="adv(this,'R16_4_B')">1K</div><div id="slot_3rd_8" class="team empty" onclick="adv(this,'R16_4_B')">3rd 8</div></div>
         </div>
     </div>
 
     <script>
-        const groups = {
-            "A": ["Mexico", "South Africa", "South Korea", "Play-off A"],
-            "B": ["Canada", "Switzerland", "Qatar", "Play-off B"],
-            "C": ["Brazil", "Morocco", "Haiti", "Scotland"],
-            "D": ["USA", "Paraguay", "Australia", "Play-off C"],
-            "E": ["Germany", "Ecuador", "Ivory Coast", "Curacao"],
-            "F": ["Netherlands", "Japan", "Tunisia", "Play-off D"],
+        const teamData = {
+            "A": ["Mexico", "South Africa", "South Korea", "Greece"],
+            "B": ["Canada", "Switzerland", "Qatar", "Mali"],
+            "C": ["Brazil", "Morocco", "Scotland", "Haiti"],
+            "D": ["USA", "Paraguay", "Australia", "Wales"],
+            "E": ["Germany", "Ecuador", "Ivory Coast", "China"],
+            "F": ["Netherlands", "Japan", "Tunisia", "Costa Rica"],
             "G": ["Belgium", "Iran", "Egypt", "New Zealand"],
             "H": ["Spain", "Uruguay", "Saudi Arabia", "Cape Verde"],
-            "I": ["France", "Senegal", "Norway", "Play-off E"],
+            "I": ["France", "Senegal", "Norway", "Honduras"],
             "J": ["Argentina", "Austria", "Algeria", "Jordan"],
-            "K": ["Portugal", "Colombia", "Uzbekistan", "Play-off F"],
+            "K": ["Portugal", "Colombia", "Uzbekistan", "Jamaica"],
             "L": ["England", "Croatia", "Panama", "Ghana"]
         };
 
+        const groupState = {}; // Stores selections to avoid duplicates
+
         function init() {
             const container = document.getElementById('group-selectors');
-            Object.keys(groups).forEach(letter => {
-                let html = `<div class="group-box"><h4>Group ${letter}</h4>`;
-                html += `<select onchange="updateBracket('${letter}', 1, this.value)"><option>1st Place</option>${groups[letter].map(t => `<option>${t}</option>`).join('')}</select>`;
-                html += `<select onchange="updateBracket('${letter}', 2, this.value)"><option>2nd Place</option>${groups[letter].map(t => `<option>${t}</option>`).join('')}</select>`;
-                html += `</div>`;
-                container.innerHTML += html;
-            });
-        }
+            const thirdGrid = document.getElementById('third-place-selectors');
 
-        function updateBracket(group, rank, team) {
-            const slotId = `slot_${group}${rank}`;
-            const slot = document.getElementById(slotId);
-            if (slot) {
-                slot.innerText = team;
-                slot.classList.remove('empty');
+            Object.keys(teamData).forEach(letter => {
+                groupState[letter] = { 1: "", 2: "", 3: "" };
+                let html = `<div class="group-box"><h4>Group ${letter}</h4>`;
+                for(let i=1; i<=3; i++) {
+                    html += `<select id="sel_${letter}_${i}" onchange="handleSelect('${letter}', ${i}, this.value)">
+                        <option value="">${i}${i==1?'st':i==2?'nd':'rd'} Place</option>
+                        ${teamData[letter].map(t => `<option value="${t}">${t}</option>`).join('')}
+                    </select>`;
+                }
+                container.innerHTML += html + `</div>`;
+            });
+
+            for(let i=1; i<=8; i++) {
+                thirdGrid.innerHTML += `<select id="best3rd_${i}" onchange="update3rd(${i}, this.value)"><option value="">Best 3rd #${i}</option></select>`;
             }
         }
 
-        function advance(element, nextId) {
-            const teamName = element.innerText;
-            if (teamName.includes("Grp") || teamName === "TBD") return;
+        function handleSelect(grp, rank, val) {
+            groupState[grp][rank] = val;
+            
+            // 1. Update Bracket (1st and 2nd only)
+            if(rank < 3) {
+                const slot = document.getElementById(`slot_${grp}${rank}`);
+                if(slot) { slot.innerText = val || `${rank}${rank==1?'st':'nd'} ${grp}`; slot.classList.toggle('empty', !val); }
+            }
+
+            // 2. Logic: Remove selected team from other dropdowns in same group
+            for(let i=1; i<=3; i++) {
+                const select = document.getElementById(`sel_${grp}_${i}`);
+                Array.from(select.options).forEach(opt => {
+                    if(!opt.value) return;
+                    const isTaken = (groupState[grp][1] === opt.value && i !== 1) || 
+                                    (groupState[grp][2] === opt.value && i !== 2) || 
+                                    (groupState[grp][3] === opt.value && i !== 3);
+                    opt.disabled = isTaken;
+                });
+            }
+
+            // 3. Update the Best 3rd dropdowns pool
+            updateThirdPlacePool();
+        }
+
+        function updateThirdPlacePool() {
+            const all3rdTeams = Object.keys(groupState).map(g => groupState[g][3]).filter(t => t !== "");
+            for(let i=1; i<=8; i++) {
+                const el = document.getElementById(`best3rd_${i}`);
+                const currentVal = el.value;
+                el.innerHTML = `<option value="">Best 3rd #${i}</option>` + all3rdTeams.map(t => `<option value="${t}" ${t===currentVal?'selected':''}>${t}</option>`).join('');
+            }
+        }
+
+        function update3rd(index, val) {
+            const slot = document.getElementById(`slot_3rd_${index}`);
+            slot.innerText = val || `3rd ${index}`;
+            slot.classList.toggle('empty', !val);
+        }
+
+        function adv(el, nextId) {
+            const name = el.innerText;
+            if(el.classList.contains('empty')) return;
             const target = document.getElementById(nextId);
-            if (target) {
-                target.innerText = teamName;
-                target.classList.remove('empty');
-                element.parentElement.querySelectorAll('.team').forEach(t => t.classList.remove('winner'));
-                element.classList.add('winner');
+            if(target) {
+                target.innerText = name; target.classList.remove('empty');
+                Array.from(el.parentElement.children).forEach(c => c.classList.remove('winner'));
+                el.classList.add('winner');
+                
+                // Special mapping for Semi -> Final
+                if(nextId === 'L_SF_T' || nextId === 'L_SF_B') adv(target, 'FINAL_L');
+                if(nextId === 'R_SF_T' || nextId === 'R_SF_B') adv(target, 'FINAL_R');
             }
         }
 
