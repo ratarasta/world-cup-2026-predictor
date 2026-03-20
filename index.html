@@ -1,16 +1,28 @@
-<div id="selection-phase">
-  <h2>Select Your Round of 32</h2>
-  <div class="group-card">
-    <h3>Group A</h3>
-    <select id="group-a-1st"><option>Mexico</option>...</select>
-    <select id="group-a-2nd"><option>Sweden</option>...</select>
-    <select id="group-a-3rd"><option>Angola</option>...</select>
-  </div>
-  <button onclick="generateBracket()">Generate Bracket</button>
-</div>
-
-<div id="bracket-phase" style="display:none;">
-  <div class="round" id="r32">
+<div class="bracket-container">
+  <div class="round r32">
+    <h3>Round of 32</h3>
+    <div class="matchup">
+      <div class="team" onclick="advance(this, 'm1-top')">Mexico</div>
+      <div class="team" onclick="advance(this, 'm1-bottom')">Sweden</div>
     </div>
-  <div class="round" id="r16"></div>
+    <div class="matchup">
+      <div class="team" onclick="advance(this, 'm2-top')">France</div>
+      <div class="team" onclick="advance(this, 'm2-bottom')">Australia</div>
+    </div>
   </div>
+
+  <div class="round r16">
+    <h3>Round of 16</h3>
+    <div class="matchup">
+      <div id="m1-top" class="team empty" onclick="advance(this, 'qf1-top')">TBD</div>
+      <div id="m2-top" class="team empty" onclick="advance(this, 'qf1-bottom')">TBD</div>
+    </div>
+  </div>
+
+  <div class="round qf">
+    <h3>Quarter Finals</h3>
+    <div class="matchup">
+      <div id="qf1-top" class="team empty">TBD</div>
+    </div>
+  </div>
+</div>
