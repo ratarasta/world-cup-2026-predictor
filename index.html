@@ -6,91 +6,148 @@
     <title>2026 World Cup Predictor</title>
     <style>
         body {
-            background-color: #0f0f0f;
-            color: #e0e0e0;
-            font-family: 'Segoe UI', sans-serif;
-            text-align: center;
+            background-color: #0b0b0b;
+            color: #eee;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            margin: 0;
             padding: 20px;
         }
-        .bracket-container {
+        h1 { text-align: center; color: #00ff88; text-transform: uppercase; letter-spacing: 2px; }
+        
+        /* The main layout: Left Bracket | Final Area | Right Bracket */
+        .tournament-wrapper {
             display: flex;
-            justify-content: flex-start;
-            gap: 40px;
-            padding: 20px;
-            overflow-x: auto;
-            min-height: 1000px;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
         }
+
+        .bracket-side {
+            display: flex;
+            gap: 30px;
+        }
+
         .round {
             display: flex;
             flex-direction: column;
             justify-content: space-around;
-            min-width: 220px;
+            min-width: 180px;
         }
+
+        /* Matchup Styling */
         .matchup {
-            background: #1e1e1e;
-            border: 2px solid #333;
-            border-radius: 8px;
-            margin: 5px 0;
-            overflow: hidden;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 4px;
+            margin: 10px 0;
+            width: 160px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
+
         .team {
-            padding: 12px;
+            padding: 10px;
             cursor: pointer;
             border-bottom: 1px solid #2a2a2a;
+            font-size: 12px;
             transition: 0.2s;
-            font-size: 0.9rem;
-            white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            white-space: nowrap;
         }
-        .team:hover { background: #2a2a2a; color: #00ff88; }
+
+        .team:hover { background: #333; color: #00ff88; }
         .team:last-child { border-bottom: none; }
-        .winner { background: #1b4332 !important; color: #00ff88 !important; font-weight: bold; }
+        .winner { background: #113825 !important; color: #00ff88 !important; font-weight: bold; }
         .empty { color: #666; font-style: italic; }
-        h3 { margin-bottom: 20px; border-bottom: 2px solid #00ff88; display: inline-block; padding-bottom: 5px; }
+
+        /* Final Match Styling */
+        .center-stage {
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .final-match {
+            border: 3px solid #00ff88;
+            width: 220px;
+            margin-top: 20px;
+        }
+        .final-match .team { padding: 20px; font-size: 16px; }
     </style>
 </head>
 <body>
-    <h1>FIFA World Cup 2026 Predictor</h1>
 
-    <div class="bracket-container">
-        <div class="round r32">
-            <h3>Round of 32</h3>
-            <div class="matchup"><div class="team" onclick="advance(this, 'mR16_1_top')">Runner-up Grp A</div><div class="team" onclick="advance(this, 'mR16_1_bottom')">Runner-up Grp B</div></div>
-            <div class="matchup"><div class="team" onclick="advance(this, 'mR16_2_top')">Winner Grp F</div><div class="team" onclick="advance(this, 'mR16_2_bottom')">Runner-up Grp C</div></div>
-            <div class="matchup"><div class="team" onclick="advance(this, 'mR16_3_top')">Winner Grp E</div><div class="team" onclick="advance(this, 'mR16_3_bottom')">3rd Place A/B/C/D/F</div></div>
-            <div class="matchup"><div class="team" onclick="advance(this, 'mR16_4_top')">Winner Grp I</div><div class="team" onclick="advance(this, 'mR16_4_bottom')">3rd Place C/D/F/G/H</div></div>
-            <div class="matchup"><div class="team" onclick="advance(this, 'mR16_5_top')">Winner Grp C</div><div class="team" onclick="advance(this, 'mR16_5_bottom')">Runner-up Grp F</div></div>
-            <div class="matchup"><div class="team" onclick="advance(this, 'mR16_6_top')">Runner-up Grp E</div><div class="team" onclick="advance(this, 'mR16_6_bottom')">Runner-up Grp I</div></div>
-            <div class="matchup"><div class="team" onclick="advance(this, 'mR16_7_top')">Winner Grp A</div><div class="team" onclick="advance(this, 'mR16_7_bottom')">3rd Place C/E/F/H/I</div></div>
-            <div class="matchup"><div class="team" onclick="advance(this, 'mR16_8_top')">Winner Grp L</div><div class="team" onclick="advance(this, 'mR16_8_bottom')">3rd Place E/H/I/J/K</div></div>
-            <div class="matchup"><div class="team" onclick="advance(this, 'mR16_9_top')">Runner-up Grp K</div><div class="team" onclick="advance(this, 'mR16_9_bottom')">Runner-up Grp L</div></div>
-            <div class="matchup"><div class="team" onclick="advance(this, 'mR16_10_top')">Winner Grp H</div><div class="team" onclick="advance(this, 'mR16_10_bottom')">Runner-up Grp J</div></div>
-            <div class="matchup"><div class="team" onclick="advance(this, 'mR16_11_top')">Winner Grp D</div><div class="team" onclick="advance(this, 'mR16_11_bottom')">3rd Place B/E/F/I/J</div></div>
-            <div class="matchup"><div class="team" onclick="advance(this, 'mR16_12_top')">Winner Grp G</div><div class="team" onclick="advance(this, 'mR16_12_bottom')">3rd Place A/E/H/I/J</div></div>
-            <div class="matchup"><div class="team" onclick="advance(this, 'mR16_13_top')">Winner Grp J</div><div class="team" onclick="advance(this, 'mR16_13_bottom')">Runner-up Grp H</div></div>
-            <div class="matchup"><div class="team" onclick="advance(this, 'mR16_14_top')">Runner-up Grp D</div><div class="team" onclick="advance(this, 'mR16_14_bottom')">Runner-up Grp G</div></div>
-            <div class="matchup"><div class="team" onclick="advance(this, 'mR16_15_top')">Winner Grp B</div><div class="team" onclick="advance(this, 'mR16_15_bottom')">3rd Place E/F/G/I/J</div></div>
-            <div class="matchup"><div class="team" onclick="advance(this, 'mR16_16_top')">Winner Grp K</div><div class="team" onclick="advance(this, 'mR16_16_bottom')">3rd Place D/E/I/J/L</div></div>
-        </div>
+    <h1>2026 World Cup Knockout Predictor</h1>
 
-        <div class="round r16">
-            <h3>Round of 16</h3>
-            <div class="matchup" id="mR16_1"><div id="mR16_1_top" class="team empty" onclick="advance(this, 'mQF_1_top')">TBD</div><div id="mR16_1_bottom" class="team empty" onclick="advance(this, 'mQF_1_bottom')">TBD</div></div>
-            <div class="matchup" id="mR16_2"><div id="mR16_2_top" class="team empty" onclick="advance(this, 'mQF_1_bottom')">TBD</div><div id="mR16_2_bottom" class="team empty" onclick="advance(this, 'mQF_1_bottom')">TBD</div></div>
-            <div class="matchup" id="mR16_3"><div id="mR16_3_top" class="team empty" onclick="advance(this, 'mQF_2_top')">TBD</div><div id="mR16_3_bottom" class="team empty" onclick="advance(this, 'mQF_2_bottom')">TBD</div></div>
-            <div class="matchup" id="mR16_4"><div id="mR16_4_top" class="team empty" onclick="advance(this, 'mQF_2_bottom')">TBD</div><div id="mR16_4_bottom" class="team empty" onclick="advance(this, 'mQF_2_bottom')">TBD</div></div>
-            <div class="matchup" id="mR16_5"><div id="mR16_5_top" class="team empty" onclick="advance(this, 'mQF_3_top')">TBD</div><div id="mR16_5_bottom" class="team empty" onclick="advance(this, 'mQF_3_bottom')">TBD</div></div>
-            <div class="matchup" id="mR16_6"><div id="mR16_6_top" class="team empty" onclick="advance(this, 'mQF_3_bottom')">TBD</div><div id="mR16_6_bottom" class="team empty" onclick="advance(this, 'mQF_3_bottom')">TBD</div></div>
-            <div class="matchup" id="mR16_7"><div id="mR16_7_top" class="team empty" onclick="advance(this, 'mQF_4_top')">TBD</div><div id="mR16_7_bottom" class="team empty" onclick="advance(this, 'mQF_4_bottom')">TBD</div></div>
-            <div class="matchup" id="mR16_8"><div id="mR16_8_top" class="team empty" onclick="advance(this, 'mQF_4_bottom')">TBD</div><div id="mR16_8_bottom" class="team empty" onclick="advance(this, 'mQF_4_bottom')">TBD</div></div>
-        </div>
+    <div class="tournament-wrapper">
         
-        <div class="round qf">
-            <h3>Quarter-Finals</h3>
-            <div class="matchup" id="mQF_1"><div id="mQF_1_top" class="team empty" onclick="advance(this, 'mSF_1_top')">TBD</div><div id="mQF_1_bottom" class="team empty" onclick="advance(this, 'mSF_1_bottom')">TBD</div></div>
-            <div class="matchup" id="mQF_2"><div id="mQF_2_top" class="team empty" onclick="advance(this, 'mSF_1_bottom')">TBD</div><div id="mQF_2_bottom" class="team empty" onclick="advance(this, 'mSF_1_bottom')">TBD</div></div>
+        <div class="bracket-side" id="left-bracket">
+            <div class="round r32">
+                <h3>R32 (Left)</h3>
+                <div class="matchup"><div class="team" onclick="advance(this, 'L_R16_1_T')">Runner-up A</div><div class="team" onclick="advance(this, 'L_R16_1_B')">Runner-up B</div></div>
+                <div class="matchup"><div class="team" onclick="advance(this, 'L_R16_2_T')">Winner F</div><div class="team" onclick="advance(this, 'L_R16_2_B')">Runner-up C</div></div>
+                <div class="matchup"><div class="team" onclick="advance(this, 'L_R16_3_T')">Winner E</div><div class="team" onclick="advance(this, 'L_R16_3_B')">3rd A/B/C/D/F</div></div>
+                <div class="matchup"><div class="team" onclick="advance(this, 'L_R16_4_T')">Winner I</div><div class="team" onclick="advance(this, 'L_R16_4_B')">3rd C/D/F/G/H</div></div>
+                <div class="matchup"><div class="team" onclick="advance(this, 'L_R16_5_T')">Winner C</div><div class="team" onclick="advance(this, 'L_R16_5_B')">Runner-up F</div></div>
+                <div class="matchup"><div class="team" onclick="advance(this, 'L_R16_6_T')">Runner-up E</div><div class="team" onclick="advance(this, 'L_R16_6_B')">Runner-up I</div></div>
+                <div class="matchup"><div class="team" onclick="advance(this, 'L_R16_7_T')">Winner A</div><div class="team" onclick="advance(this, 'L_R16_7_B')">3rd C/E/F/H/I</div></div>
+                <div class="matchup"><div class="team" onclick="advance(this, 'L_R16_8_T')">Winner L</div><div class="team" onclick="advance(this, 'L_R16_8_B')">3rd E/H/I/J/K</div></div>
+            </div>
+            <div class="round r16">
+                <h3>R16</h3>
+                <div class="matchup"><div id="L_R16_1_T" class="team empty" onclick="advance(this, 'L_QF_1_T')">TBD</div><div id="L_R16_1_B" class="team empty" onclick="advance(this, 'L_QF_1_T')">TBD</div></div>
+                <div class="matchup"><div id="L_R16_2_T" class="team empty" onclick="advance(this, 'L_QF_1_B')">TBD</div><div id="L_R16_2_B" class="team empty" onclick="advance(this, 'L_QF_1_B')">TBD</div></div>
+                <div class="matchup"><div id="L_R16_3_T" class="team empty" onclick="advance(this, 'L_QF_2_T')">TBD</div><div id="L_R16_3_B" class="team empty" onclick="advance(this, 'L_QF_2_T')">TBD</div></div>
+                <div class="matchup"><div id="L_R16_4_T" class="team empty" onclick="advance(this, 'L_QF_2_B')">TBD</div><div id="L_R16_4_B" class="team empty" onclick="advance(this, 'L_QF_2_B')">TBD</div></div>
+            </div>
+            <div class="round qf">
+                <h3>QF</h3>
+                <div class="matchup"><div id="L_QF_1_T" class="team empty" onclick="advance(this, 'L_SF_T')">TBD</div><div id="L_QF_1_B" class="team empty" onclick="advance(this, 'L_SF_T')">TBD</div></div>
+                <div class="matchup"><div id="L_QF_2_T" class="team empty" onclick="advance(this, 'L_SF_B')">TBD</div><div id="L_QF_2_B" class="team empty" onclick="advance(this, 'L_SF_B')">TBD</div></div>
+            </div>
         </div>
+
+        <div class="center-stage">
+            <h3>SEMIS</h3>
+            <div class="matchup"><div id="L_SF_T" class="team empty" onclick="advance(this, 'FINAL_L')">TBD (Left Semi)</div><div id="L_SF_B" class="team empty" onclick="advance(this, 'FINAL_L')">TBD</div></div>
+            
+            <h2>WORLD CUP FINAL</h2>
+            <div class="matchup final-match">
+                <div id="FINAL_L" class="team empty" onclick="this.classList.add('winner')">FINALIST 1</div>
+                <div id="FINAL_R" class="team empty" onclick="this.classList.add('winner')">FINALIST 2</div>
+            </div>
+
+            <div class="matchup" style="margin-top: 20px;"><div id="R_SF_T" class="team empty" onclick="advance(this, 'FINAL_R')">TBD (Right Semi)</div><div id="R_SF_B" class="team empty" onclick="advance(this, 'FINAL_R')">TBD</div></div>
+        </div>
+
+        <div class="bracket-side" id="right-bracket">
+            <div class="round qf">
+                <h3>QF</h3>
+                <div class="matchup"><div id="R_QF_1_T" class="team empty" onclick="advance(this, 'R_SF_T')">TBD</div><div id="R_QF_1_B" class="team empty" onclick="advance(this, 'R_SF_T')">TBD</div></div>
+                <div class="matchup"><div id="R_QF_2_T" class="team empty" onclick="advance(this, 'R_SF_B')">TBD</div><div id="R_QF_2_B" class="team empty" onclick="advance(this, 'R_SF_B')">TBD</div></div>
+            </div>
+            <div class="round r16">
+                <h3>R16</h3>
+                <div class="matchup"><div id="R_R16_1_T" class="team empty" onclick="advance(this, 'R_QF_1_T')">TBD</div><div id="R_R16_1_B" class="team empty" onclick="advance(this, 'R_QF_1_T')">TBD</div></div>
+                <div class="matchup"><div id="R_R16_2_T" class="team empty" onclick="advance(this, 'R_QF_1_B')">TBD</div><div id="R_R16_2_B" class="team empty" onclick="advance(this, 'R_QF_1_B')">TBD</div></div>
+                <div class="matchup"><div id="R_R16_3_T" class="team empty" onclick="advance(this, 'R_QF_2_T')">TBD</div><div id="R_R16_3_B" class="team empty" onclick="advance(this, 'R_QF_2_T')">TBD</div></div>
+                <div class="matchup"><div id="R_R16_4_T" class="team empty" onclick="advance(this, 'R_QF_2_B')">TBD</div><div id="R_R16_4_B" class="team empty" onclick="advance(this, 'R_QF_2_B')">TBD</div></div>
+            </div>
+            <div class="round r32">
+                <h3>R32 (Right)</h3>
+                <div class="matchup"><div class="team" onclick="advance(this, 'R_R16_1_T')">Runner-up K</div><div class="team" onclick="advance(this, 'R_R16_1_B')">Runner-up L</div></div>
+                <div class="matchup"><div class="team" onclick="advance(this, 'R_R16_1_B')">Winner H</div><div class="team" onclick="advance(this, 'R_R16_1_B')">Runner-up J</div></div>
+                <div class="matchup"><div class="team" onclick="advance(this, 'R_R16_2_T')">Winner D</div><div class="team" onclick="advance(this, 'R_R16_2_B')">3rd B/E/F/I/J</div></div>
+                <div class="matchup"><div class="team" onclick="advance(this, 'R_R16_2_B')">Winner G</div><div class="team" onclick="advance(this, 'R_R16_2_B')">3rd A/E/H/I/J</div></div>
+                <div class="matchup"><div class="team" onclick="advance(this, 'R_R16_3_T')">Winner J</div><div class="team" onclick="advance(this, 'R_R16_3_B')">Runner-up H</div></div>
+                <div class="matchup"><div class="team" onclick="advance(this, 'R_R16_3_B')">Runner-up D</div><div class="team" onclick="advance(this, 'R_R16_3_B')">Runner-up G</div></div>
+                <div class="matchup"><div class="team" onclick="advance(this, 'R_R16_4_T')">Winner B</div><div class="team" onclick="advance(this, 'R_R16_4_B')">3rd E/F/G/I/J</div></div>
+                <div class="matchup"><div class="team" onclick="advance(this, 'R_R16_4_B')">Winner K</div><div class="team" onclick="advance(this, 'R_R16_4_B')">3rd D/E/I/J/L</div></div>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -103,9 +160,11 @@
                 targetSlot.innerText = teamName;
                 targetSlot.classList.remove('empty');
                 
-                // Highlight winner in the current matchup
+                // Clear highlight from previous winner in this box
                 const siblings = element.parentElement.querySelectorAll('.team');
                 siblings.forEach(t => t.classList.remove('winner'));
+                
+                // Highlight the selected winner
                 element.classList.add('winner');
             }
         }
