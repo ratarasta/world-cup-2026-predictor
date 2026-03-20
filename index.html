@@ -4,14 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2026 World Cup Predictor</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* CSS stays inside the HTML for reliability */
+        body {
+            background-color: #0f0f0f;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .bracket-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 20px;
+            overflow-x: auto;
+        }
+        .round {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+        .matchup {
+            background: #1e1e1e;
+            border: 2px solid #333;
+            border-radius: 8px;
+            width: 200px;
+            margin: 10px 0;
+        }
+        .team {
+            padding: 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #2a2a2a;
+            transition: 0.2s;
+        }
+        .team:hover { background: #2a2a2a; color: #00ff88; }
+        .team:last-child { border-bottom: none; }
+        .winner { background: #1b4332 !important; color: #00ff88 !important; font-weight: bold; }
+        .empty { color: #666; font-style: italic; }
+    </style>
 </head>
 <body>
     <h1>FIFA World Cup 2026 Predictor</h1>
-    
+
     <div class="bracket-container">
         <div class="round r32">
-            <h2>Round of 32</h2>
+            <h3>Round of 32</h3>
             <div class="matchup">
                 <div class="team" onclick="advance(this, 'mR16_1_top')">Runner-up Group A</div>
                 <div class="team" onclick="advance(this, 'mR16_1_bottom')">Runner-up Group B</div>
@@ -20,20 +58,34 @@
                 <div class="team" onclick="advance(this, 'mR16_2_top')">Winner Group F</div>
                 <div class="team" onclick="advance(this, 'mR16_2_bottom')">Runner-up Group C</div>
             </div>
-            </div>
+        </div>
 
         <div class="round r16">
-            <h2>Round of 16</h2>
+            <h3>Round of 16</h3>
             <div class="matchup" id="mR16_1">
                 <div id="mR16_1_top" class="team empty" onclick="advance(this, 'mQF_1_top')">TBD</div>
                 <div id="mR16_1_bottom" class="team empty" onclick="advance(this, 'mQF_1_bottom')">TBD</div>
             </div>
-            <div class="matchup" id="mR16_2">
-                <div id="mR16_2_top" class="team empty" onclick="advance(this, 'mQF_1_bottom')">TBD</div>
-            </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        // JavaScript also stays inside for reliability
+        function advance(element, nextId) {
+            const teamName = element.innerText;
+            if (teamName === "TBD") return;
+
+            const targetSlot = document.getElementById(nextId);
+            if (targetSlot) {
+                targetSlot.innerText = teamName;
+                targetSlot.classList.remove('empty');
+                
+                // Highlight winner
+                const siblings = element.parentElement.querySelectorAll('.team');
+                siblings.forEach(t => t.classList.remove('winner'));
+                element.classList.add('winner');
+            }
+        }
+    </script>
 </body>
 </html>
