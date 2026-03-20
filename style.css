@@ -1,64 +1,48 @@
-:root {
-  --line-color: #555;
-  --win-color: #2ecc71;
-  --bg-color: #121212;
-  --card-bg: #1e1e1e;
+body {
+    background-color: #121212;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
 }
 
-body { background-color: var(--bg-color); color: white; font-family: sans-serif; }
-
 .bracket-container {
-  display: flex;
-  gap: 50px;
-  padding: 50px;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    padding: 40px;
 }
 
 .round {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  height: 800px; /* Adjust based on match count */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 .matchup {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  background: var(--card-bg);
-  border: 1px solid #333;
-  width: 150px;
-  border-radius: 4px;
+    position: relative;
+    background: #1e1e1e;
+    border: 1px solid #444;
+    width: 180px;
+    margin: 15px 0;
+    border-radius: 5px;
 }
 
 .team {
-  padding: 10px;
-  cursor: pointer;
-  border-bottom: 1px solid #333;
-  transition: 0.2s;
+    padding: 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #333;
 }
 
 .team:hover { background: #333; }
-.empty { color: #666; font-style: italic; }
+.empty { color: #777; font-style: italic; }
 
-/* THE LINES */
+/* Connecting Lines */
 .r32 .matchup::after {
-  content: "";
-  position: absolute;
-  right: -50px;
-  top: 50%;
-  width: 50px;
-  height: 2px;
-  background: var(--line-color);
-}
-
-/* Vertical connectors for R32 to R16 */
-.r32 .matchup:nth-child(even)::before {
-  content: "";
-  position: absolute;
-  right: -50px;
-  top: -50%; /* Adjust based on gap */
-  width: 2px;
-  height: 100%;
-  background: var(--line-color);
+    content: "";
+    position: absolute;
+    right: -60px;
+    top: 50%;
+    width: 60px;
+    height: 2px;
+    background: #555;
 }
