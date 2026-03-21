@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green</title>
+    <title>Grand Champion Edition</title>
     <style>
         :root { --line-color: #333; --accent: #00ff88; --bg: #0b0b0b; --card: #1a1a1a; --box-w: 85px; }
         body { background: var(--bg); color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; font-size: 12px; overflow-x: auto; }
@@ -20,9 +20,9 @@
         .best-3rd-grid { display: flex; gap: 5px; justify-content: center; margin-top: 5px; }
         .best-3rd-grid select { width: 100px; }
 
-        /* Tournament Layout - TIGHTENED GAPS */
-        .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: 40px 10px 100px 10px; position: relative; gap: 10px; }
-        .bracket-side { display: flex; align-items: flex-start; gap: 15px; } /* Smaller gap between rounds */
+        /* Tournament Layout */
+        .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: 60px 10px 100px 10px; position: relative; gap: 10px; }
+        .bracket-side { display: flex; align-items: flex-start; gap: 15px; }
         .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 90px; height: 800px; position: relative; }
         .round h3 { font-size: 8px; color: #555; text-align: center; position: absolute; top: -20px; width: 100%; text-transform: uppercase; }
 
@@ -36,12 +36,28 @@
         .center-stage { display: flex; align-items: center; justify-content: center; gap: 15px; height: 800px; min-width: 240px; }
         .final-column { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
         
+        /* CHAMPION BOX - Upgraded */
         #champion-display {
-            position: absolute; bottom: 105%; margin-bottom: 12px; width: 85px; padding: 8px; border: 2px gold solid; border-radius: 8px;
-            background: linear-gradient(145deg, #1a1a1a, #000); text-align: center; box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+            position: absolute; 
+            bottom: 115%; /* Moved higher up */
+            margin-bottom: 20px; 
+            width: 100px; /* Slightly wider */
+            padding: 12px 8px; /* More padding */
+            border: 2px gold solid; 
+            border-radius: 10px;
+            background: linear-gradient(145deg, #1a1a1a, #000); 
+            text-align: center; 
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.5); /* Stronger glow */
         }
-        #champion-display h2 { margin: 0; font-size: 7px; color: gold; text-transform: uppercase; }
-        #champion-name { font-size: 14px; font-weight: bold; margin-top: 3px; min-height: 18px; }
+        #champion-display h2 { margin: 0; font-size: 8px; color: gold; text-transform: uppercase; letter-spacing: 1px; }
+        #champion-name { 
+            font-size: 18px; /* Larger font */
+            font-weight: 800; 
+            margin-top: 6px; 
+            min-height: 24px; 
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
         .final-match { border: 2px solid var(--accent); background: #111; width: 85px; margin: 0; }
 
         /* SVG DASHED LINES */
@@ -72,7 +88,7 @@
     <div class="bracket-side left-bracket">
         <div class="round">
             <h3>R32</h3>
-            <div class="matchup" id="m1"><div id="s_A2" class="team empty" onclick="adv(this,'M90_T')">1st A</div><div id="s_B2" class="team empty" onclick="adv(this,'M90_T')">2nd B</div></div>
+            <div class="matchup" id="m1"><div id="s_A2" class="team empty" onclick="adv(this,'M90_T')">2nd A</div><div id="s_B2" class="team empty" onclick="adv(this,'M90_T')">2nd B</div></div>
             <div class="matchup" id="m2"><div id="s_F1" class="team empty" onclick="adv(this,'M90_B')">1st F</div><div id="s_C2" class="team empty" onclick="adv(this,'M90_B')">2nd C</div></div>
             <div class="matchup" id="m3"><div id="slot_3rd_1" class="team empty" onclick="adv(this,'M89_T')">3rd #1</div><div id="s_E1" class="team empty" onclick="adv(this,'M89_T')">1st E</div></div>
             <div class="matchup" id="m4"><div id="slot_3rd_2" class="team empty" onclick="adv(this,'M89_B')">3rd #2</div><div id="s_I1" class="team empty" onclick="adv(this,'M89_B')">1st I</div></div>
@@ -98,7 +114,7 @@
     <div class="center-stage">
         <div class="matchup" id="m15"><div id="M101_T" class="team empty" onclick="adv(this,'FINAL_L')">...</div><div id="M101_B" class="team empty" onclick="adv(this,'FINAL_L')">...</div></div>
         <div class="final-column">
-            <div id="champion-display"><h2>🏆 Winner</h2><div id="champion-name"></div></div>
+            <div id="champion-display"><h2>🏆 WORLD CHAMPION</h2><div id="champion-name"></div></div>
             <div class="matchup final-match" id="mf"><div id="FINAL_L" class="team empty" onclick="setWinner(this)">...</div><div id="FINAL_R" class="team empty" onclick="setWinner(this)">...</div></div>
         </div>
         <div class="matchup" id="m16"><div id="M102_T" class="team empty" onclick="adv(this,'FINAL_R')">...</div><div id="M102_B" class="team empty" onclick="adv(this,'FINAL_R')">...</div></div>
@@ -144,8 +160,7 @@ function init() {
         sel[g] = ["","",""];
         let h = `<div class="group-box"><h4>Grp ${g}</h4>`;
         for(let i=1; i<=3; i++) {
-            let label = i === 1 ? "1st" : i === 2 ? "2nd" : "3rd";
-            h += `<select id="s_${g}_${i}" onchange="upG('${g}',${i},this.value)"><option value="">${label}</option>${teams[g].map(t=>`<option value="${t}">${flags[t]} ${codes[t]}</option>`).join('')}</select>`;
+            h += `<select id="s_${g}_${i}" onchange="upG('${g}',${i},this.value)"><option value="">${i==1?'1st':i==2?'2nd':'3rd'}</option>${teams[g].map(t=>`<option value="${t}">${flags[t]} ${codes[t]}</option>`).join('')}</select>`;
         }
         if (idx < 6) r1.innerHTML += h + `</div>`; else r2.innerHTML += h + `</div>`;
     });
@@ -242,7 +257,7 @@ function drawAllLines() {
         path.setAttribute("class", "path-line");
 
         const winner = startEl.querySelector('.team.winner');
-        if(winner && (endEl.innerHTML === winner.innerHTML || (conn.to === 'champion-name' && endEl.innerHTML === winner.innerHTML))) path.classList.add('active');
+        if(winner && (endEl.innerHTML === winner.innerHTML)) path.classList.add('active');
         svg.appendChild(path);
     });
 }
