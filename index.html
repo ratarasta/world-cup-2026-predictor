@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 World Cup Predictor - Fixed</title>
+    <title>2026 World Cup Predictor 2</title>
     <style>
         body { background: #0b0b0b; color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; font-size: 13px; }
         h1 { text-align: center; color: #00ff88; margin: 10px 0; }
@@ -30,7 +30,7 @@
 <div class="group-stage" id="groups"></div>
 
 <div class="best-3rd">
-    <h4 style="margin:0 0 10px 0; color:#00ff88">8 Best 3rd Place Teams</h4>
+    <h4 style="margin:0 0 10px 0; color:#00ff88">Select 8 Best 3rd Place Teams</h4>
     <div id="third-selectors" style="display:flex; flex-wrap:wrap; gap:5px; justify-content:center"></div>
 </div>
 
@@ -39,12 +39,12 @@
         <h3>ROUND OF 32</h3>
         <div class="matchup"><div id="s_A2" class="team empty" onclick="adv(this,'M90_T')">2nd A</div><div id="s_B2" class="team empty" onclick="adv(this,'M90_T')">2nd B</div></div>
         <div class="matchup"><div id="s_F1" class="team empty" onclick="adv(this,'M90_B')">1st F</div><div id="s_C2" class="team empty" onclick="adv(this,'M90_B')">2nd C</div></div>
-        <div class="matchup"><div id="s_E1" class="team empty" onclick="adv(this,'M89_T')">1st E</div><div id="s_3rd_1" class="team empty" onclick="adv(this,'M89_T')">3rd #1</div></div>
-        <div class="matchup"><div id="s_I1" class="team empty" onclick="adv(this,'M89_B')">1st I</div><div id="s_3rd_2" class="team empty" onclick="adv(this,'M89_B')">3rd #2</div></div>
+        <div class="matchup"><div id="slot_3rd_1" class="team empty" onclick="adv(this,'M89_T')">3rd #1</div><div id="s_E1" class="team empty" onclick="adv(this,'M89_T')">1st E</div></div>
+        <div class="matchup"><div id="slot_3rd_2" class="team empty" onclick="adv(this,'M89_B')">3rd #2</div><div id="s_I1" class="team empty" onclick="adv(this,'M89_B')">1st I</div></div>
         <div class="matchup"><div id="s_C1" class="team empty" onclick="adv(this,'M91_T')">1st C</div><div id="s_F2" class="team empty" onclick="adv(this,'M91_T')">2nd F</div></div>
         <div class="matchup"><div id="s_E2" class="team empty" onclick="adv(this,'M91_B')">2nd E</div><div id="s_I2" class="team empty" onclick="adv(this,'M91_B')">2nd I</div></div>
-        <div class="matchup"><div id="s_A1" class="team empty" onclick="adv(this,'M92_T')">1st A</div><div id="s_3rd_3" class="team empty" onclick="adv(this,'M92_T')">3rd #3</div></div>
-        <div class="matchup"><div id="s_L1" class="team empty" onclick="adv(this,'M92_B')">1st L</div><div id="s_3rd_4" class="team empty" onclick="adv(this,'M92_B')">3rd #4</div></div>
+        <div class="matchup"><div id="s_A1" class="team empty" onclick="adv(this,'M92_T')">1st A</div><div id="slot_3rd_3" class="team empty" onclick="adv(this,'M92_T')">3rd #3</div></div>
+        <div class="matchup"><div id="s_L1" class="team empty" onclick="adv(this,'M92_B')">1st L</div><div id="slot_3rd_4" class="team empty" onclick="adv(this,'M92_B')">3rd #4</div></div>
     </div>
     <div class="round">
         <h3>ROUND OF 16</h3>
@@ -87,12 +87,12 @@
         <h3>ROUND OF 32</h3>
         <div class="matchup"><div id="s_K2" class="team empty" onclick="adv(this,'M93_T')">2nd K</div><div id="s_L2" class="team empty" onclick="adv(this,'M93_T')">2nd L</div></div>
         <div class="matchup"><div id="s_H1" class="team empty" onclick="adv(this,'M93_B')">1st H</div><div id="s_J2" class="team empty" onclick="adv(this,'M93_B')">2nd J</div></div>
-        <div class="matchup"><div id="s_D1" class="team empty" onclick="adv(this,'M94_T')">1st D</div><div id="s_3rd_5" class="team empty" onclick="adv(this,'M94_T')">3rd #5</div></div>
-        <div class="matchup"><div id="s_G1" class="team empty" onclick="adv(this,'M94_B')">1st G</div><div id="s_3rd_6" class="team empty" onclick="adv(this,'M94_B')">3rd #6</div></div>
+        <div class="matchup"><div id="s_D1" class="team empty" onclick="adv(this,'M94_T')">1st D</div><div id="slot_3rd_5" class="team empty" onclick="adv(this,'M94_T')">3rd #5</div></div>
+        <div class="matchup"><div id="s_G1" class="team empty" onclick="adv(this,'M94_B')">1st G</div><div id="slot_3rd_6" class="team empty" onclick="adv(this,'M94_B')">3rd #6</div></div>
         <div class="matchup"><div id="s_J1" class="team empty" onclick="adv(this,'M95_T')">1st J</div><div id="s_H2" class="team empty" onclick="adv(this,'M95_T')">2nd H</div></div>
         <div class="matchup"><div id="s_D2" class="team empty" onclick="adv(this,'M95_B')">2nd D</div><div id="s_G2" class="team empty" onclick="adv(this,'M95_B')">2nd G</div></div>
-        <div class="matchup"><div id="s_B1" class="team empty" onclick="adv(this,'M96_T')">1st B</div><div id="s_3rd_7" class="team empty" onclick="adv(this,'M96_T')">3rd #7</div></div>
-        <div class="matchup"><div id="s_K1" class="team empty" onclick="adv(this,'M96_B')">1st K</div><div id="s_3rd_8" class="team empty" onclick="adv(this,'M96_B')">3rd #8</div></div>
+        <div class="matchup"><div id="s_B1" class="team empty" onclick="adv(this,'M96_T')">1st B</div><div id="slot_3rd_7" class="team empty" onclick="adv(this,'M96_T')">3rd #7</div></div>
+        <div class="matchup"><div id="s_K1" class="team empty" onclick="adv(this,'M96_B')">1st K</div><div id="slot_3rd_8" class="team empty" onclick="adv(this,'M96_B')">3rd #8</div></div>
     </div>
 </div>
 
@@ -148,14 +148,13 @@ function up3(i,v) {
 
 function adv(el, nId) {
     const teamName = el.innerText;
-    if(el.classList.contains('empty') && !teamName) return; 
-    if(teamName.includes("rd") || teamName.includes("st") || teamName.includes("nd")) return;
+    // Fix: Allow advancement if it's a real name and NOT a placeholder
+    if(!teamName || teamName.includes("#") || teamName.includes("st ") || teamName.includes("nd ") || teamName === "TBD") return;
 
     const target = document.getElementById(nId);
     if(target) {
         target.innerText = teamName;
         target.classList.remove('empty');
-        // Visual highlights
         const siblings = el.parentElement.querySelectorAll('.team');
         siblings.forEach(s => s.classList.remove('winner'));
         el.classList.add('winner');
@@ -163,7 +162,7 @@ function adv(el, nId) {
 }
 
 function win(el) {
-    if(el.classList.contains('empty')) return;
+    if(el.classList.contains('empty') || el.innerText.includes("FINALIST")) return;
     alert("🏆 CHAMPION: " + el.innerText + " 🏆");
 }
 init();
