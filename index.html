@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 World Cup Predictor - Version 1.2</title>
+    <title>Version 2.1</title>
     <style>
         :root { --line-color: #333; --accent: #00ff88; --bg: #0b0b0b; --card: #1a1a1a; --box-w: 85px; }
         body { background: var(--bg); color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; font-size: 12px; overflow-x: auto; }
         h1 { text-align: center; color: var(--accent); margin: 0 0 15px 0; text-transform: uppercase; letter-spacing: 2px; font-size: 18px; }
 
-        /* Group Stage Grid */
         .group-stage-wrapper { display: flex; flex-direction: column; gap: 8px; align-items: center; margin-bottom: 15px; }
         .group-row { display: grid; grid-template-columns: repeat(6, 110px); gap: 6px; }
         .group-box { background: var(--card); padding: 5px; border: 1px solid #333; border-radius: 4px; text-align: center; }
@@ -20,7 +19,6 @@
         .best-3rd-grid { display: flex; gap: 5px; justify-content: center; margin-top: 5px; }
         .best-3rd-grid select { width: 100px; }
 
-        /* Tournament Layout */
         .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: 60px 10px 100px 10px; position: relative; gap: 10px; }
         .bracket-side { display: flex; align-items: flex-start; gap: 15px; }
         .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 90px; height: 800px; position: relative; }
@@ -32,29 +30,17 @@
         .winner { background: #113825 !important; color: var(--accent) !important; font-weight: bold; }
         .empty { color: #444; font-size: 9px; }
 
-        /* CENTER AREA */
         .center-stage { display: flex; align-items: center; justify-content: center; gap: 15px; height: 800px; min-width: 240px; }
         .final-column { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
         
-        /* CHAMPION BOX - High Visibility */
         #champion-display {
-            position: absolute; 
-            bottom: 115%; 
-            margin-bottom: 20px; 
-            width: 100px; 
-            padding: 12px 8px; 
-            border: 2px gold solid; 
-            border-radius: 10px;
-            background: linear-gradient(145deg, #1a1a1a, #000); 
-            text-align: center; 
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
-            z-index: 3;
+            position: absolute; bottom: 115%; margin-bottom: 20px; width: 100px; padding: 12px 8px; border: 2px gold solid; border-radius: 10px;
+            background: linear-gradient(145deg, #1a1a1a, #000); text-align: center; box-shadow: 0 0 25px rgba(255, 215, 0, 0.5); z-index: 3;
         }
         #champion-display h2 { margin: 0; font-size: 8px; color: gold; text-transform: uppercase; letter-spacing: 1px; }
         #champion-name { font-size: 18px; font-weight: 800; margin-top: 6px; min-height: 24px; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
         .final-match { border: 2px solid var(--accent); background: #111; width: 85px; margin: 0; }
 
-        /* SVG DASHED LINES */
         #bracket-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
         .path-line { fill: none; stroke: var(--line-color); stroke-width: 1.5; stroke-dasharray: 4, 3; transition: stroke 0.3s; }
         .path-line.active { stroke: var(--accent); stroke-dasharray: none; stroke-width: 2; filter: drop-shadow(0 0 3px var(--accent)); }
@@ -142,7 +128,7 @@
 </div>
 
 <script>
-const codes = {"Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czechia":"CZE","Canada":"CAN","Switzerland":"SUI","Qatar":"QAT","Italy":"ITA","Brazil":"BRA","Morocco":"MAR","Haiti":"HAI","Scotland":"SCO","USA":"USA","Paraguay":"PAR","Australia":"AUS","Slovakia":"SVK","Germany":"GER","Curaçao":"CUW","Ivory Coast":"CIV","Ecuador":"ECU","Netherlands":"NED","Japan":"JPN","Tunisia":"TUN","Ukraine":"UKR","Belgium":"BEL","Egypt":"EGY","Iran":"IRN","New Zealand":"NZL","Spain":"ESP","Cape Verde":"CPV","Saudi Arabia":"KSA","Uruguay":"URU","France":"FRA","Senegal":"SEN","Norway":"NOR","Iraq":"IRQ","Argentina":"ARG","Algeria":"ALG","Austria":"AUT","Jordan":"JOR","Portugal":"POR","Uzbekistan":"UZB","Colombia":"COL","Jamaica":"JAM","England":"ENG","Croatia":"CRO","Ghana":"GHA","Panama":"PAN"};
+const codes = {"Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czechia":"CZE","Canada":"CAN","Switzerland":"SUI","Qatar":"QAT","Italy":"ITA","Brazil":"BRA","Morocco":"MAR","Haiti":"HAI","Scotland":"SCO","USA":"USA","Paraguay":"PAR","Australia":"AUS","Slovakia":"SVK","Germany":"GER","Curaçao":"CUW","Ivory Coast":"CIV","Ecuador":"ECU","Netherlands":"NED","Japan":"JPN","Tunisia":"TUN","Ukraine":"UKR","Belgium":"BEL","Egypt":"EGY","Iran":"IRN","New Zealand":"NZL","Spain":"ESP","Cape Verde":"CPV","Saudi Arabia":"KSA","Uruguay":"URU","France":"FRA","Senegal":"SEN","Norway":"NOR","Iraq":"IRQ","Argentina":"ARG","Algeria":"DZ","Austria":"AUT","Jordan":"JOR","Portugal":"POR","Uzbekistan":"UZB","Colombia":"COL","Jamaica":"JAM","England":"ENG","Croatia":"CRO","Ghana":"GHA","Panama":"PAN"};
 const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
 const teams = {A:["Mexico","South Africa","South Korea","Czechia"], B:["Canada","Switzerland","Qatar","Italy"], C:["Brazil","Morocco","Haiti","Scotland"], D:["USA","Paraguay","Australia","Slovakia"], E:["Germany","Curaçao","Ivory Coast","Ecuador"], F:["Netherlands","Japan","Tunisia","Ukraine"], G:["Belgium","Egypt","Iran","New Zealand"], H:["Spain","Cape Verde","Saudi Arabia","Uruguay"], I:["France","Senegal","Norway","Iraq"], J:["Argentina","Algeria","Austria","Jordan"], K:["Portugal","Uzbekistan","Colombia","Jamaica"], L:["England","Croatia","Ghana","Panama"]};
 let sel = {}; let b3rd = Array(8).fill("");
@@ -163,7 +149,34 @@ function init() {
     setTimeout(drawAllLines, 200);
 }
 
+// THE CASCADE ENGINE: Clears a team from all future rounds if they are changed/removed
+function clearDownstream(oldVal) {
+    if (!oldVal) return;
+    const allSlots = document.querySelectorAll('.tournament-wrapper .team');
+    allSlots.forEach(slot => {
+        // If the slot contains the old team name, reset it
+        if (slot.innerHTML.includes(oldVal)) {
+            const isR32Placeholder = slot.id.startsWith('s_') || slot.id.startsWith('slot_');
+            if (!isR32Placeholder) {
+                slot.innerHTML = "...";
+                slot.classList.add('empty');
+            }
+            slot.classList.remove('winner');
+        }
+    });
+    // Reset Champion if needed
+    const champ = document.getElementById('champion-name');
+    if (champ.innerHTML.includes(oldVal)) champ.innerHTML = "";
+}
+
 function upG(g,r,v) {
+    let oldVal = document.getElementById(`s_${g}${r}`)?.innerHTML;
+    // Extract name from flag/code string if necessary
+    if (oldVal && oldVal.length > 5) {
+        const teamName = Object.keys(codes).find(name => oldVal.includes(codes[name]));
+        clearDownstream(teamName);
+    }
+
     sel[g][r-1] = v;
     for(let i=1; i<=3; i++) {
         let el = document.getElementById(`s_${g}_${i}`);
@@ -186,6 +199,12 @@ function refresh3rdPool() {
 }
 
 function up3(i,v) {
+    let oldVal = document.getElementById(`slot_3rd_${i+1}`)?.innerHTML;
+    if (oldVal && oldVal.length > 5) {
+        const teamName = Object.keys(codes).find(name => oldVal.includes(codes[name]));
+        clearDownstream(teamName);
+    }
+
     b3rd[i]=v; let s = document.getElementById(`slot_3rd_${i+1}`);
     if(s){ s.innerHTML=v ? `${flags[v]} ${codes[v]}` : `3rd #${i+1}`; s.classList.toggle('empty', !v); s.classList.remove('winner'); }
     refresh3rdPool();
@@ -194,13 +213,19 @@ function up3(i,v) {
 
 function adv(el, nId) {
     if(el.classList.contains('empty') || el.innerHTML.includes("#") || el.innerHTML.length < 3 || el.innerHTML.includes("...")) return;
+    
+    // Before advancing, clear whatever was previously in that target slot from future rounds
     const target = document.getElementById(nId);
-    if(target) {
-        target.innerHTML = el.innerHTML; target.classList.remove('empty');
-        Array.from(el.parentElement.children).forEach(s => s.classList.remove('winner'));
-        el.classList.add('winner');
-        drawAllLines();
+    if (target.innerHTML !== "...") {
+        const teamName = Object.keys(codes).find(name => target.innerHTML.includes(codes[name]));
+        clearDownstream(teamName);
     }
+
+    target.innerHTML = el.innerHTML; 
+    target.classList.remove('empty');
+    Array.from(el.parentElement.children).forEach(s => s.classList.remove('winner'));
+    el.classList.add('winner');
+    drawAllLines();
 }
 
 function setWinner(el) {
@@ -221,7 +246,7 @@ function drawAllLines() {
         {from: 'm5', to: 'M91_T'}, {from: 'm6', to: 'M91_B'}, {from: 'm7', to: 'M92_T'}, {from: 'm8', to: 'M92_B'},
         {from: 'm9', to: 'M97_T'}, {from: 'm10', to: 'M97_B'}, {from: 'm11', to: 'M99_T'}, {from: 'm12', to: 'M99_B'},
         {from: 'm13', to: 'M101_T'}, {from: 'm14', to: 'M101_B'}, {from: 'm15', to: 'FINAL_L'}, 
-        {from: 'mf', to: 'champion-display'}, // Targeted the container instead of name
+        {from: 'mf', to: 'champion-display'},
         {from: 'm16', to: 'FINAL_R'}, {from: 'm17', to: 'M102_T'}, {from: 'm18', to: 'M102_B'},
         {from: 'm19', to: 'M98_T'}, {from: 'm20', to: 'M98_B'}, {from: 'm21', to: 'M100_T'}, {from: 'm22', to: 'M100_B'},
         {from: 'm23', to: 'M93_T'}, {from: 'm24', to: 'M93_B'}, {from: 'm25', to: 'M94_T'}, {from: 'm26', to: 'M94_B'},
@@ -241,10 +266,9 @@ function drawAllLines() {
         let y1 = sRect.top + sRect.height / 2;
         let x2 = eRect.left + eRect.width / 2;
         
-        // Target Logic
         let y2;
         if(conn.to === 'champion-display') {
-            y2 = eRect.bottom; // Stop exactly at the bottom border
+            y2 = eRect.bottom;
         } else {
             y2 = (conn.to.endsWith('_T') || conn.to === 'FINAL_L' || conn.to === 'FINAL_R') ? eRect.top : eRect.bottom;
         }
