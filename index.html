@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grand Champion Edition</title>
+    <title>2026 World Cup Predictor - Version 1.2</title>
     <style>
         :root { --line-color: #333; --accent: #00ff88; --bg: #0b0b0b; --card: #1a1a1a; --box-w: 85px; }
         body { background: var(--bg); color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; font-size: 12px; overflow-x: auto; }
@@ -36,28 +36,22 @@
         .center-stage { display: flex; align-items: center; justify-content: center; gap: 15px; height: 800px; min-width: 240px; }
         .final-column { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
         
-        /* CHAMPION BOX - Upgraded */
+        /* CHAMPION BOX - High Visibility */
         #champion-display {
             position: absolute; 
-            bottom: 115%; /* Moved higher up */
+            bottom: 115%; 
             margin-bottom: 20px; 
-            width: 100px; /* Slightly wider */
-            padding: 12px 8px; /* More padding */
+            width: 100px; 
+            padding: 12px 8px; 
             border: 2px gold solid; 
             border-radius: 10px;
             background: linear-gradient(145deg, #1a1a1a, #000); 
             text-align: center; 
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.5); /* Stronger glow */
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+            z-index: 3;
         }
         #champion-display h2 { margin: 0; font-size: 8px; color: gold; text-transform: uppercase; letter-spacing: 1px; }
-        #champion-name { 
-            font-size: 18px; /* Larger font */
-            font-weight: 800; 
-            margin-top: 6px; 
-            min-height: 24px; 
-            color: #fff;
-            text-shadow: 0 0 10px rgba(255,255,255,0.3);
-        }
+        #champion-name { font-size: 18px; font-weight: 800; margin-top: 6px; min-height: 24px; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
         .final-match { border: 2px solid var(--accent); background: #111; width: 85px; margin: 0; }
 
         /* SVG DASHED LINES */
@@ -88,7 +82,7 @@
     <div class="bracket-side left-bracket">
         <div class="round">
             <h3>R32</h3>
-            <div class="matchup" id="m1"><div id="s_A2" class="team empty" onclick="adv(this,'M90_T')">2nd A</div><div id="s_B2" class="team empty" onclick="adv(this,'M90_T')">2nd B</div></div>
+            <div class="matchup" id="m1"><div id="s_A2" class="team empty" onclick="adv(this,'M90_T')">1st A</div><div id="s_B2" class="team empty" onclick="adv(this,'M90_T')">2nd B</div></div>
             <div class="matchup" id="m2"><div id="s_F1" class="team empty" onclick="adv(this,'M90_B')">1st F</div><div id="s_C2" class="team empty" onclick="adv(this,'M90_B')">2nd C</div></div>
             <div class="matchup" id="m3"><div id="slot_3rd_1" class="team empty" onclick="adv(this,'M89_T')">3rd #1</div><div id="s_E1" class="team empty" onclick="adv(this,'M89_T')">1st E</div></div>
             <div class="matchup" id="m4"><div id="slot_3rd_2" class="team empty" onclick="adv(this,'M89_B')">3rd #2</div><div id="s_I1" class="team empty" onclick="adv(this,'M89_B')">1st I</div></div>
@@ -226,7 +220,8 @@ function drawAllLines() {
         {from: 'm1', to: 'M90_T'}, {from: 'm2', to: 'M90_B'}, {from: 'm3', to: 'M89_T'}, {from: 'm4', to: 'M89_B'},
         {from: 'm5', to: 'M91_T'}, {from: 'm6', to: 'M91_B'}, {from: 'm7', to: 'M92_T'}, {from: 'm8', to: 'M92_B'},
         {from: 'm9', to: 'M97_T'}, {from: 'm10', to: 'M97_B'}, {from: 'm11', to: 'M99_T'}, {from: 'm12', to: 'M99_B'},
-        {from: 'm13', to: 'M101_T'}, {from: 'm14', to: 'M101_B'}, {from: 'm15', to: 'FINAL_L'}, {from: 'mf', to: 'champion-name'},
+        {from: 'm13', to: 'M101_T'}, {from: 'm14', to: 'M101_B'}, {from: 'm15', to: 'FINAL_L'}, 
+        {from: 'mf', to: 'champion-display'}, // Targeted the container instead of name
         {from: 'm16', to: 'FINAL_R'}, {from: 'm17', to: 'M102_T'}, {from: 'm18', to: 'M102_B'},
         {from: 'm19', to: 'M98_T'}, {from: 'm20', to: 'M98_B'}, {from: 'm21', to: 'M100_T'}, {from: 'm22', to: 'M100_B'},
         {from: 'm23', to: 'M93_T'}, {from: 'm24', to: 'M93_B'}, {from: 'm25', to: 'M94_T'}, {from: 'm26', to: 'M94_B'},
@@ -245,8 +240,14 @@ function drawAllLines() {
         let x1 = isLeft ? sRect.right : sRect.left;
         let y1 = sRect.top + sRect.height / 2;
         let x2 = eRect.left + eRect.width / 2;
-        let y2 = (conn.to.endsWith('_T') || conn.to === 'FINAL_L' || conn.to === 'FINAL_R') ? eRect.top : eRect.bottom;
-        if(conn.to === 'champion-name') y2 = eRect.bottom;
+        
+        // Target Logic
+        let y2;
+        if(conn.to === 'champion-display') {
+            y2 = eRect.bottom; // Stop exactly at the bottom border
+        } else {
+            y2 = (conn.to.endsWith('_T') || conn.to === 'FINAL_L' || conn.to === 'FINAL_R') ? eRect.top : eRect.bottom;
+        }
 
         x1 -= container.left; y1 -= container.top;
         x2 -= container.left; y2 -= container.top;
@@ -257,7 +258,9 @@ function drawAllLines() {
         path.setAttribute("class", "path-line");
 
         const winner = startEl.querySelector('.team.winner');
-        if(winner && (endEl.innerHTML === winner.innerHTML)) path.classList.add('active');
+        if(winner && (endEl.innerHTML.includes(winner.innerHTML) || (conn.to === 'champion-display' && document.getElementById('champion-name').innerHTML === winner.innerHTML))) {
+            path.classList.add('active');
+        }
         svg.appendChild(path);
     });
 }
