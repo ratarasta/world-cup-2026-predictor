@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Version 3.2</title>
+    <title>2026 World Cup Predictor - Version 3.3</title>
     <style>
         :root { --line-color: #333; --accent: #00ff88; --bg: #0b0b0b; --card: #1a1a1a; --box-w: 85px; }
         body { background: var(--bg); color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; font-size: 12px; overflow-x: auto; }
@@ -11,26 +11,12 @@
 
         .group-stage-wrapper { display: flex; flex-direction: column; gap: 12px; align-items: center; margin-bottom: 25px; }
         .group-row { display: grid; grid-template-columns: repeat(6, 160px); gap: 10px; }
-        
-        .group-box { 
-            background: var(--card); padding: 8px; border: 1px solid #333; border-radius: 6px; 
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
-        }
-        .group-box:hover { 
-            transform: scale(1.08); 
-            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2); 
-            border-color: var(--accent);
-            z-index: 10;
-        }
-
+        .group-box { background: var(--card); padding: 8px; border: 1px solid #333; border-radius: 6px; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .group-box:hover { transform: scale(1.08); box-shadow: 0 0 15px rgba(0, 255, 136, 0.2); border-color: var(--accent); z-index: 10; }
         .group-box h4 { margin: 0 0 6px 0; color: var(--accent); font-size: 11px; text-align: center; border-bottom: 1px solid #333; padding-bottom: 4px; }
         .team-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; gap: 4px; }
         .team-label { font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-grow: 1; }
-        
-        .group-box select { 
-            width: 55px; background: #222; color: white; border: 1px solid #444; 
-            padding: 1px; font-size: 9px; border-radius: 3px; cursor: pointer;
-        }
+        .group-box select { width: 55px; background: #222; color: white; border: 1px solid #444; padding: 1px; font-size: 9px; border-radius: 3px; cursor: pointer; }
 
         .best-3rd-wrapper { text-align: center; margin-bottom: 20px; }
         .best-3rd-container { display: inline-block; padding: 10px; border: 1px dashed #444; border-radius: 8px; background: #111; }
@@ -50,11 +36,7 @@
 
         .center-stage { display: flex; align-items: center; justify-content: center; gap: 15px; height: 800px; min-width: 240px; }
         .final-column { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
-        
-        #champion-display {
-            position: absolute; bottom: 115%; margin-bottom: 20px; width: 100px; padding: 12px 8px; border: 2px gold solid; border-radius: 10px;
-            background: linear-gradient(145deg, #1a1a1a, #000); text-align: center; box-shadow: 0 0 25px rgba(255, 215, 0, 0.5); z-index: 3;
-        }
+        #champion-display { position: absolute; bottom: 115%; margin-bottom: 20px; width: 100px; padding: 12px 8px; border: 2px gold solid; border-radius: 10px; background: linear-gradient(145deg, #1a1a1a, #000); text-align: center; box-shadow: 0 0 25px rgba(255, 215, 0, 0.5); z-index: 3; }
         #champion-display h2 { margin: 0; font-size: 8px; color: gold; text-transform: uppercase; letter-spacing: 1px; }
         #champion-name { font-size: 18px; font-weight: 800; margin-top: 6px; min-height: 24px; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
         .final-match { border: 2px solid var(--accent); background: #111; width: 85px; margin: 0; }
@@ -189,23 +171,18 @@ function init() {
 }
 
 function upGroupLocked(group, team, rank) {
-    // 1. Clear branches for any slot this team PREVIOUSLY occupied
-    Object.keys(groupState[group]).forEach(r => {
-        if (groupState[group][r] === team && r !== "4th") {
-            clearBranch(`s_${group}${r.charAt(0)}`);
-        }
-    });
-
-    // 2. Clear branch for the NEW rank slot being overwritten
+    // 1. Wipe old branch for this rank if it's being replaced
     if (rank && rank !== "4th") clearBranch(`s_${group}${rank.charAt(0)}`);
+    
+    // 2. Wipe old branch for where the team WAS before this change
+    const previousRank = Object.keys(groupState[group]).find(k => groupState[group][k] === team);
+    if (previousRank && previousRank !== "4th") clearBranch(`s_${group}${previousRank.charAt(0)}`);
 
-    // 3. Remove team from old rank in state
+    // 3. Update internal state
     Object.keys(groupState[group]).forEach(r => { if(groupState[group][r] === team) groupState[group][r] = ""; });
-
-    // 4. Update new state
     if (rank) groupState[group][rank] = team;
 
-    // 5. Sync bracket slots
+    // 4. Update visuals for the group ranking slots
     ["1st", "2nd", "3rd"].forEach(r => {
         const val = groupState[group][r];
         const slotId = `s_${group}${r.charAt(0)}`;
@@ -217,13 +194,16 @@ function upGroupLocked(group, team, rank) {
         }
     });
 
-    // 6. Strict Lock: Disable options already chosen in this group
+    // 5. GLOBAL GROUP REFRESH: Re-sync all dropdowns to enforce "One rank per group"
+    const currentTaken = Object.values(groupState[group]).filter(v => v !== "");
     teams[group].forEach(t => {
         const selEl = document.getElementById(`sel_${group}_${t.replace(/\s/g,'_')}`);
         const currentVal = selEl.value;
         Array.from(selEl.options).forEach(opt => {
-            if (opt.value && opt.value !== currentVal) {
-                opt.disabled = Object.values(groupState[group]).includes(opt.value);
+            if (opt.value) {
+                // Disable option if it's taken by someone else
+                const takenBySomeoneElse = Object.entries(groupState[group]).some(([r, name]) => r === opt.value && name !== "" && name !== t);
+                opt.disabled = takenBySomeoneElse;
             }
         });
     });
@@ -259,7 +239,7 @@ function adv(el, nId) {
     if(el.classList.contains('empty') || el.innerHTML.includes("...") || el.innerHTML.length < 3) return;
     clearBranch(el.id);
     const target = document.getElementById(nId);
-    if (target.innerHTML !== "...") clearBranch(target.id); // Scrub overwrite
+    if (target.innerHTML !== "...") clearBranch(target.id);
     target.innerHTML = el.innerHTML; 
     target.classList.remove('empty');
     Array.from(el.parentElement.children).forEach(s => s.classList.remove('winner'));
