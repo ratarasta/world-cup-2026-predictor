@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 World Cup Predictor - Version 2.1</title>
+    <title>Mind Change</title>
     <style>
         :root { --line-color: #333; --accent: #00ff88; --bg: #0b0b0b; --card: #1a1a1a; --box-w: 85px; }
         body { background: var(--bg); color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; font-size: 12px; overflow-x: auto; }
@@ -19,7 +19,7 @@
         .best-3rd-grid { display: flex; gap: 5px; justify-content: center; margin-top: 5px; }
         .best-3rd-grid select { width: 100px; }
 
-        .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: 60px 10px 100px 10px; position: relative; gap: 10px; }
+        .tournament-wrapper { display: center; justify-content: center; align-items: flex-start; padding: 60px 10px 100px 10px; position: relative; gap: 10px; display: flex; }
         .bracket-side { display: flex; align-items: flex-start; gap: 15px; }
         .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 90px; height: 800px; position: relative; }
         .round h3 { font-size: 8px; color: #555; text-align: center; position: absolute; top: -20px; width: 100%; text-transform: uppercase; }
@@ -128,7 +128,7 @@
 </div>
 
 <script>
-const codes = {"Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czechia":"CZE","Canada":"CAN","Switzerland":"SUI","Qatar":"QAT","Italy":"ITA","Brazil":"BRA","Morocco":"MAR","Haiti":"HAI","Scotland":"SCO","USA":"USA","Paraguay":"PAR","Australia":"AUS","Slovakia":"SVK","Germany":"GER","Curaçao":"CUW","Ivory Coast":"CIV","Ecuador":"ECU","Netherlands":"NED","Japan":"JPN","Tunisia":"TUN","Ukraine":"UKR","Belgium":"BEL","Egypt":"EGY","Iran":"IRN","New Zealand":"NZL","Spain":"ESP","Cape Verde":"CPV","Saudi Arabia":"KSA","Uruguay":"URU","France":"FRA","Senegal":"SEN","Norway":"NOR","Iraq":"IRQ","Argentina":"ARG","Algeria":"DZ","Austria":"AUT","Jordan":"JOR","Portugal":"POR","Uzbekistan":"UZB","Colombia":"COL","Jamaica":"JAM","England":"ENG","Croatia":"CRO","Ghana":"GHA","Panama":"PAN"};
+const codes = {"Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czechia":"CZE","Canada":"CAN","Switzerland":"SUI","Qatar":"QAT","Italy":"ITA","Brazil":"BRA","Morocco":"MAR","Haiti":"HAI","Scotland":"SCO","USA":"USA","Paraguay":"PAR","Australia":"AUS","Slovakia":"SVK","Germany":"GER","Curaçao":"CUW","Ivory Coast":"CIV","Ecuador":"ECU","Netherlands":"NED","Japan":"JPN","Tunisia":"TUN","Ukraine":"UKR","Belgium":"BEL","Egypt":"EGY","Iran":"IRN","New Zealand":"NZL","Spain":"ESP","Cape Verde":"CPV","Saudi Arabia":"KSA","Uruguay":"URU","France":"FRA","Senegal":"SEN","Norway":"NOR","Iraq":"IRQ","Argentina":"ARG","Algeria":"ALG","Austria":"AUT","Jordan":"JOR","Portugal":"POR","Uzbekistan":"UZB","Colombia":"COL","Jamaica":"JAM","England":"ENG","Croatia":"CRO","Ghana":"GHA","Panama":"PAN"};
 const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
 const teams = {A:["Mexico","South Africa","South Korea","Czechia"], B:["Canada","Switzerland","Qatar","Italy"], C:["Brazil","Morocco","Haiti","Scotland"], D:["USA","Paraguay","Australia","Slovakia"], E:["Germany","Curaçao","Ivory Coast","Ecuador"], F:["Netherlands","Japan","Tunisia","Ukraine"], G:["Belgium","Egypt","Iran","New Zealand"], H:["Spain","Cape Verde","Saudi Arabia","Uruguay"], I:["France","Senegal","Norway","Iraq"], J:["Argentina","Algeria","Austria","Jordan"], K:["Portugal","Uzbekistan","Colombia","Jamaica"], L:["England","Croatia","Ghana","Panama"]};
 let sel = {}; let b3rd = Array(8).fill("");
@@ -149,60 +149,58 @@ function init() {
     setTimeout(drawAllLines, 200);
 }
 
-// THE CASCADE ENGINE: Clears a team from all future rounds if they are changed/removed
-function clearDownstream(oldVal) {
-    if (!oldVal) return;
-    const allSlots = document.querySelectorAll('.tournament-wrapper .team');
-    allSlots.forEach(slot => {
-        // If the slot contains the old team name, reset it
-        if (slot.innerHTML.includes(oldVal)) {
-            const isR32Placeholder = slot.id.startsWith('s_') || slot.id.startsWith('slot_');
-            if (!isR32Placeholder) {
+// RIPPLE RESET: Completely scrubs a team and their "Winner" status from future rounds
+function clearDownstream(teamHTML) {
+    if (!teamHTML || teamHTML === "...") return;
+    
+    // Scrub team from every box in the knockout stage
+    const allKnockoutSlots = document.querySelectorAll('.tournament-wrapper .team');
+    allKnockoutSlots.forEach(slot => {
+        // If the slot currently holds this team
+        if (slot.innerHTML === teamHTML) {
+            // Reset to placeholder unless it's a fixed R32 starter slot
+            if (!(slot.id.startsWith('s_') || slot.id.startsWith('slot_'))) {
                 slot.innerHTML = "...";
                 slot.classList.add('empty');
             }
+            // Always remove the 'winner' highlight from the parent matchup when a team is cleared
             slot.classList.remove('winner');
         }
     });
-    // Reset Champion if needed
+
+    // Reset champion if it matches
     const champ = document.getElementById('champion-name');
-    if (champ.innerHTML.includes(oldVal)) champ.innerHTML = "";
+    if (champ.innerHTML === teamHTML) champ.innerHTML = "";
 }
 
 function upG(g,r,v) {
-    let oldVal = document.getElementById(`s_${g}${r}`)?.innerHTML;
-    // Extract name from flag/code string if necessary
-    if (oldVal && oldVal.length > 5) {
-        const teamName = Object.keys(codes).find(name => oldVal.includes(codes[name]));
-        clearDownstream(teamName);
+    // 1. Identify what was previously in the bracket slot for this position
+    let placeholderId = `s_${g}${r}`;
+    let oldTeamHTML = document.getElementById(placeholderId)?.innerHTML;
+    
+    // 2. Clear that specific team's whole ripple
+    if (oldTeamHTML && !oldTeamHTML.includes(g)) {
+        clearDownstream(oldTeamHTML);
     }
 
+    // 3. Update logic
     sel[g][r-1] = v;
     for(let i=1; i<=3; i++) {
         let el = document.getElementById(`s_${g}_${i}`);
         Array.from(el.options).forEach(o => { if(o.value) o.disabled = sel[g].includes(o.value) && o.value !== sel[g][i-1]; });
     }
     if(r<3) { 
-        let s = document.getElementById(`s_${g}${r}`); 
+        let s = document.getElementById(placeholderId); 
         if(s){ s.innerHTML=v ? `${flags[v]} ${codes[v]}` : `${r==1?'1st':'2nd'} ${g}`; s.classList.toggle('empty', !v); s.classList.remove('winner'); }
     }
     refresh3rdPool();
     drawAllLines();
 }
 
-function refresh3rdPool() {
-    let pool = Object.keys(sel).map(g => sel[g][2]).filter(t => t!=="");
-    for(let i=1; i<=8; i++) {
-        let el = document.getElementById(`b3_${i}`); let cur = el.value;
-        el.innerHTML = `<option value="">3rd #${i}</option>` + pool.map(t => `<option value="${t}" ${t===cur?'selected':''} ${b3rd.includes(t)&&t!==cur?'disabled':''}>${flags[t]} ${codes[t]}</option>`).join('');
-    }
-}
-
 function up3(i,v) {
-    let oldVal = document.getElementById(`slot_3rd_${i+1}`)?.innerHTML;
-    if (oldVal && oldVal.length > 5) {
-        const teamName = Object.keys(codes).find(name => oldVal.includes(codes[name]));
-        clearDownstream(teamName);
+    let oldTeamHTML = document.getElementById(`slot_3rd_${i+1}`)?.innerHTML;
+    if (oldTeamHTML && !oldTeamHTML.includes('#')) {
+        clearDownstream(oldTeamHTML);
     }
 
     b3rd[i]=v; let s = document.getElementById(`slot_3rd_${i+1}`);
@@ -214,17 +212,19 @@ function up3(i,v) {
 function adv(el, nId) {
     if(el.classList.contains('empty') || el.innerHTML.includes("#") || el.innerHTML.length < 3 || el.innerHTML.includes("...")) return;
     
-    // Before advancing, clear whatever was previously in that target slot from future rounds
+    // Clear the ripple of whatever was PREVIOUSLY in the next box before overwriting it
     const target = document.getElementById(nId);
-    if (target.innerHTML !== "...") {
-        const teamName = Object.keys(codes).find(name => target.innerHTML.includes(codes[name]));
-        clearDownstream(teamName);
+    if (target.innerHTML !== "..." && target.innerHTML !== el.innerHTML) {
+        clearDownstream(target.innerHTML);
     }
 
     target.innerHTML = el.innerHTML; 
     target.classList.remove('empty');
+    
+    // Mark this box as the winner of this specific matchup
     Array.from(el.parentElement.children).forEach(s => s.classList.remove('winner'));
     el.classList.add('winner');
+    
     drawAllLines();
 }
 
@@ -265,13 +265,8 @@ function drawAllLines() {
         let x1 = isLeft ? sRect.right : sRect.left;
         let y1 = sRect.top + sRect.height / 2;
         let x2 = eRect.left + eRect.width / 2;
-        
-        let y2;
-        if(conn.to === 'champion-display') {
-            y2 = eRect.bottom;
-        } else {
-            y2 = (conn.to.endsWith('_T') || conn.to === 'FINAL_L' || conn.to === 'FINAL_R') ? eRect.top : eRect.bottom;
-        }
+        let y2 = (conn.to.endsWith('_T') || conn.to === 'FINAL_L' || conn.to === 'FINAL_R') ? eRect.top : eRect.bottom;
+        if(conn.to === 'champion-display') y2 = eRect.bottom;
 
         x1 -= container.left; y1 -= container.top;
         x2 -= container.left; y2 -= container.top;
@@ -282,11 +277,19 @@ function drawAllLines() {
         path.setAttribute("class", "path-line");
 
         const winner = startEl.querySelector('.team.winner');
-        if(winner && (endEl.innerHTML.includes(winner.innerHTML) || (conn.to === 'champion-display' && document.getElementById('champion-name').innerHTML === winner.innerHTML))) {
+        if(winner && (endEl.innerHTML === winner.innerHTML || (conn.to === 'champion-display' && document.getElementById('champion-name').innerHTML === winner.innerHTML))) {
             path.classList.add('active');
         }
         svg.appendChild(path);
     });
+}
+
+function refresh3rdPool() {
+    let pool = Object.keys(sel).map(g => sel[g][2]).filter(t => t!=="");
+    for(let i=1; i<=8; i++) {
+        let el = document.getElementById(`b3_${i}`); let cur = el.value;
+        el.innerHTML = `<option value="">3rd #${i}</option>` + pool.map(t => `<option value="${t}" ${t===cur?'selected':''} ${b3rd.includes(t)&&t!==cur?'disabled':''}>${flags[t]} ${codes[t]}</option>`).join('');
+    }
 }
 
 window.addEventListener('resize', drawAllLines);
