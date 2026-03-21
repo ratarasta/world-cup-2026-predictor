@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stepladder Path</title>
+    <title>2026 World Cup Predictor - Stepladder Elite</title>
     <style>
         :root { --line-color: #333; --accent: #00ff88; --bg: #0b0b0b; --card: #1a1a1a; --box-w: 85px; }
-        body { background: var(--bg); color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; font-size: 12px; }
+        body { background: var(--bg); color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; font-size: 12px; overflow-x: hidden; }
         h1 { text-align: center; color: var(--accent); margin: 5px 0; text-transform: uppercase; letter-spacing: 2px; font-size: 18px; }
 
         .group-stage-wrapper { display: flex; flex-direction: column; gap: 10px; align-items: center; margin-bottom: 20px; }
@@ -17,9 +17,8 @@
         .best-3rd-wrapper { text-align: center; margin-bottom: 20px; }
         .best-3rd-container { display: inline-block; padding: 10px; border: 1px dashed #444; border-radius: 8px; background: #111; }
         .best-3rd-grid { display: flex; gap: 5px; justify-content: center; margin-top: 5px; }
-        .best-3rd-grid select { width: 110px; }
+        .best-3rd-grid select { width: 100px; }
 
-        /* Bracket Layout */
         .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: 60px 0 100px 0; position: relative; }
         .bracket-side { display: flex; align-items: flex-start; }
         .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 140px; height: 800px; position: relative; }
@@ -31,7 +30,6 @@
         .winner { background: #113825 !important; color: var(--accent) !important; font-weight: bold; }
         .empty { color: #444; font-size: 9px; }
 
-        /* CENTER STAGE */
         .center-stage { display: flex; align-items: center; justify-content: center; gap: 40px; height: 800px; }
         .final-column { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
         #champion-display { position: absolute; bottom: 105%; margin-bottom: 12px; width: 85px; padding: 8px; border: 2px gold solid; border-radius: 8px; background: linear-gradient(145deg, #1a1a1a, #000); text-align: center; box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); }
@@ -39,18 +37,9 @@
         #champion-name { font-size: 14px; font-weight: bold; margin-top: 3px; min-height: 18px; }
         .final-match { border: 2px solid var(--accent); background: #111; width: 85px; margin: 0; }
 
-        /* SVG OVERLAY FOR LINES */
-        #bracket-svg {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 1;
-        }
-        .path-line {
-            fill: none; stroke: var(--line-color); stroke-width: 2;
-            stroke-dasharray: 5, 5; transition: stroke 0.3s, filter 0.3s;
-        }
-        .path-line.active {
-            stroke: var(--accent); filter: drop-shadow(0 0 5px var(--accent));
-        }
+        #bracket-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        .path-line { fill: none; stroke: var(--line-color); stroke-width: 1.5; stroke-dasharray: 4, 3; transition: stroke 0.3s; }
+        .path-line.active { stroke: var(--accent); stroke-dasharray: none; stroke-width: 2; filter: drop-shadow(0 0 3px var(--accent)); }
     </style>
 </head>
 <body>
@@ -75,61 +64,61 @@
     <div class="bracket-side left-bracket">
         <div class="round">
             <h3>R32</h3>
-            <div class="matchup" id="m1"><div id="s_A2" class="team empty" onclick="adv(this,'M90_T','p1')">2nd A</div><div id="s_B2" class="team empty" onclick="adv(this,'M90_T','p1')">2nd B</div></div>
-            <div class="matchup" id="m2"><div id="s_F1" class="team empty" onclick="adv(this,'M90_B','p2')">1st F</div><div id="s_C2" class="team empty" onclick="adv(this,'M90_B','p2')">2nd C</div></div>
-            <div class="matchup" id="m3"><div id="slot_3rd_1" class="team empty" onclick="adv(this,'M89_T','p3')">3rd #1</div><div id="s_E1" class="team empty" onclick="adv(this,'M89_T','p3')">1st E</div></div>
-            <div class="matchup" id="m4"><div id="slot_3rd_2" class="team empty" onclick="adv(this,'M89_B','p4')">3rd #2</div><div id="s_I1" class="team empty" onclick="adv(this,'M89_B','p4')">1st I</div></div>
-            <div class="matchup" id="m5"><div id="s_C1" class="team empty" onclick="adv(this,'M91_T','p5')">1st C</div><div id="s_F2" class="team empty" onclick="adv(this,'M91_T','p5')">2nd F</div></div>
-            <div class="matchup" id="m6"><div id="s_E2" class="team empty" onclick="adv(this,'M91_B','p6')">2nd E</div><div id="s_I2" class="team empty" onclick="adv(this,'M91_B','p6')">2nd I</div></div>
-            <div class="matchup" id="m7"><div id="s_A1" class="team empty" onclick="adv(this,'M92_T','p7')">1st A</div><div id="slot_3rd_3" class="team empty" onclick="adv(this,'M92_T','p7')">3rd #3</div></div>
-            <div class="matchup" id="m8"><div id="s_L1" class="team empty" onclick="adv(this,'M92_B','p8')">1st L</div><div id="slot_3rd_4" class="team empty" onclick="adv(this,'M92_B')">3rd #4</div></div>
+            <div class="matchup" id="m1"><div id="s_A2" class="team empty" onclick="adv(this,'M90_T')">2nd A</div><div id="s_B2" class="team empty" onclick="adv(this,'M90_T')">2nd B</div></div>
+            <div class="matchup" id="m2"><div id="s_F1" class="team empty" onclick="adv(this,'M90_B')">1st F</div><div id="s_C2" class="team empty" onclick="adv(this,'M90_B')">2nd C</div></div>
+            <div class="matchup" id="m3"><div id="slot_3rd_1" class="team empty" onclick="adv(this,'M89_T')">3rd #1</div><div id="s_E1" class="team empty" onclick="adv(this,'M89_T')">1st E</div></div>
+            <div class="matchup" id="m4"><div id="slot_3rd_2" class="team empty" onclick="adv(this,'M89_B')">3rd #2</div><div id="s_I1" class="team empty" onclick="adv(this,'M89_B')">1st I</div></div>
+            <div class="matchup" id="m5"><div id="s_C1" class="team empty" onclick="adv(this,'M91_T')">1st C</div><div id="s_F2" class="team empty" onclick="adv(this,'M91_T')">2nd F</div></div>
+            <div class="matchup" id="m6"><div id="s_E2" class="team empty" onclick="adv(this,'M91_B')">2nd E</div><div id="s_I2" class="team empty" onclick="adv(this,'M91_B')">2nd I</div></div>
+            <div class="matchup" id="m7"><div id="s_A1" class="team empty" onclick="adv(this,'M92_T')">1st A</div><div id="slot_3rd_3" class="team empty" onclick="adv(this,'M92_T')">3rd #3</div></div>
+            <div class="matchup" id="m8"><div id="s_L1" class="team empty" onclick="adv(this,'M92_B')">1st L</div><div id="slot_3rd_4" class="team empty" onclick="adv(this,'M92_B')">3rd #4</div></div>
         </div>
         <div class="round">
             <h3>R16</h3>
-            <div class="matchup" id="m9"><div id="M90_T" class="team empty" onclick="adv(this,'M97_T','p9')">...</div><div id="M90_B" class="team empty" onclick="adv(this,'M97_T','p9')">...</div></div>
-            <div class="matchup" id="m10"><div id="M89_T" class="team empty" onclick="adv(this,'M97_B','p10')">...</div><div id="M89_B" class="team empty" onclick="adv(this,'M97_B','p10')">...</div></div>
-            <div class="matchup" id="m11"><div id="M91_T" class="team empty" onclick="adv(this,'M99_T','p11')">...</div><div id="M91_B" class="team empty" onclick="adv(this,'M99_T')">...</div></div>
-            <div class="matchup" id="m12"><div id="M92_T" class="team empty" onclick="adv(this,'M99_B','p12')">...</div><div id="M92_B" class="team empty" onclick="adv(this,'M99_B')">...</div></div>
+            <div class="matchup" id="m9"><div id="M90_T" class="team empty" onclick="adv(this,'M97_T')">...</div><div id="M90_B" class="team empty" onclick="adv(this,'M97_T')">...</div></div>
+            <div class="matchup" id="m10"><div id="M89_T" class="team empty" onclick="adv(this,'M97_B')">...</div><div id="M89_B" class="team empty" onclick="adv(this,'M97_B')">...</div></div>
+            <div class="matchup" id="m11"><div id="M91_T" class="team empty" onclick="adv(this,'M99_T')">...</div><div id="M91_B" class="team empty" onclick="adv(this,'M99_T')">...</div></div>
+            <div class="matchup" id="m12"><div id="M92_T" class="team empty" onclick="adv(this,'M99_B')">...</div><div id="M92_B" class="team empty" onclick="adv(this,'M99_B')">...</div></div>
         </div>
         <div class="round">
             <h3>QF</h3>
-            <div class="matchup" id="m13"><div id="M97_T" class="team empty" onclick="adv(this,'M101_T','p13')">...</div><div id="M97_B" class="team empty" onclick="adv(this,'M101_T')">...</div></div>
-            <div class="matchup" id="m14"><div id="M99_T" class="team empty" onclick="adv(this,'M101_B','p14')">...</div><div id="M99_B" class="team empty" onclick="adv(this,'M101_B')">...</div></div>
+            <div class="matchup" id="m13"><div id="M97_T" class="team empty" onclick="adv(this,'M101_T')">...</div><div id="M97_B" class="team empty" onclick="adv(this,'M101_T')">...</div></div>
+            <div class="matchup" id="m14"><div id="M99_T" class="team empty" onclick="adv(this,'M101_B')">...</div><div id="M99_B" class="team empty" onclick="adv(this,'M101_B')">...</div></div>
         </div>
     </div>
 
     <div class="center-stage">
-        <div class="matchup" id="m15"><div id="M101_T" class="team empty" onclick="adv(this,'FINAL_L','p15')">...</div><div id="M101_B" class="team empty" onclick="adv(this,'FINAL_L','p15')">...</div></div>
+        <div class="matchup" id="m15"><div id="M101_T" class="team empty" onclick="adv(this,'FINAL_L')">...</div><div id="M101_B" class="team empty" onclick="adv(this,'FINAL_L')">...</div></div>
         <div class="final-column">
             <div id="champion-display"><h2>🏆 Winner</h2><div id="champion-name"></div></div>
-            <div class="matchup final-match"><div id="FINAL_L" class="team empty" onclick="setWinner(this)">...</div><div id="FINAL_R" class="team empty" onclick="setWinner(this)">...</div></div>
+            <div class="matchup final-match" id="mf"><div id="FINAL_L" class="team empty" onclick="setWinner(this)">...</div><div id="FINAL_R" class="team empty" onclick="setWinner(this)">...</div></div>
         </div>
-        <div class="matchup" id="m16"><div id="M102_T" class="team empty" onclick="adv(this,'FINAL_R','p16')">...</div><div id="M102_B" class="team empty" onclick="adv(this,'FINAL_R','p16')">...</div></div>
+        <div class="matchup" id="m16"><div id="M102_T" class="team empty" onclick="adv(this,'FINAL_R')">...</div><div id="M102_B" class="team empty" onclick="adv(this,'FINAL_R')">...</div></div>
     </div>
 
     <div class="bracket-side right-bracket">
         <div class="round">
             <h3>QF</h3>
-            <div class="matchup" id="m17"><div id="M98_T" class="team empty" onclick="adv(this,'M102_T','p17')">...</div><div id="M98_B" class="team empty" onclick="adv(this,'M102_T','p17')">...</div></div>
-            <div class="matchup" id="m18"><div id="M100_T" class="team empty" onclick="adv(this,'M102_B','p18')">...</div><div id="M100_B" class="team empty" onclick="adv(this,'M102_B','p18')">...</div></div>
+            <div class="matchup" id="m17"><div id="M98_T" class="team empty" onclick="adv(this,'M102_T')">...</div><div id="M98_B" class="team empty" onclick="adv(this,'M102_T')">...</div></div>
+            <div class="matchup" id="m18"><div id="M100_T" class="team empty" onclick="adv(this,'M102_B')">...</div><div id="M100_B" class="team empty" onclick="adv(this,'M102_B')">...</div></div>
         </div>
         <div class="round">
             <h3>R16</h3>
-            <div class="matchup" id="m19"><div id="M93_T" class="team empty" onclick="adv(this,'M98_T','p19')">...</div><div id="M93_B" class="team empty" onclick="adv(this,'M98_T','p19')">...</div></div>
-            <div class="matchup" id="m20"><div id="M94_T" class="team empty" onclick="adv(this,'M98_B','p20')">...</div><div id="M94_B" class="team empty" onclick="adv(this,'M98_B','p20')">...</div></div>
-            <div class="matchup" id="m21"><div id="M95_T" class="team empty" onclick="adv(this,'M100_T','p21')">...</div><div id="M95_B" class="team empty" onclick="adv(this,'M100_T','p21')">...</div></div>
-            <div class="matchup" id="m22"><div id="M96_T" class="team empty" onclick="adv(this,'M100_B','p22')">...</div><div id="M96_B" class="team empty" onclick="adv(this,'M100_B','p22')">...</div></div>
+            <div class="matchup" id="m19"><div id="M93_T" class="team empty" onclick="adv(this,'M98_T')">...</div><div id="M93_B" class="team empty" onclick="adv(this,'M98_T')">...</div></div>
+            <div class="matchup" id="m20"><div id="M94_T" class="team empty" onclick="adv(this,'M98_B')">...</div><div id="M94_B" class="team empty" onclick="adv(this,'M98_B')">...</div></div>
+            <div class="matchup" id="m21"><div id="M95_T" class="team empty" onclick="adv(this,'M100_T')">...</div><div id="M95_B" class="team empty" onclick="adv(this,'M100_T')">...</div></div>
+            <div class="matchup" id="m22"><div id="M96_T" class="team empty" onclick="adv(this,'M100_B')">...</div><div id="M96_B" class="team empty" onclick="adv(this,'M100_B')">...</div></div>
         </div>
         <div class="round">
             <h3>R32</h3>
-            <div class="matchup" id="m23"><div id="s_K2" class="team empty" onclick="adv(this,'M93_T','p23')">2nd K</div><div id="s_L2" class="team empty" onclick="adv(this,'M93_T','p23')">2nd L</div></div>
-            <div class="matchup" id="m24"><div id="s_H1" class="team empty" onclick="adv(this,'M93_B','p24')">1st H</div><div id="s_J2" class="team empty" onclick="adv(this,'M93_B','p24')">2nd J</div></div>
-            <div class="matchup" id="m25"><div id="s_D1" class="team empty" onclick="adv(this,'M94_T','p25')">1st D</div><div id="slot_3rd_5" class="team empty" onclick="adv(this,'M94_T','p25')">3rd #5</div></div>
-            <div class="matchup" id="m26"><div id="s_G1" class="team empty" onclick="adv(this,'M94_B','p26')">1st G</div><div id="slot_3rd_6" class="team empty" onclick="adv(this,'M94_B','p26')">3rd #6</div></div>
-            <div class="matchup" id="m27"><div id="s_J1" class="team empty" onclick="adv(this,'M95_T','p27')">1st J</div><div id="s_H2" class="team empty" onclick="adv(this,'M95_T','p27')">2nd H</div></div>
-            <div class="matchup" id="m28"><div id="s_D2" class="team empty" onclick="adv(this,'M95_B','p28')">2nd D</div><div id="s_G2" class="team empty" onclick="adv(this,'M95_B')">2nd G</div></div>
-            <div class="matchup" id="m29"><div id="s_B1" class="team empty" onclick="adv(this,'M96_T','p29')">1st B</div><div id="slot_3rd_7" class="team empty" onclick="adv(this,'M96_T')">3rd #7</div></div>
-            <div class="matchup" id="m30"><div id="s_K1" class="team empty" onclick="adv(this,'M96_B','p30')">1st K</div><div id="slot_3rd_8" class="team empty" onclick="adv(this,'M96_B')">3rd #8</div></div>
+            <div class="matchup" id="m23"><div id="s_K2" class="team empty" onclick="adv(this,'M93_T')">2nd K</div><div id="s_L2" class="team empty" onclick="adv(this,'M93_T')">2nd L</div></div>
+            <div class="matchup" id="m24"><div id="s_H1" class="team empty" onclick="adv(this,'M93_B')">1st H</div><div id="s_J2" class="team empty" onclick="adv(this,'M93_B')">2nd J</div></div>
+            <div class="matchup" id="m25"><div id="s_D1" class="team empty" onclick="adv(this,'M94_T')">1st D</div><div id="slot_3rd_5" class="team empty" onclick="adv(this,'M94_T')">3rd #5</div></div>
+            <div class="matchup" id="m26"><div id="s_G1" class="team empty" onclick="adv(this,'M94_B')">1st G</div><div id="slot_3rd_6" class="team empty" onclick="adv(this,'M94_B')">3rd #6</div></div>
+            <div class="matchup" id="m27"><div id="s_J1" class="team empty" onclick="adv(this,'M95_T')">1st J</div><div id="s_H2" class="team empty" onclick="adv(this,'M95_T')">2nd H</div></div>
+            <div class="matchup" id="m28"><div id="s_D2" class="team empty" onclick="adv(this,'M95_B')">2nd D</div><div id="s_G2" class="team empty" onclick="adv(this,'M95_B')">2nd G</div></div>
+            <div class="matchup" id="m29"><div id="s_B1" class="team empty" onclick="adv(this,'M96_T')">1st B</div><div id="slot_3rd_7" class="team empty" onclick="adv(this,'M96_T')">3rd #7</div></div>
+            <div class="matchup" id="m30"><div id="s_K1" class="team empty" onclick="adv(this,'M96_B')">1st K</div><div id="slot_3rd_8" class="team empty" onclick="adv(this,'M96_B')">3rd #8</div></div>
         </div>
     </div>
 </div>
@@ -154,7 +143,7 @@ function init() {
     });
     for(let i=1;i<=8;i++) tDiv.innerHTML += `<select id="b3_${i}" onchange="up3(${i-1},this.value)" style="width:110px;"><option value="">3rd #${i}</option></select>`;
     refresh3rdPool();
-    setTimeout(drawAllLines, 500);
+    setTimeout(drawAllLines, 200);
 }
 
 function upG(g,r,v) {
@@ -165,10 +154,10 @@ function upG(g,r,v) {
     }
     if(r<3) { 
         let s = document.getElementById(`s_${g}${r}`); 
-        let label = r === 1 ? "1st" : "2nd";
-        if(s){ s.innerHTML=v ? `${flags[v]} ${codes[v]}` : `${label} ${g}`; s.classList.toggle('empty', !v); s.classList.remove('winner'); }
+        if(s){ s.innerHTML=v ? `${flags[v]} ${codes[v]}` : `${r==1?'1st':'2nd'} ${g}`; s.classList.toggle('empty', !v); s.classList.remove('winner'); }
     }
     refresh3rdPool();
+    drawAllLines();
 }
 
 function refresh3rdPool() {
@@ -183,24 +172,17 @@ function up3(i,v) {
     b3rd[i]=v; let s = document.getElementById(`slot_3rd_${i+1}`);
     if(s){ s.innerHTML=v ? `${flags[v]} ${codes[v]}` : `3rd #${i+1}`; s.classList.toggle('empty', !v); s.classList.remove('winner'); }
     refresh3rdPool();
+    drawAllLines();
 }
 
-function adv(el, nId, pathId) {
+function adv(el, nId) {
     if(el.classList.contains('empty') || el.innerHTML.includes("#") || el.innerHTML.length < 3 || el.innerHTML.includes("...")) return;
     const target = document.getElementById(nId);
     if(target) {
         target.innerHTML = el.innerHTML; target.classList.remove('empty');
         Array.from(el.parentElement.children).forEach(s => s.classList.remove('winner'));
         el.classList.add('winner');
-        
-        // Activate Path
-        const line = document.getElementById(pathId);
-        if(line) line.classList.add('active');
-        
-        // If clicking top team, deactivate bottom team's line and vice versa
-        const siblings = el.parentElement.querySelectorAll('.team');
-        const index = Array.from(siblings).indexOf(el);
-        // Note: This simple logic might need adjusting for specific complex paths
+        drawAllLines();
     }
 }
 
@@ -209,6 +191,7 @@ function setWinner(el) {
     Array.from(el.parentElement.children).forEach(s => s.classList.remove('winner'));
     el.classList.add('winner');
     document.getElementById('champion-name').innerHTML = el.innerHTML;
+    drawAllLines();
 }
 
 function drawAllLines() {
@@ -217,22 +200,14 @@ function drawAllLines() {
     svg.innerHTML = ''; 
 
     const connections = [
-        {from: 'm1', to: 'M90_T', id: 'p1'}, {from: 'm2', to: 'M90_B', id: 'p2'},
-        {from: 'm3', to: 'M89_T', id: 'p3'}, {from: 'm4', to: 'M89_B', id: 'p4'},
-        {from: 'm5', to: 'M91_T', id: 'p5'}, {from: 'm6', to: 'M91_B', id: 'p6'},
-        {from: 'm7', to: 'M92_T', id: 'p7'}, {from: 'm8', to: 'M92_B', id: 'p8'},
-        {from: 'm9', to: 'M97_T', id: 'p9'}, {from: 'm10', to: 'M97_B', id: 'p10'},
-        {from: 'm11', to: 'M99_T', id: 'p11'}, {from: 'm12', to: 'M99_B', id: 'p12'},
-        {from: 'm13', to: 'M101_T', id: 'p13'}, {from: 'm14', to: 'M101_B', id: 'p14'},
-        {from: 'm15', to: 'FINAL_L', id: 'p15'}, {from: 'm16', to: 'FINAL_R', id: 'p16'},
-        // Right side
-        {from: 'm17', to: 'M102_T', id: 'p17'}, {from: 'm18', to: 'M102_B', id: 'p18'},
-        {from: 'm19', to: 'M98_T', id: 'p19'}, {from: 'm20', to: 'M98_B', id: 'p20'},
-        {from: 'm21', to: 'M100_T', id: 'p21'}, {from: 'm22', to: 'M100_B', id: 'p22'},
-        {from: 'm23', to: 'M93_T', id: 'p23'}, {from: 'm24', to: 'M93_B', id: 'p24'},
-        {from: 'm25', to: 'M94_T', id: 'p25'}, {from: 'm26', to: 'M94_B', id: 'p26'},
-        {from: 'm27', to: 'M95_T', id: 'p27'}, {from: 'm28', to: 'M95_B', id: 'p28'},
-        {from: 'm29', to: 'M96_T', id: 'p29'}, {from: 'm30', to: 'M96_B', id: 'p30'}
+        {from: 'm1', to: 'M90_T'}, {from: 'm2', to: 'M90_B'}, {from: 'm3', to: 'M89_T'}, {from: 'm4', to: 'M89_B'},
+        {from: 'm5', to: 'M91_T'}, {from: 'm6', to: 'M91_B'}, {from: 'm7', to: 'M92_T'}, {from: 'm8', to: 'M92_B'},
+        {from: 'm9', to: 'M97_T'}, {from: 'm10', to: 'M97_B'}, {from: 'm11', to: 'M99_T'}, {from: 'm12', to: 'M99_B'},
+        {from: 'm13', to: 'M101_T'}, {from: 'm14', to: 'M101_B'}, {from: 'm15', to: 'FINAL_L'}, {from: 'mf', to: 'champion-name'},
+        {from: 'm16', to: 'FINAL_R'}, {from: 'm17', to: 'M102_T'}, {from: 'm18', to: 'M102_B'},
+        {from: 'm19', to: 'M98_T'}, {from: 'm20', to: 'M98_B'}, {from: 'm21', to: 'M100_T'}, {from: 'm22', to: 'M100_B'},
+        {from: 'm23', to: 'M93_T'}, {from: 'm24', to: 'M93_B'}, {from: 'm25', to: 'M94_T'}, {from: 'm26', to: 'M94_B'},
+        {from: 'm27', to: 'M95_T'}, {from: 'm28', to: 'M95_B'}, {from: 'm29', to: 'M96_T'}, {from: 'm30', to: 'M96_B'}
     ];
 
     connections.forEach(conn => {
@@ -242,27 +217,35 @@ function drawAllLines() {
 
         const startRect = startEl.getBoundingClientRect();
         const endRect = endEl.getBoundingClientRect();
-
         const isLeft = startEl.closest('.left-bracket') || startEl.id === 'm15';
-        
+        const isRight = startEl.closest('.right-bracket') || startEl.id === 'm16';
+
         let x1 = isLeft ? startRect.right : startRect.left;
         let y1 = startRect.top + startRect.height / 2;
-        let x2 = isLeft ? endRect.left : endRect.right;
-        let y2 = endRect.top + endRect.height / 2;
+        
+        // Target specific edge based on whether the slot is Top or Bottom
+        let x2 = endRect.left + endRect.width / 2;
+        let y2 = conn.to.endsWith('_T') || conn.to === 'FINAL_L' || conn.to === 'FINAL_R' ? endRect.top : endRect.bottom;
+        
+        // Handle Champion special case
+        if(conn.to === 'champion-name') y2 = endRect.bottom;
 
-        // Coordinates relative to SVG container
         x1 -= container.left; y1 -= container.top;
         x2 -= container.left; y2 -= container.top;
 
-        const midX = x1 + (x2 - x1) / 2;
+        const midX = isLeft ? x1 + 20 : x1 - 20;
 
         const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        // Stepladder command: Move to start, horizontal to mid, vertical to end height, horizontal to end
+        // Stepladder: Right -> Up/Down to midX -> Up/Down to x2 -> Vertical into Box
         const d = `M ${x1} ${y1} L ${midX} ${y1} L ${midX} ${y2} L ${x2} ${y2}`;
         
         path.setAttribute("d", d);
-        path.setAttribute("id", conn.id);
         path.setAttribute("class", "path-line");
+
+        // CHECK IF ACTIVE: If start box has a winner AND end box contains that winner's HTML
+        const winner = startEl.querySelector('.team.winner');
+        if(winner && endEl.innerHTML === winner.innerHTML) path.classList.add('active');
+
         svg.appendChild(path);
     });
 }
