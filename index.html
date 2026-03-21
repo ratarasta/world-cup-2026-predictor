@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Final Base</title>
+    <title>Alignment Fix</title>
     <style>
         :root { --line-color: #444; --accent: #00ff88; --bg: #0b0b0b; --card: #1a1a1a; --box-w: 75px; }
         body { background: var(--bg); color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; font-size: 12px; }
@@ -15,7 +15,7 @@
         .group-box { background: var(--card); padding: 5px; border: 1px solid #333; border-radius: 4px; text-align: center; }
         select { width: 100%; background: #222; color: white; border: 1px solid #444; padding: 3px; margin-top: 2px; font-size: 10px; border-radius: 3px; }
         
-        /* Best 3rd Section */
+        /* Compact 3rd Place Section */
         .best-3rd-wrapper { text-align: center; margin-bottom: 20px; }
         .best-3rd-container { display: inline-block; padding: 10px; border: 1px dashed #444; border-radius: 8px; background: #111; }
         .best-3rd-grid { display: flex; gap: 5px; justify-content: center; margin-top: 5px; }
@@ -36,29 +36,35 @@
         .winner { background: #113825 !important; color: var(--accent) !important; font-weight: bold; }
         .empty { color: #444; font-size: 9px; }
 
-        /* CENTER STAGE: All in one horizontal row */
+        /* CENTER STAGE: Horizontal Alignment Fix */
         .center-stage { 
             display: flex; 
-            align-items: center; 
+            align-items: center; /* This aligns Semis and Final horizontally */
             justify-content: center; 
             gap: 20px; 
-            height: 800px; /* Match round height */
-            padding-top: 0; 
+            height: 800px; 
         }
 
-        .final-column { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        /* This stacks the Trophy (Yellow) on top of the Final (Green) */
+        .final-column { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 15px; 
+            transform: translateY(-25px); /* Fine-tuning the vertical center */
+        }
         
         #champion-display {
             width: 85px; padding: 8px; border: 2px gold solid; border-radius: 8px;
             background: linear-gradient(145deg, #1a1a1a, #000); text-align: center;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
         }
         #champion-display h2 { margin: 0; font-size: 7px; color: gold; text-transform: uppercase; }
         #champion-name { font-size: 14px; font-weight: bold; margin-top: 3px; min-height: 18px; }
 
-        .final-match { border: 2px solid var(--accent); background: #111; width: 85px; margin: 0; }
+        .final-match { border: 2px solid var(--accent); background: #111; width: 85px; margin: 0; box-shadow: 0 0 10px rgba(0,255,136,0.1); }
 
-        /* Semi-to-Final Lines */
+        /* Connectors */
         .semi-match { position: relative; }
         .semi-left::after { content: ""; position: absolute; right: -20px; top: 50%; width: 20px; height: 1px; background: var(--line-color); }
         .semi-right::before { content: ""; position: absolute; left: -20px; top: 50%; width: 20px; height: 1px; background: var(--line-color); }
@@ -95,44 +101,53 @@
         </div>
         <div class="round">
             <h3>R16</h3>
-            <div class="matchup"><div id="M90_T" class="team empty" onclick="adv(this,'M97_T')">...</div><div id="M90_B" class="team empty" onclick="adv(this,'M97_T')">...</div></div>
-            <div class="matchup"><div id="M89_T" class="team empty" onclick="adv(this,'M97_B')">...</div><div id="M89_B" class="team empty" onclick="adv(this,'M97_B')">...</div></div>
-            <div class="matchup"><div id="M91_T" class="team empty" onclick="adv(this,'M99_T')">...</div><div id="M91_B" class="team empty" onclick="adv(this,'M99_T')">...</div></div>
-            <div class="matchup"><div id="M92_T" class="team empty" onclick="adv(this,'M99_B')">...</div><div id="M92_B" class="team empty" onclick="adv(this,'M99_B')">...</div></div>
+            <div class="matchup"><div id="M90_T" class="team empty" onclick="adv(this,'M97_T')">...</div><div id="M90_B" class="team empty" onclick="adv(this,'M90_B')">...</div></div>
+            <div class="matchup"><div id="M89_T" class="team empty" onclick="adv(this,'M97_B')">...</div><div id="M89_B" class="team empty" onclick="adv(this,'M89_B')">...</div></div>
+            <div class="matchup"><div id="M91_T" class="team empty" onclick="adv(this,'M99_T')">...</div><div id="M91_B" class="team empty" onclick="adv(this,'M91_B')">...</div></div>
+            <div class="matchup"><div id="M92_T" class="team empty" onclick="adv(this,'M99_B')">...</div><div id="M92_B" class="team empty" onclick="adv(this,'M92_B')">...</div></div>
         </div>
         <div class="round">
             <h3>QF</h3>
-            <div class="matchup"><div id="M97_T" class="team empty" onclick="adv(this,'M101_T')">...</div><div id="M97_B" class="team empty" onclick="adv(this,'M101_T')">...</div></div>
-            <div class="matchup"><div id="M99_T" class="team empty" onclick="adv(this,'M101_B')">...</div><div id="M99_B" class="team empty" onclick="adv(this,'M101_B')">...</div></div>
+            <div class="matchup"><div id="M97_T" class="team empty" onclick="adv(this,'M101_T')">...</div><div id="M97_B" class="team empty" onclick="adv(this,'M97_B')">...</div></div>
+            <div class="matchup"><div id="M99_T" class="team empty" onclick="adv(this,'M101_B')">...</div><div id="M99_B" class="team empty" onclick="adv(this,'M99_B')">...</div></div>
         </div>
     </div>
 
     <div class="center-stage">
-        <div class="matchup semi-left semi-match"><div id="M101_T" class="team empty" onclick="adv(this,'FINAL_L')">...</div><div id="M101_B" class="team empty" onclick="adv(this,'FINAL_L')">...</div></div>
+        <div class="matchup semi-left semi-match">
+            <div id="M101_T" class="team empty" onclick="adv(this,'FINAL_L')">...</div>
+            <div id="M101_B" class="team empty" onclick="adv(this,'FINAL_L')">...</div>
+        </div>
         
         <div class="final-column">
             <div id="champion-display">
                 <h2>🏆 Winner</h2>
                 <div id="champion-name"></div>
             </div>
-            <div class="matchup final-match"><div id="FINAL_L" class="team empty" onclick="setWinner(this)">...</div><div id="FINAL_R" class="team empty" onclick="setWinner(this)">...</div></div>
+            <div class="matchup final-match">
+                <div id="FINAL_L" class="team empty" onclick="setWinner(this)">...</div>
+                <div id="FINAL_R" class="team empty" onclick="setWinner(this)">...</div>
+            </div>
         </div>
 
-        <div class="matchup semi-right semi-match"><div id="M102_T" class="team empty" onclick="adv(this,'FINAL_R')">...</div><div id="M102_B" class="team empty" onclick="adv(this,'FINAL_R')">...</div></div>
+        <div class="matchup semi-right semi-match">
+            <div id="M102_T" class="team empty" onclick="adv(this,'FINAL_R')">...</div>
+            <div id="M102_B" class="team empty" onclick="adv(this,'FINAL_R')">...</div>
+        </div>
     </div>
 
     <div class="bracket-side right-bracket">
         <div class="round">
             <h3>QF</h3>
-            <div class="matchup"><div id="M98_T" class="team empty" onclick="adv(this,'M102_T')">...</div><div id="M98_B" class="team empty" onclick="adv(this,'M102_T')">...</div></div>
-            <div class="matchup"><div id="M100_T" class="team empty" onclick="adv(this,'M102_B')">...</div><div id="M100_B" class="team empty" onclick="adv(this,'M102_B')">...</div></div>
+            <div class="matchup"><div id="M98_T" class="team empty" onclick="adv(this,'M102_T')">...</div><div id="M98_B" class="team empty" onclick="adv(this,'M98_B')">...</div></div>
+            <div class="matchup"><div id="M100_T" class="team empty" onclick="adv(this,'M102_B')">...</div><div id="M100_B" class="team empty" onclick="adv(this,'M100_B')">...</div></div>
         </div>
         <div class="round">
             <h3>R16</h3>
-            <div class="matchup"><div id="M93_T" class="team empty" onclick="adv(this,'M98_T')">...</div><div id="M93_B" class="team empty" onclick="adv(this,'M98_T')">...</div></div>
-            <div class="matchup"><div id="M94_T" class="team empty" onclick="adv(this,'M98_B')">...</div><div id="M94_B" class="team empty" onclick="adv(this,'M98_B')">...</div></div>
-            <div class="matchup"><div id="M95_T" class="team empty" onclick="adv(this,'M100_T')">...</div><div id="M95_B" class="team empty" onclick="adv(this,'M100_T')">...</div></div>
-            <div class="matchup"><div id="M96_T" class="team empty" onclick="adv(this,'M100_B')">...</div><div id="M96_B" class="team empty" onclick="adv(this,'M100_B')">...</div></div>
+            <div class="matchup"><div id="M93_T" class="team empty" onclick="adv(this,'M98_T')">...</div><div id="M93_B" class="team empty" onclick="adv(this,'M93_B')">...</div></div>
+            <div class="matchup"><div id="M94_T" class="team empty" onclick="adv(this,'M98_B')">...</div><div id="M94_B" class="team empty" onclick="adv(this,'M94_B')">...</div></div>
+            <div class="matchup"><div id="M95_T" class="team empty" onclick="adv(this,'M100_T')">...</div><div id="M95_B" class="team empty" onclick="adv(this,'M95_B')">...</div></div>
+            <div class="matchup"><div id="M96_T" class="team empty" onclick="adv(this,'M100_B')">...</div><div id="M96_B" class="team empty" onclick="adv(this,'M96_B')">...</div></div>
         </div>
         <div class="round">
             <h3>R32</h3>
@@ -207,7 +222,7 @@ function adv(el, nId) {
 }
 
 function setWinner(el) {
-    if(el.classList.contains('empty') || el.innerText.includes("FINALIST")) return;
+    if(el.classList.contains('empty') || el.innerText.includes("...")) return;
     Array.from(el.parentElement.children).forEach(s => s.classList.remove('winner'));
     el.classList.add('winner');
     document.getElementById('champion-name').innerHTML = el.innerHTML;
