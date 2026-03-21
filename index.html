@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 World Cup Predictor - Symmetrical Edition</title>
+    <title>Final Elite Edition</title>
     <style>
         :root { --line-color: #444; --accent: #00ff88; --bg: #0b0b0b; --card: #1a1a1a; --box-w: 75px; }
         body { background: var(--bg); color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; font-size: 12px; }
@@ -38,28 +38,28 @@
         /* CENTER STAGE: Grid Layout */
         .center-stage { 
             display: grid; 
-            grid-template-columns: 100px 120px 100px; 
+            grid-template-columns: 100px 100px 100px; 
             align-items: center; 
             justify-items: center;
-            gap: 20px;
+            gap: 15px;
             padding-top: 320px;
         }
 
         .final-area { grid-column: 2; display: flex; flex-direction: column; align-items: center; gap: 10px; }
         
         #champion-display {
-            width: 100px; padding: 8px; border: 2px gold solid; border-radius: 8px;
+            width: 80px; padding: 8px; border: 2px gold solid; border-radius: 8px;
             background: linear-gradient(145deg, #1a1a1a, #000); text-align: center;
             box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
         }
-        #champion-display h2 { margin: 0; font-size: 8px; color: gold; text-transform: uppercase; }
-        #champion-name { font-size: 14px; font-weight: bold; margin-top: 3px; }
+        #champion-display h2 { margin: 0; font-size: 7px; color: gold; text-transform: uppercase; }
+        #champion-name { font-size: 13px; font-weight: bold; margin-top: 3px; }
 
-        .final-match { border: 2px solid var(--accent); background: #111; width: 90px; margin: 0; }
+        .final-match { border: 2px solid var(--accent); background: #111; width: 85px; margin: 0; }
 
         /* Lines for Semis to Final */
-        .semi-left::after { content: ""; position: absolute; right: -20px; top: 50%; width: 20px; height: 1px; background: var(--line-color); }
-        .semi-right::before { content: ""; position: absolute; left: -20px; top: 50%; width: 20px; height: 1px; background: var(--line-color); }
+        .semi-left::after { content: ""; position: absolute; right: -15px; top: 50%; width: 15px; height: 1px; background: var(--line-color); }
+        .semi-right::before { content: ""; position: absolute; left: -15px; top: 50%; width: 15px; height: 1px; background: var(--line-color); }
     </style>
 </head>
 <body>
@@ -68,9 +68,11 @@
 
 <div class="group-stage" id="groups"></div>
 
-<div class="group-box" style="margin: 0 auto 15px; max-width: 95%; border: 1px dashed #444;">
-    <h4 style="margin: 0 0 5px 0; font-size: 10px; color: var(--accent);">BEST 3rd PLACE TEAMS</h4>
-    <div id="third-selectors" class="best-3rd-grid" style="background: transparent; padding: 0; grid-template-columns: repeat(8, 1fr);"></div>
+<div class="group-stage" style="margin-top: -10px;">
+    <div class="group-box" style="grid-column: 1 / -1; border: 1px dashed #444;">
+        <h4 style="margin: 0 0 5px 0; font-size: 10px; color: var(--accent);">SELECT 8 BEST 3rd PLACE TEAMS</h4>
+        <div id="third-selectors" style="display: flex; gap: 5px; justify-content: center; flex-wrap: wrap;"></div>
+    </div>
 </div>
 
 <div class="tournament-wrapper">
@@ -151,25 +153,9 @@
 </div>
 
 <script>
-const codes = {
-    "Mexico":"MX","South Africa":"ZA","South Korea":"KR","Czechia":"CZ","Canada":"CA","Switzerland":"CH","Qatar":"QA","Italy":"IT",
-    "Brazil":"BR","Morocco":"MA","Haiti":"HT","Scotland":"SCT","USA":"US","Paraguay":"PY","Australia":"AU","Slovakia":"SK",
-    "Germany":"DE","Curaçao":"CW","Ivory Coast":"CI","Ecuador":"EC","Netherlands":"NL","Japan":"JP","Tunisia":"TN","Ukraine":"UA",
-    "Belgium":"BE","Egypt":"EG","Iran":"IR","New Zealand":"NZ","Spain":"ES","Cape Verde":"CV","Saudi Arabia":"SA","Uruguay":"UY",
-    "France":"FR","Senegal":"SN","Norway":"NO","Iraq":"IQ","Argentina":"AR","Algeria":"DZ","Austria":"AT","Jordan":"JO",
-    "Portugal":"PT","Uzbekistan":"UZ","Colombia":"CO","Jamaica":"JM","England":"ENG","Croatia":"HR","Ghana":"GH","Panama":"PA"
-};
-const flags = {
-    "Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹",
-    "Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰",
-    "Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦",
-    "Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾",
-    "France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴",
-    "Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"
-};
-const teams = {
-    A:["Mexico","South Africa","South Korea","Czechia"], B:["Canada","Switzerland","Qatar","Italy"], C:["Brazil","Morocco","Haiti","Scotland"], D:["USA","Paraguay","Australia","Slovakia"], E:["Germany","Curaçao","Ivory Coast","Ecuador"], F:["Netherlands","Japan","Tunisia","Ukraine"], G:["Belgium","Egypt","Iran","New Zealand"], H:["Spain","Cape Verde","Saudi Arabia","Uruguay"], I:["France","Senegal","Norway","Iraq"], J:["Argentina","Algeria","Austria","Jordan"], K:["Portugal","Uzbekistan","Colombia","Jamaica"], L:["England","Croatia","Ghana","Panama"]
-};
+const codes = {"Mexico":"MX","South Africa":"ZA","South Korea":"KR","Czechia":"CZ","Canada":"CA","Switzerland":"CH","Qatar":"QA","Italy":"IT","Brazil":"BR","Morocco":"MA","Haiti":"HT","Scotland":"SCT","USA":"US","Paraguay":"PY","Australia":"AU","Slovakia":"SK","Germany":"DE","Curaçao":"CW","Ivory Coast":"CI","Ecuador":"EC","Netherlands":"NL","Japan":"JP","Tunisia":"TN","Ukraine":"UA","Belgium":"BE","Egypt":"EG","Iran":"IR","New Zealand":"NZ","Spain":"ES","Cape Verde":"CV","Saudi Arabia":"SA","Uruguay":"UY","France":"FR","Senegal":"SN","Norway":"NO","Iraq":"IQ","Argentina":"AR","Algeria":"DZ","Austria":"AT","Jordan":"JO","Portugal":"PT","Uzbekistan":"UZ","Colombia":"CO","Jamaica":"JM","England":"ENG","Croatia":"HR","Ghana":"GH","Panama":"PA"};
+const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
+const teams = {A:["Mexico","South Africa","South Korea","Czechia"], B:["Canada","Switzerland","Qatar","Italy"], C:["Brazil","Morocco","Haiti","Scotland"], D:["USA","Paraguay","Australia","Slovakia"], E:["Germany","Curaçao","Ivory Coast","Ecuador"], F:["Netherlands","Japan","Tunisia","Ukraine"], G:["Belgium","Egypt","Iran","New Zealand"], H:["Spain","Cape Verde","Saudi Arabia","Uruguay"], I:["France","Senegal","Norway","Iraq"], J:["Argentina","Algeria","Austria","Jordan"], K:["Portugal","Uzbekistan","Colombia","Jamaica"], L:["England","Croatia","Ghana","Panama"]};
 let sel = {}; let b3rd = Array(8).fill("");
 
 function init() {
@@ -181,7 +167,7 @@ function init() {
         for(let i=1; i<=3; i++) h+=`<select id="s_${g}_${i}" onchange="upG('${g}',${i},this.value)"><option value="">${i==1?'1st':i==2?'nd':'rd'}</option>${teams[g].map(t=>`<option value="${t}">${flags[t]} ${codes[t]}</option>`).join('')}</select>`;
         gDiv.innerHTML += h+`</div>`;
     });
-    for(let i=1;i<=8;i++) tDiv.innerHTML += `<select id="b3_${i}" onchange="up3(${i-1},this.value)"><option value="">#${i}</option></select>`;
+    for(let i=1;i<=8;i++) tDiv.innerHTML += `<select id="b3_${i}" onchange="up3(${i-1},this.value)" style="width:110px;"><option value="">#${i}</option></select>`;
 }
 
 function upG(g,r,v) {
