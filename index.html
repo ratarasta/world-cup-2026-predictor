@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 World Cup Predictor - Final Alignment</title>
+    <title>3-Letter Edition</title>
     <style>
-        :root { --line-color: #444; --accent: #00ff88; --bg: #0b0b0b; --card: #1a1a1a; --box-w: 75px; }
+        :root { --line-color: #444; --accent: #00ff88; --bg: #0b0b0b; --card: #1a1a1a; --box-w: 82px; }
         body { background: var(--bg); color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; font-size: 12px; }
         h1 { text-align: center; color: var(--accent); margin: 5px 0; text-transform: uppercase; letter-spacing: 2px; font-size: 18px; }
 
         /* Group Stage Grid */
         .group-stage-wrapper { display: flex; flex-direction: column; gap: 10px; align-items: center; margin-bottom: 20px; }
-        .group-row { display: grid; grid-template-columns: repeat(6, 110px); gap: 8px; }
+        .group-row { display: grid; grid-template-columns: repeat(6, 115px); gap: 8px; }
         .group-box { background: var(--card); padding: 5px; border: 1px solid #333; border-radius: 4px; text-align: center; }
         select { width: 100%; background: #222; color: white; border: 1px solid #444; padding: 3px; margin-top: 2px; font-size: 10px; border-radius: 3px; }
         
@@ -19,34 +19,32 @@
         .best-3rd-wrapper { text-align: center; margin-bottom: 20px; }
         .best-3rd-container { display: inline-block; padding: 10px; border: 1px dashed #444; border-radius: 8px; background: #111; }
         .best-3rd-grid { display: flex; gap: 5px; justify-content: center; margin-top: 5px; }
-        .best-3rd-grid select { width: 90px; }
+        .best-3rd-grid select { width: 105px; }
 
         /* Bracket Layout */
         .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: 60px 0 100px 0; }
         .bracket-side { display: flex; align-items: flex-start; }
-        .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 100px; height: 800px; position: relative; }
+        .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 110px; height: 800px; position: relative; }
         .round h3 { font-size: 8px; color: #555; text-align: center; position: absolute; top: -20px; width: 100%; text-transform: uppercase; }
 
         .matchup { background: var(--card); border: 1px solid #333; border-radius: 4px; width: var(--box-w); margin: 3px auto; position: relative; z-index: 2; }
-        .left-bracket .round:not(:last-child) .matchup::after { content: ""; position: absolute; right: -25px; top: 50%; width: 25px; height: 1px; background: var(--line-color); }
-        .right-bracket .round:not(:first-child) .matchup::before { content: ""; position: absolute; left: -25px; top: 50%; width: 25px; height: 1px; background: var(--line-color); }
+        .left-bracket .round:not(:last-child) .matchup::after { content: ""; position: absolute; right: -28px; top: 50%; width: 28px; height: 1px; background: var(--line-color); }
+        .right-bracket .round:not(:first-child) .matchup::before { content: ""; position: absolute; left: -28px; top: 50%; width: 28px; height: 1px; background: var(--line-color); }
 
-        .team { padding: 6px; cursor: pointer; border-bottom: 1px solid #2a2a2a; transition: 0.2s; white-space: nowrap; text-align: center; display: flex; justify-content: center; align-items: center; gap: 4px; height: 28px; box-sizing: border-box; }
+        .team { padding: 6px; cursor: pointer; border-bottom: 1px solid #2a2a2a; transition: 0.2s; white-space: nowrap; text-align: center; display: flex; justify-content: center; align-items: center; gap: 5px; height: 30px; box-sizing: border-box; font-weight: 500; }
         .team:hover { background: #333; color: var(--accent); }
         .winner { background: #113825 !important; color: var(--accent) !important; font-weight: bold; }
         .empty { color: #444; font-size: 9px; }
 
-        /* CENTER STAGE: Horizontal Alignment Fix */
+        /* CENTER STAGE: Precision Alignment */
         .center-stage { 
             display: flex; 
             align-items: center; 
             justify-content: center; 
             gap: 20px; 
-            height: 800px; /* Forces center area to match bracket height */
+            height: 800px; 
         }
 
-        /* Logic: To keep the Green box level with Semis, 
-           the Yellow box must be "pulled up" out of the flow or the container must center correctly. */
         .final-column { 
             display: flex; 
             flex-direction: column; 
@@ -57,18 +55,17 @@
         
         #champion-display {
             position: absolute;
-            bottom: 100%; /* Sits exactly on top of the final-match */
-            margin-bottom: 15px;
-            width: 85px; padding: 8px; border: 2px gold solid; border-radius: 8px;
+            bottom: 105%; 
+            margin-bottom: 12px;
+            width: 82px; padding: 8px; border: 2px gold solid; border-radius: 8px;
             background: linear-gradient(145deg, #1a1a1a, #000); text-align: center;
             box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
         }
         #champion-display h2 { margin: 0; font-size: 7px; color: gold; text-transform: uppercase; }
         #champion-name { font-size: 14px; font-weight: bold; margin-top: 3px; min-height: 18px; }
 
-        .final-match { border: 2px solid var(--accent); background: #111; width: 85px; margin: 0; box-shadow: 0 0 10px rgba(0,255,136,0.1); }
+        .final-match { border: 2px solid var(--accent); background: #111; width: 82px; margin: 0; box-shadow: 0 0 10px rgba(0,255,136,0.1); }
 
-        /* Connectors */
         .semi-match { position: relative; }
         .semi-left::after { content: ""; position: absolute; right: -20px; top: 50%; width: 20px; height: 1px; background: var(--line-color); }
         .semi-right::before { content: ""; position: absolute; left: -20px; top: 50%; width: 20px; height: 1px; background: var(--line-color); }
@@ -122,7 +119,6 @@
             <div id="M101_T" class="team empty" onclick="adv(this,'FINAL_L')">...</div>
             <div id="M101_B" class="team empty" onclick="adv(this,'FINAL_L')">...</div>
         </div>
-        
         <div class="final-column">
             <div id="champion-display">
                 <h2>🏆 Winner</h2>
@@ -133,7 +129,6 @@
                 <div id="FINAL_R" class="team empty" onclick="setWinner(this)">...</div>
             </div>
         </div>
-
         <div class="matchup semi-right semi-match">
             <div id="M102_T" class="team empty" onclick="adv(this,'FINAL_R')">...</div>
             <div id="M102_B" class="team empty" onclick="adv(this,'FINAL_R')">...</div>
@@ -150,7 +145,7 @@
             <h3>R16</h3>
             <div class="matchup"><div id="M93_T" class="team empty" onclick="adv(this,'M98_T')">...</div><div id="M93_B" class="team empty" onclick="adv(this,'M93_B')">...</div></div>
             <div class="matchup"><div id="M94_T" class="team empty" onclick="adv(this,'M98_B')">...</div><div id="M94_B" class="team empty" onclick="adv(this,'M94_B')">...</div></div>
-            <div class="matchup"><div id="M95_T" class="team empty" onclick="adv(this,'M100_T')">...</div><div id="M95_B" class="team empty" onclick="adv(this,'M100_B')">...</div></div>
+            <div class="matchup"><div id="M95_T" class="team empty" onclick="adv(this,'M100_T')">...</div><div id="M95_B" class="team empty" onclick="adv(this,'M95_B')">...</div></div>
             <div class="matchup"><div id="M96_T" class="team empty" onclick="adv(this,'M100_B')">...</div><div id="M96_B" class="team empty" onclick="adv(this,'M96_B')">...</div></div>
         </div>
         <div class="round">
@@ -168,24 +163,21 @@
 </div>
 
 <script>
-const codes = {"Mexico":"MX","South Africa":"ZA","South Korea":"KR","Czechia":"CZ","Canada":"CA","Switzerland":"CH","Qatar":"QA","Italy":"IT","Brazil":"BR","Morocco":"MA","Haiti":"HT","Scotland":"SCT","USA":"US","Paraguay":"PY","Australia":"AU","Slovakia":"SK","Germany":"DE","Curaçao":"CW","Ivory Coast":"CI","Ecuador":"EC","Netherlands":"NL","Japan":"JP","Tunisia":"TN","Ukraine":"UA","Belgium":"BE","Egypt":"EG","Iran":"IR","New Zealand":"NZ","Spain":"ES","Cape Verde":"CV","Saudi Arabia":"SA","Uruguay":"UY","France":"FR","Senegal":"SN","Norway":"NO","Iraq":"IQ","Argentina":"AR","Algeria":"DZ","Austria":"AT","Jordan":"JO","Portugal":"PT","Uzbekistan":"UZ","Colombia":"CO","Jamaica":"JM","England":"ENG","Croatia":"HR","Ghana":"GH","Panama":"PA"};
+const codes = {"Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czechia":"CZE","Canada":"CAN","Switzerland":"SUI","Qatar":"QAT","Italy":"ITA","Brazil":"BRA","Morocco":"MAR","Haiti":"HAI","Scotland":"SCO","USA":"USA","Paraguay":"PAR","Australia":"AUS","Slovakia":"SVK","Germany":"GER","Curaçao":"CUW","Ivory Coast":"CIV","Ecuador":"ECU","Netherlands":"NED","Japan":"JPN","Tunisia":"TUN","Ukraine":"UKR","Belgium":"BEL","Egypt":"EGY","Iran":"IRN","New Zealand":"NZL","Spain":"ESP","Cape Verde":"CPV","Saudi Arabia":"KSA","Uruguay":"URU","France":"FRA","Senegal":"SEN","Norway":"NOR","Iraq":"IRQ","Argentina":"ARG","Algeria":"ALG","Austria":"AUT","Jordan":"JOR","Portugal":"POR","Uzbekistan":"UZB","Colombia":"COL","Jamaica":"JAM","England":"ENG","Croatia":"CRO","Ghana":"GHA","Panama":"PAN"};
 const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
 const teams = {A:["Mexico","South Africa","South Korea","Czechia"], B:["Canada","Switzerland","Qatar","Italy"], C:["Brazil","Morocco","Haiti","Scotland"], D:["USA","Paraguay","Australia","Slovakia"], E:["Germany","Curaçao","Ivory Coast","Ecuador"], F:["Netherlands","Japan","Tunisia","Ukraine"], G:["Belgium","Egypt","Iran","New Zealand"], H:["Spain","Cape Verde","Saudi Arabia","Uruguay"], I:["France","Senegal","Norway","Iraq"], J:["Argentina","Algeria","Austria","Jordan"], K:["Portugal","Uzbekistan","Colombia","Jamaica"], L:["England","Croatia","Ghana","Panama"]};
 let sel = {}; let b3rd = Array(8).fill("");
 
 function init() {
-    const row1 = document.getElementById('row-1');
-    const row2 = document.getElementById('row-2');
+    const r1 = document.getElementById('row-1'); const r2 = document.getElementById('row-2');
     const tDiv = document.getElementById('third-selectors');
-    
     Object.keys(teams).forEach((g, idx) => {
         sel[g] = ["","",""];
         let h = `<div class="group-box"><h4>Grp ${g}</h4>`;
         for(let i=1; i<=3; i++) h+=`<select id="s_${g}_${i}" onchange="upG('${g}',${i},this.value)"><option value="">${i==1?'1st':i==2?'nd':'rd'}</option>${teams[g].map(t=>`<option value="${t}">${flags[t]} ${codes[t]}</option>`).join('')}</select>`;
-        h += `</div>`;
-        if (idx < 6) row1.innerHTML += h; else row2.innerHTML += h;
+        if(idx < 6) r1.innerHTML += h + `</div>`; else r2.innerHTML += h + `</div>`;
     });
-    for(let i=1;i<=8;i++) tDiv.innerHTML += `<select id="b3_${i}" onchange="up3(${i-1},this.value)" style="width:100px;"><option value="">#${i}</option></select>`;
+    for(let i=1;i<=8;i++) tDiv.innerHTML += `<select id="b3_${i}" onchange="up3(${i-1},this.value)" style="width:105px;"><option value="">#${i}</option></select>`;
 }
 
 function upG(g,r,v) {
