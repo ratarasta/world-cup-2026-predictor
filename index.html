@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Final Pro</title>
+    <title>2026 World Cup Predictor - Final Pro</title>
     <style>
         :root { --line-color: #444; --accent: #00ff88; --bg: #0b0b0b; --card: #1a1a1a; --box-w: 85px; }
         body { background: var(--bg); color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; font-size: 12px; }
@@ -110,7 +110,7 @@
     <div class="bracket-side right-bracket">
         <div class="round">
             <h3>QF</h3>
-            <div class="matchup"><div id="M98_T" class="team empty" onclick="adv(this,'M101_B')">...</div><div id="M98_B" class="team empty" onclick="adv(this,'M101_B')">...</div></div>
+            <div class="matchup"><div id="M98_T" class="team empty" onclick="adv(this,'M102_T')">...</div><div id="M98_B" class="team empty" onclick="adv(this,'M102_T')">...</div></div>
             <div class="matchup"><div id="M100_T" class="team empty" onclick="adv(this,'M102_B')">...</div><div id="M100_B" class="team empty" onclick="adv(this,'M102_B')">...</div></div>
         </div>
         <div class="round">
@@ -149,7 +149,7 @@ function init() {
         for(let i=1; i<=3; i++) h+=`<select id="s_${g}_${i}" onchange="upG('${g}',${i},this.value)"><option value="">${i==1?'1st':i==2?'nd':'rd'}</option>${teams[g].map(t=>`<option value="${t}">${flags[t]} ${codes[t]}</option>`).join('')}</select>`;
         if (idx < 6) row1.innerHTML += h + `</div>`; else row2.innerHTML += h + `</div>`;
     });
-    for(let i=1;i<=8;i++) tDiv.innerHTML += `<select id="b3_${i}" onchange="up3(${i-1},this.value)" style="width:110px;"><option value="">#${i}</option></select>`;
+    for(let i=1;i<=8;i++) tDiv.innerHTML += `<select id="b3_${i}" onchange="up3(${i-1},this.value)" style="width:100px;"><option value="">#${i}</option></select>`;
     refresh3rdPool();
 }
 
