@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alignment Fix</title>
+    <title>2026 World Cup Predictor - Final Alignment</title>
     <style>
         :root { --line-color: #444; --accent: #00ff88; --bg: #0b0b0b; --card: #1a1a1a; --box-w: 75px; }
         body { background: var(--bg); color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; font-size: 12px; }
@@ -39,22 +39,26 @@
         /* CENTER STAGE: Horizontal Alignment Fix */
         .center-stage { 
             display: flex; 
-            align-items: center; /* This aligns Semis and Final horizontally */
+            align-items: center; 
             justify-content: center; 
             gap: 20px; 
-            height: 800px; 
+            height: 800px; /* Forces center area to match bracket height */
         }
 
-        /* This stacks the Trophy (Yellow) on top of the Final (Green) */
+        /* Logic: To keep the Green box level with Semis, 
+           the Yellow box must be "pulled up" out of the flow or the container must center correctly. */
         .final-column { 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            gap: 15px; 
-            transform: translateY(-25px); /* Fine-tuning the vertical center */
+            justify-content: center;
+            position: relative;
         }
         
         #champion-display {
+            position: absolute;
+            bottom: 100%; /* Sits exactly on top of the final-match */
+            margin-bottom: 15px;
             width: 85px; padding: 8px; border: 2px gold solid; border-radius: 8px;
             background: linear-gradient(145deg, #1a1a1a, #000); text-align: center;
             box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
@@ -146,7 +150,7 @@
             <h3>R16</h3>
             <div class="matchup"><div id="M93_T" class="team empty" onclick="adv(this,'M98_T')">...</div><div id="M93_B" class="team empty" onclick="adv(this,'M93_B')">...</div></div>
             <div class="matchup"><div id="M94_T" class="team empty" onclick="adv(this,'M98_B')">...</div><div id="M94_B" class="team empty" onclick="adv(this,'M94_B')">...</div></div>
-            <div class="matchup"><div id="M95_T" class="team empty" onclick="adv(this,'M100_T')">...</div><div id="M95_B" class="team empty" onclick="adv(this,'M95_B')">...</div></div>
+            <div class="matchup"><div id="M95_T" class="team empty" onclick="adv(this,'M100_T')">...</div><div id="M95_B" class="team empty" onclick="adv(this,'M100_B')">...</div></div>
             <div class="matchup"><div id="M96_T" class="team empty" onclick="adv(this,'M100_B')">...</div><div id="M96_B" class="team empty" onclick="adv(this,'M96_B')">...</div></div>
         </div>
         <div class="round">
