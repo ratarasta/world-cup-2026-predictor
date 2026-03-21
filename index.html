@@ -3,100 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 World Cup Predictor 2</title>
+    <title>2026 World Cup Predictor Flags</title>
     <style>
-        body { background: #0b0b0b; color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; font-size: 13px; }
-        h1 { text-align: center; color: #00ff88; margin: 10px 0; }
-        .group-stage { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; background: #111; padding: 10px; border-radius: 8px; margin-bottom: 15px; }
-        .group-box { background: #1a1a1a; padding: 8px; border: 1px solid #333; border-radius: 4px; text-align: center; }
-        select { width: 100%; background: #222; color: white; border: 1px solid #444; padding: 3px; margin-top: 3px; font-size: 10px; }
-        .best-3rd { background: #111; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center; border: 1px dashed #444; }
-        .bracket-container { display: flex; justify-content: center; gap: 15px; overflow-x: auto; align-items: flex-start; padding-bottom: 100px; }
-        .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 140px; height: 900px; }
-        .round h3 { font-size: 11px; color: #888; text-align: center; border-bottom: 1px solid #333; margin-bottom: 5px; }
-        .matchup { background: #1a1a1a; border: 1px solid #333; border-radius: 4px; width: 135px; margin: 2px 0; }
-        .team { padding: 8px; cursor: pointer; border-bottom: 1px solid #2a2a2a; transition: 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .team:hover { background: #333; color: #00ff88; }
-        .winner { background: #113825 !important; color: #00ff88 !important; font-weight: bold; }
+        :root { --line-color: #444; --accent: #00ff88; --bg: #0b0b0b; --card: #1a1a1a; }
+        body { background: var(--bg); color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; font-size: 13px; }
+        h1 { text-align: center; color: var(--accent); margin: 10px 0; text-transform: uppercase; letter-spacing: 2px; }
+        
+        /* Dropdowns Style */
+        .group-stage, .best-3rd-grid { 
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
+            gap: 8px; background: #111; padding: 10px; border-radius: 8px; margin-bottom: 15px; 
+        }
+        .group-box { background: var(--card); padding: 8px; border: 1px solid #333; border-radius: 4px; text-align: center; }
+        .group-box h4 { margin: 0 0 5px 0; color: var(--accent); font-size: 11px; }
+        select { 
+            width: 100%; background: #222; color: white; border: 1px solid #444; 
+            padding: 4px; margin-top: 2px; font-size: 10px; border-radius: 3px; 
+        }
+
+        /* Bracket Layout */
+        .tournament-wrapper { display: flex; justify-content: center; gap: 40px; overflow-x: auto; align-items: flex-start; padding: 40px 10px 100px 10px; }
+        .bracket-side { display: flex; gap: 40px; }
+        .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 150px; height: 900px; position: relative; }
+        .round h3 { font-size: 11px; color: #888; text-align: center; margin-bottom: 10px; position: absolute; top: -30px; width: 100%; }
+
+        /* Matchup & Connecting Lines */
+        .matchup { background: var(--card); border: 1px solid #333; border-radius: 4px; width: 150px; margin: 5px 0; position: relative; z-index: 2; }
+        
+        /* Line Logic - Right side of Left Bracket */
+        .bracket-side:first-child .round:not(:last-child) .matchup::after {
+            content: ""; position: absolute; right: -40px; top: 50%; width: 40px; height: 1px; background: var(--line-color);
+        }
+        /* Line Logic - Left side of Right Bracket */
+        .bracket-side:last-child .round:not(:first-child) .matchup::before {
+            content: ""; position: absolute; left: -40px; top: 50%; width: 40px; height: 1px; background: var(--line-color);
+        }
+
+        .team { padding: 10px; cursor: pointer; border-bottom: 1px solid #2a2a2a; transition: 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 8px; }
+        .team:hover { background: #333; color: var(--accent); }
+        .winner { background: #113825 !important; color: var(--accent) !important; font-weight: bold; }
         .empty { color: #555; font-style: italic; }
-        .center-stage { text-align: center; min-width: 200px; padding-top: 300px; }
-        .final-match { border: 2px solid #00ff88; background: #111; }
+
+        .center-stage { text-align: center; min-width: 220px; padding-top: 350px; z-index: 5; }
+        .final-match { border: 2px solid var(--accent); background: #111; box-shadow: 0 0 15px rgba(0,255,136,0.2); }
+        .final-match .team { padding: 15px; font-size: 14px; }
     </style>
 </head>
 <body>
 
-<h1>FIFA 2026 WORLD CUP PREDICTOR</h1>
+<h1>2026 WORLD CUP PREDICTOR</h1>
 
 <div class="group-stage" id="groups"></div>
 
-<div class="best-3rd">
-    <h4 style="margin:0 0 10px 0; color:#00ff88">Select 8 Best 3rd Place Teams</h4>
-    <div id="third-selectors" style="display:flex; flex-wrap:wrap; gap:5px; justify-content:center"></div>
+<div class="group-box" style="margin: 0 auto 15px; max-width: 90%; border: 1px dashed #444;">
+    <h4 style="margin-bottom: 10px;">SELECT 8 BEST 3rd PLACE TEAMS</h4>
+    <div id="third-selectors" class="best-3rd-grid" style="background: transparent; padding: 0;"></div>
 </div>
 
-<div class="bracket-container">
-    <div class="round">
-        <h3>ROUND OF 32</h3>
-        <div class="matchup"><div id="s_A2" class="team empty" onclick="adv(this,'M90_T')">2nd A</div><div id="s_B2" class="team empty" onclick="adv(this,'M90_T')">2nd B</div></div>
-        <div class="matchup"><div id="s_F1" class="team empty" onclick="adv(this,'M90_B')">1st F</div><div id="s_C2" class="team empty" onclick="adv(this,'M90_B')">2nd C</div></div>
-        <div class="matchup"><div id="slot_3rd_1" class="team empty" onclick="adv(this,'M89_T')">3rd #1</div><div id="s_E1" class="team empty" onclick="adv(this,'M89_T')">1st E</div></div>
-        <div class="matchup"><div id="slot_3rd_2" class="team empty" onclick="adv(this,'M89_B')">3rd #2</div><div id="s_I1" class="team empty" onclick="adv(this,'M89_B')">1st I</div></div>
-        <div class="matchup"><div id="s_C1" class="team empty" onclick="adv(this,'M91_T')">1st C</div><div id="s_F2" class="team empty" onclick="adv(this,'M91_T')">2nd F</div></div>
-        <div class="matchup"><div id="s_E2" class="team empty" onclick="adv(this,'M91_B')">2nd E</div><div id="s_I2" class="team empty" onclick="adv(this,'M91_B')">2nd I</div></div>
-        <div class="matchup"><div id="s_A1" class="team empty" onclick="adv(this,'M92_T')">1st A</div><div id="slot_3rd_3" class="team empty" onclick="adv(this,'M92_T')">3rd #3</div></div>
-        <div class="matchup"><div id="s_L1" class="team empty" onclick="adv(this,'M92_B')">1st L</div><div id="slot_3rd_4" class="team empty" onclick="adv(this,'M92_B')">3rd #4</div></div>
-    </div>
-    <div class="round">
-        <h3>ROUND OF 16</h3>
-        <div class="matchup"><div id="M90_T" class="team empty" onclick="adv(this,'M97_T')">TBD</div><div id="M90_B" class="team empty" onclick="adv(this,'M97_T')">TBD</div></div>
-        <div class="matchup"><div id="M89_T" class="team empty" onclick="adv(this,'M97_B')">TBD</div><div id="M89_B" class="team empty" onclick="adv(this,'M97_B')">TBD</div></div>
-        <div class="matchup"><div id="M91_T" class="team empty" onclick="adv(this,'M99_T')">TBD</div><div id="M91_B" class="team empty" onclick="adv(this,'M99_T')">TBD</div></div>
-        <div class="matchup"><div id="M92_T" class="team empty" onclick="adv(this,'M99_B')">TBD</div><div id="M92_B" class="team empty" onclick="adv(this,'M99_B')">TBD</div></div>
-    </div>
-    <div class="round">
-        <h3>QUARTERS</h3>
-        <div class="matchup"><div id="M97_T" class="team empty" onclick="adv(this,'M101_T')">TBD</div><div id="M97_B" class="team empty" onclick="adv(this,'M101_T')">TBD</div></div>
-        <div class="matchup"><div id="M99_T" class="team empty" onclick="adv(this,'M101_B')">TBD</div><div id="M99_B" class="team empty" onclick="adv(this,'M101_B')">TBD</div></div>
+<div class="tournament-wrapper">
+    <div class="bracket-side">
+        <div class="round">
+            <h3>R32</h3>
+            <div class="matchup"><div id="s_A2" class="team empty" onclick="adv(this,'M90_T')">2A</div><div id="s_B2" class="team empty" onclick="adv(this,'M90_T')">2B</div></div>
+            <div class="matchup"><div id="s_F1" class="team empty" onclick="adv(this,'M90_B')">1F</div><div id="s_C2" class="team empty" onclick="adv(this,'M90_B')">2C</div></div>
+            <div class="matchup"><div id="slot_3rd_1" class="team empty" onclick="adv(this,'M89_T')">3rd #1</div><div id="s_E1" class="team empty" onclick="adv(this,'M89_T')">1E</div></div>
+            <div class="matchup"><div id="slot_3rd_2" class="team empty" onclick="adv(this,'M89_B')">3rd #2</div><div id="s_I1" class="team empty" onclick="adv(this,'M89_B')">1I</div></div>
+            <div class="matchup"><div id="s_C1" class="team empty" onclick="adv(this,'M91_T')">1C</div><div id="s_F2" class="team empty" onclick="adv(this,'M91_T')">2F</div></div>
+            <div class="matchup"><div id="s_E2" class="team empty" onclick="adv(this,'M91_B')">2E</div><div id="s_I2" class="team empty" onclick="adv(this,'M91_B')">2I</div></div>
+            <div class="matchup"><div id="s_A1" class="team empty" onclick="adv(this,'M92_T')">1A</div><div id="slot_3rd_3" class="team empty" onclick="adv(this,'M92_T')">3rd #3</div></div>
+            <div class="matchup"><div id="s_L1" class="team empty" onclick="adv(this,'M92_B')">1L</div><div id="slot_3rd_4" class="team empty" onclick="adv(this,'M92_B')">3rd #4</div></div>
+        </div>
+        <div class="round">
+            <h3>R16</h3>
+            <div class="matchup"><div id="M90_T" class="team empty" onclick="adv(this,'M97_T')">TBD</div><div id="M90_B" class="team empty" onclick="adv(this,'M97_T')">TBD</div></div>
+            <div class="matchup"><div id="M89_T" class="team empty" onclick="adv(this,'M97_B')">TBD</div><div id="M89_B" class="team empty" onclick="adv(this,'M97_B')">TBD</div></div>
+            <div class="matchup"><div id="M91_T" class="team empty" onclick="adv(this,'M99_T')">TBD</div><div id="M91_B" class="team empty" onclick="adv(this,'M99_T')">TBD</div></div>
+            <div class="matchup"><div id="M92_T" class="team empty" onclick="adv(this,'M99_B')">TBD</div><div id="M92_B" class="team empty" onclick="adv(this,'M99_B')">TBD</div></div>
+        </div>
+        <div class="round">
+            <h3>QF</h3>
+            <div class="matchup"><div id="M97_T" class="team empty" onclick="adv(this,'M101_T')">TBD</div><div id="M97_B" class="team empty" onclick="adv(this,'M101_T')">TBD</div></div>
+            <div class="matchup"><div id="M99_T" class="team empty" onclick="adv(this,'M101_B')">TBD</div><div id="M99_B" class="team empty" onclick="adv(this,'M101_B')">TBD</div></div>
+        </div>
     </div>
 
     <div class="center-stage">
-        <h3>SEMIS</h3>
-        <div class="matchup"><div id="M101_T" class="team empty" onclick="adv(this,'FINAL_L')">TBD</div><div id="M101_B" class="team empty" onclick="adv(this,'FINAL_L')">TBD</div></div>
-        <h2>WORLD CUP FINAL</h2>
+        <div class="matchup" style="border-color: #444;"><div id="M101_T" class="team empty" onclick="adv(this,'FINAL_L')">TBD</div><div id="M101_B" class="team empty" onclick="adv(this,'FINAL_L')">TBD</div></div>
         <div class="matchup final-match">
             <div id="FINAL_L" class="team empty" onclick="win(this)">FINALIST 1</div>
             <div id="FINAL_R" class="team empty" onclick="win(this)">FINALIST 2</div>
         </div>
-        <div class="matchup"><div id="M102_T" class="team empty" onclick="adv(this,'FINAL_R')">TBD</div><div id="M102_B" class="team empty" onclick="adv(this,'FINAL_R')">TBD</div></div>
-        <h3>SEMIS</h3>
+        <div class="matchup" style="border-color: #444;"><div id="M102_T" class="team empty" onclick="adv(this,'FINAL_R')">TBD</div><div id="M102_B" class="team empty" onclick="adv(this,'FINAL_R')">TBD</div></div>
     </div>
 
-    <div class="round">
-        <h3>QUARTERS</h3>
-        <div class="matchup"><div id="M98_T" class="team empty" onclick="adv(this,'M102_T')">TBD</div><div id="M98_B" class="team empty" onclick="adv(this,'M102_T')">TBD</div></div>
-        <div class="matchup"><div id="M100_T" class="team empty" onclick="adv(this,'M102_B')">TBD</div><div id="M100_B" class="team empty" onclick="adv(this,'M102_B')">TBD</div></div>
-    </div>
-    <div class="round">
-        <h3>ROUND OF 16</h3>
-        <div class="matchup"><div id="M93_T" class="team empty" onclick="adv(this,'M98_T')">TBD</div><div id="M93_B" class="team empty" onclick="adv(this,'M98_T')">TBD</div></div>
-        <div class="matchup"><div id="M94_T" class="team empty" onclick="adv(this,'M98_B')">TBD</div><div id="M94_B" class="team empty" onclick="adv(this,'M98_B')">TBD</div></div>
-        <div class="matchup"><div id="M95_T" class="team empty" onclick="adv(this,'M100_T')">TBD</div><div id="M95_B" class="team empty" onclick="adv(this,'M100_T')">TBD</div></div>
-        <div class="matchup"><div id="M96_T" class="team empty" onclick="adv(this,'M100_B')">TBD</div><div id="M96_B" class="team empty" onclick="adv(this,'M100_B')">TBD</div></div>
-    </div>
-    <div class="round">
-        <h3>ROUND OF 32</h3>
-        <div class="matchup"><div id="s_K2" class="team empty" onclick="adv(this,'M93_T')">2nd K</div><div id="s_L2" class="team empty" onclick="adv(this,'M93_T')">2nd L</div></div>
-        <div class="matchup"><div id="s_H1" class="team empty" onclick="adv(this,'M93_B')">1st H</div><div id="s_J2" class="team empty" onclick="adv(this,'M93_B')">2nd J</div></div>
-        <div class="matchup"><div id="s_D1" class="team empty" onclick="adv(this,'M94_T')">1st D</div><div id="slot_3rd_5" class="team empty" onclick="adv(this,'M94_T')">3rd #5</div></div>
-        <div class="matchup"><div id="s_G1" class="team empty" onclick="adv(this,'M94_B')">1st G</div><div id="slot_3rd_6" class="team empty" onclick="adv(this,'M94_B')">3rd #6</div></div>
-        <div class="matchup"><div id="s_J1" class="team empty" onclick="adv(this,'M95_T')">1st J</div><div id="s_H2" class="team empty" onclick="adv(this,'M95_T')">2nd H</div></div>
-        <div class="matchup"><div id="s_D2" class="team empty" onclick="adv(this,'M95_B')">2nd D</div><div id="s_G2" class="team empty" onclick="adv(this,'M95_B')">2nd G</div></div>
-        <div class="matchup"><div id="s_B1" class="team empty" onclick="adv(this,'M96_T')">1st B</div><div id="slot_3rd_7" class="team empty" onclick="adv(this,'M96_T')">3rd #7</div></div>
-        <div class="matchup"><div id="s_K1" class="team empty" onclick="adv(this,'M96_B')">1st K</div><div id="slot_3rd_8" class="team empty" onclick="adv(this,'M96_B')">3rd #8</div></div>
+    <div class="bracket-side">
+        <div class="round">
+            <h3>QF</h3>
+            <div class="matchup"><div id="M98_T" class="team empty" onclick="adv(this,'M102_T')">TBD</div><div id="M98_B" class="team empty" onclick="adv(this,'M102_T')">TBD</div></div>
+            <div class="matchup"><div id="M100_T" class="team empty" onclick="adv(this,'M102_B')">TBD</div><div id="M100_B" class="team empty" onclick="adv(this,'M102_B')">TBD</div></div>
+        </div>
+        <div class="round">
+            <h3>R16</h3>
+            <div class="matchup"><div id="M93_T" class="team empty" onclick="adv(this,'M98_T')">TBD</div><div id="M93_B" class="team empty" onclick="adv(this,'M98_T')">TBD</div></div>
+            <div class="matchup"><div id="M94_T" class="team empty" onclick="adv(this,'M98_B')">TBD</div><div id="M94_B" class="team empty" onclick="adv(this,'M98_B')">TBD</div></div>
+            <div class="matchup"><div id="M95_T" class="team empty" onclick="adv(this,'M100_T')">TBD</div><div id="M95_B" class="team empty" onclick="adv(this,'M100_T')">TBD</div></div>
+            <div class="matchup"><div id="M96_T" class="team empty" onclick="adv(this,'M100_B')">TBD</div><div id="M96_B" class="team empty" onclick="adv(this,'M100_B')">TBD</div></div>
+        </div>
+        <div class="round">
+            <h3>R32</h3>
+            <div class="matchup"><div id="s_K2" class="team empty" onclick="adv(this,'M93_T')">2K</div><div id="s_L2" class="team empty" onclick="adv(this,'M93_T')">2L</div></div>
+            <div class="matchup"><div id="s_H1" class="team empty" onclick="adv(this,'M93_B')">1H</div><div id="s_J2" class="team empty" onclick="adv(this,'M93_B')">2J</div></div>
+            <div class="matchup"><div id="s_D1" class="team empty" onclick="adv(this,'M94_T')">1D</div><div id="slot_3rd_5" class="team empty" onclick="adv(this,'M94_T')">3rd #5</div></div>
+            <div class="matchup"><div id="s_G1" class="team empty" onclick="adv(this,'M94_B')">1G</div><div id="slot_3rd_6" class="team empty" onclick="adv(this,'M94_B')">3rd #6</div></div>
+            <div class="matchup"><div id="s_J1" class="team empty" onclick="adv(this,'M95_T')">1J</div><div id="s_H2" class="team empty" onclick="adv(this,'M95_T')">2H</div></div>
+            <div class="matchup"><div id="s_D2" class="team empty" onclick="adv(this,'M95_B')">2D</div><div id="s_G2" class="team empty" onclick="adv(this,'M95_B')">2G</div></div>
+            <div class="matchup"><div id="s_B1" class="team empty" onclick="adv(this,'M96_T')">1B</div><div id="slot_3rd_7" class="team empty" onclick="adv(this,'M96_T')">3rd #7</div></div>
+            <div class="matchup"><div id="s_K1" class="team empty" onclick="adv(this,'M96_B')">1K</div><div id="slot_3rd_8" class="team empty" onclick="adv(this,'M96_B')">3rd #8</div></div>
+        </div>
     </div>
 </div>
 
 <script>
+const flags = {
+    "Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹",
+    "Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰",
+    "Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦",
+    "Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾",
+    "France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴",
+    "Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"
+};
+
 const teams = {
     A:["Mexico","South Africa","South Korea","Czechia"], B:["Canada","Switzerland","Qatar","Italy"],
     C:["Brazil","Morocco","Haiti","Scotland"], D:["USA","Paraguay","Australia","Slovakia"],
@@ -107,6 +143,8 @@ const teams = {
 };
 let sel = {}; let b3rd = Array(8).fill("");
 
+function getFlag(name) { return flags[name] || ""; }
+
 function init() {
     const gDiv = document.getElementById('groups');
     const tDiv = document.getElementById('third-selectors');
@@ -116,7 +154,7 @@ function init() {
         for(let i=1;i<=3;i++) h+=`<select id="s_${g}_${i}" onchange="upG('${g}',${i},this.value)"><option value="">${i==1?'1st':i==2?'nd':'rd'}</option>${teams[g].map(t=>`<option>${t}</option>`).join('')}</select>`;
         gDiv.innerHTML += h+`</div>`;
     });
-    for(let i=1;i<=8;i++) tDiv.innerHTML += `<select id="b3_${i}" onchange="up3(${i-1},this.value)"><option value="">#${i}</option></select>`;
+    for(let i=1;i<=8;i++) tDiv.innerHTML += `<select id="b3_${i}" onchange="up3(${i-1},this.value)" style="width:130px;"><option value="">#${i}</option></select>`;
 }
 
 function upG(g,r,v) {
@@ -127,7 +165,7 @@ function upG(g,r,v) {
     }
     if(r<3) { 
         let s = document.getElementById(`s_${g}${r}`); 
-        if(s){ s.innerText=v||`${r}${r==1?'st':'nd'} ${g}`; s.classList.add('empty'); s.classList.remove('winner'); }
+        if(s){ s.innerHTML=v ? `${getFlag(v)} ${v}` : `${r}${r==1?'st':'nd'} ${g}`; s.classList.toggle('empty', !v); s.classList.remove('winner'); }
     }
     upPool();
 }
@@ -136,25 +174,22 @@ function upPool() {
     let pool = Object.keys(sel).map(g => sel[g][2]).filter(t => t!=="");
     for(let i=1;i<=8;i++) {
         let el = document.getElementById(`b3_${i}`); let cur = el.value;
-        el.innerHTML = `<option value="">#${i}</option>` + pool.map(t => `<option value="${t}" ${t===cur?'selected':''} ${b3rd.includes(t)&&t!==cur?'disabled':''}>${t}</option>`).join('');
+        el.innerHTML = `<option value="">#${i}</option>` + pool.map(t => `<option value="${t}" ${t===cur?'selected':''} ${b3rd.includes(t)&&t!==cur?'disabled':''}>${getFlag(t)} ${t}</option>`).join('');
     }
 }
 
 function up3(i,v) {
     b3rd[i]=v; let s = document.getElementById(`slot_3rd_${i+1}`);
-    if(s){ s.innerText=v||`3rd #${i+1}`; s.classList.add('empty'); s.classList.remove('winner'); }
+    if(s){ s.innerHTML=v ? `${getFlag(v)} ${v}` : `3rd #${i+1}`; s.classList.toggle('empty', !v); s.classList.remove('winner'); }
     upPool();
 }
 
 function adv(el, nId) {
-    const teamName = el.innerText;
-    // Fix: Allow advancement if it's a real name and NOT a placeholder
-    if(!teamName || teamName.includes("#") || teamName.includes("st ") || teamName.includes("nd ") || teamName === "TBD") return;
-
+    const content = el.innerHTML;
+    if(el.classList.contains('empty') || content.includes("#") || content.includes("nd ") || content.includes("st ")) return;
     const target = document.getElementById(nId);
     if(target) {
-        target.innerText = teamName;
-        target.classList.remove('empty');
+        target.innerHTML = content; target.classList.remove('empty');
         const siblings = el.parentElement.querySelectorAll('.team');
         siblings.forEach(s => s.classList.remove('winner'));
         el.classList.add('winner');
@@ -163,7 +198,7 @@ function adv(el, nId) {
 
 function win(el) {
     if(el.classList.contains('empty') || el.innerText.includes("FINALIST")) return;
-    alert("🏆 CHAMPION: " + el.innerText + " 🏆");
+    alert("🏆 CHAMPION: " + el.innerText.toUpperCase() + " 🏆");
 }
 init();
 </script>
