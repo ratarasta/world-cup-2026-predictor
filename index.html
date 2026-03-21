@@ -3,22 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Version 3</title>
+    <title>3.1</title>
     <style>
         :root { --line-color: #333; --accent: #00ff88; --bg: #0b0b0b; --card: #1a1a1a; --box-w: 85px; }
         body { background: var(--bg); color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; font-size: 12px; overflow-x: auto; }
         h1 { text-align: center; color: var(--accent); margin: 0 0 15px 0; text-transform: uppercase; letter-spacing: 2px; font-size: 18px; }
 
-        /* Group Stage Grid */
-        .group-stage-wrapper { display: flex; flex-direction: column; gap: 8px; align-items: center; margin-bottom: 15px; }
-        .group-row { display: grid; grid-template-columns: repeat(6, 110px); gap: 6px; }
-        .group-box { background: var(--card); padding: 5px; border: 1px solid #333; border-radius: 4px; text-align: center; }
-        select { width: 100%; background: #222; color: white; border: 1px solid #444; padding: 2px; margin-top: 2px; font-size: 10px; border-radius: 3px; }
+        /* Group Stage Grid Improvements */
+        .group-stage-wrapper { display: flex; flex-direction: column; gap: 12px; align-items: center; margin-bottom: 25px; }
+        .group-row { display: grid; grid-template-columns: repeat(6, 160px); gap: 10px; }
         
+        .group-box { 
+            background: var(--card); padding: 8px; border: 1px solid #333; border-radius: 6px; 
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
+            cursor: default;
+        }
+        /* Hover Animation */
+        .group-box:hover { 
+            transform: scale(1.08); 
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2); 
+            border-color: var(--accent);
+            z-index: 10;
+        }
+
+        .group-box h4 { margin: 0 0 6px 0; color: var(--accent); font-size: 11px; text-align: center; border-bottom: 1px solid #333; padding-bottom: 4px; }
+        
+        .team-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; gap: 4px; }
+        .team-label { font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-grow: 1; }
+        
+        .group-box select { 
+            width: 55px; background: #222; color: white; border: 1px solid #444; 
+            padding: 1px; font-size: 9px; border-radius: 3px; cursor: pointer;
+        }
+
+        /* 3rd Place Section */
         .best-3rd-wrapper { text-align: center; margin-bottom: 20px; }
         .best-3rd-container { display: inline-block; padding: 10px; border: 1px dashed #444; border-radius: 8px; background: #111; }
         .best-3rd-grid { display: flex; gap: 5px; justify-content: center; margin-top: 5px; }
-        .best-3rd-grid select { width: 100px; }
+        .best-3rd-grid select { width: 100px; background: #222; color: white; border: 1px solid #444; padding: 2px; border-radius: 3px; }
 
         /* Tournament Layout */
         .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: 60px 10px 100px 10px; position: relative; gap: 10px; }
@@ -32,7 +54,6 @@
         .winner { background: #113825 !important; color: var(--accent) !important; font-weight: bold; }
         .empty { color: #444; font-size: 9px; }
 
-        /* CENTER AREA */
         .center-stage { display: flex; align-items: center; justify-content: center; gap: 15px; height: 800px; min-width: 240px; }
         .final-column { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
         
@@ -44,7 +65,6 @@
         #champion-name { font-size: 18px; font-weight: 800; margin-top: 6px; min-height: 24px; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
         .final-match { border: 2px solid var(--accent); background: #111; width: 85px; margin: 0; }
 
-        /* SVG DASHED LINES */
         #bracket-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
         .path-line { fill: none; stroke: var(--line-color); stroke-width: 1.5; stroke-dasharray: 4, 3; transition: stroke 0.3s; }
         .path-line.active { stroke: var(--accent); stroke-dasharray: none; stroke-width: 2; filter: drop-shadow(0 0 3px var(--accent)); }
@@ -136,7 +156,6 @@ const codes = {"Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czechia"
 const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
 const teams = {A:["Mexico","South Africa","South Korea","Czechia"], B:["Canada","Switzerland","Qatar","Italy"], C:["Brazil","Morocco","Haiti","Scotland"], D:["USA","Paraguay","Australia","Slovakia"], E:["Germany","Curaçao","Ivory Coast","Ecuador"], F:["Netherlands","Japan","Tunisia","Ukraine"], G:["Belgium","Egypt","Iran","New Zealand"], H:["Spain","Cape Verde","Saudi Arabia","Uruguay"], I:["France","Senegal","Norway","Iraq"], J:["Argentina","Algeria","Austria","Jordan"], K:["Portugal","Uzbekistan","Colombia","Jamaica"], L:["England","Croatia","Ghana","Panama"]};
 
-// THE GPS SYSTEM: Logical next steps for every box
 const nextMap = {
     's_A2':'M90_T','s_B2':'M90_T','s_F1':'M90_B', 's_C2':'M90_B', 'slot_3rd_1':'M89_T', 's_E1':'M89_T', 'slot_3rd_2':'M89_B', 's_I1':'M89_B',
     's_C1':'M91_T', 's_F2':'M91_T', 's_E2':'M91_B', 's_I2':'M91_B', 's_A1':'M92_T', 'slot_3rd_3':'M92_T', 's_L1':'M92_B', 'slot_3rd_4':'M92_B',
@@ -148,20 +167,74 @@ const nextMap = {
     'M101_T':'FINAL_L','M101_B':'FINAL_L','M102_T':'FINAL_R','M102_B':'FINAL_R','FINAL_L':'champion-name','FINAL_R':'champion-name'
 };
 
-let sel = {}; let b3rd = Array(8).fill("");
+let b3rd = Array(8).fill("");
+let groupState = {}; // Stores 1st, 2nd, 3rd per group
 
 function init() {
     const r1 = document.getElementById('row-1'); const r2 = document.getElementById('row-2');
     const tDiv = document.getElementById('third-selectors');
+    
     Object.keys(teams).forEach((g, idx) => {
-        sel[g] = ["","",""];
-        let h = `<div class="group-box"><h4>Grp ${g}</h4>`;
-        for(let i=1; i<=3; i++) h += `<select id="s_${g}_${i}" onchange="upG('${g}',${i},this.value)"><option value="">${i==1?'1st':i==2?'2nd':'3rd'}</option>${teams[g].map(t=>`<option value="${t}">${flags[t]} ${codes[t]}</option>`).join('')}</select>`;
-        if (idx < 6) r1.innerHTML += h + `</div>`; else r2.innerHTML += h + `</div>`;
+        groupState[g] = { "1st": "", "2nd": "", "3rd": "" };
+        let h = `<div class="group-box"><h4>GROUP ${g}</h4>`;
+        teams[g].forEach(t => {
+            h += `<div class="team-row">
+                    <span class="team-label">${flags[t]} ${codes[t]}</span>
+                    <select id="sel_${g}_${t.replace(/\s/g,'')}" onchange="upGroupNew('${g}', '${t}', this.value)">
+                        <option value="">-</option>
+                        <option value="1st">1st</option>
+                        <option value="2nd">2nd</option>
+                        <option value="3rd">3rd</option>
+                    </select>
+                  </div>`;
+        });
+        h += `</div>`;
+        if (idx < 6) r1.innerHTML += h; else r2.innerHTML += h;
     });
-    for(let i=1;i<=8;i++) tDiv.innerHTML += `<select id="b3_${i}" onchange="up3(${i-1},this.value)" style="width:100px;"><option value="">3rd #${i}</option></select>`;
+
+    for(let i=1;i<=8;i++) tDiv.innerHTML += `<select id="b3_${i}" onchange="up3(${i-1},this.value)"><option value="">3rd #${i}</option></select>`;
     refresh3rdPool();
     setTimeout(drawAllLines, 200);
+}
+
+function upGroupNew(group, team, rank) {
+    // 1. Clear old team from that specific rank path
+    if (groupState[group][rank]) clearBranch(`s_${group}${rank.charAt(0)}`);
+    
+    // 2. Wipe team's own old path if they were already somewhere else
+    const oldRank = Object.keys(groupState[group]).find(key => groupState[group][key] === team);
+    if (oldRank) {
+        clearBranch(`s_${group}${oldRank.charAt(0)}`);
+        groupState[group][oldRank] = "";
+    }
+
+    // 3. Set new state
+    if (rank) groupState[group][rank] = team;
+
+    // 4. Update the actual bracket starter slots
+    ["1st", "2nd", "3rd"].forEach(r => {
+        const val = groupState[group][r];
+        const slotId = (r === "3rd") ? `s_${group}3` : `s_${group}${r.charAt(0)}`;
+        const slotEl = document.getElementById(slotId);
+        if (slotEl) {
+            slotEl.innerHTML = val ? `${flags[val]} ${codes[val]}` : `${r} ${group}`;
+            slotEl.classList.toggle('empty', !val);
+            slotEl.classList.remove('winner');
+        }
+    });
+
+    // 5. Update dropdown availability (prevent double 1st/2nd/3rd)
+    teams[group].forEach(t => {
+        const el = document.getElementById(`sel_${group}_${t.replace(/\s/g,'')}`);
+        Array.from(el.options).forEach(opt => {
+            if (opt.value && opt.value !== rank) {
+                opt.disabled = Object.values(groupState[group]).includes(opt.value);
+            }
+        });
+    });
+
+    refresh3rdPool();
+    drawAllLines();
 }
 
 function clearBranch(startId) {
@@ -180,22 +253,6 @@ function clearBranch(startId) {
         if(startEl) startEl.classList.remove('winner');
         clearBranch(nextId);
     }
-}
-
-function upG(g,r,v) {
-    let slotId = `s_${g}${r}`;
-    clearBranch(slotId);
-    sel[g][r-1] = v;
-    for(let i=1; i<=3; i++) {
-        let el = document.getElementById(`s_${g}_${i}`);
-        Array.from(el.options).forEach(o => { if(o.value) o.disabled = sel[g].includes(o.value) && o.value !== sel[g][i-1]; });
-    }
-    if(r<3) { 
-        let s = document.getElementById(slotId); 
-        if(s){ s.innerHTML=v ? `${flags[v]} ${codes[v]}` : `${r==1?'1st':'2nd'} ${g}`; s.classList.toggle('empty', !v); s.classList.remove('winner'); }
-    }
-    refresh3rdPool();
-    drawAllLines();
 }
 
 function up3(i,v) {
@@ -269,7 +326,8 @@ function drawAllLines() {
 }
 
 function refresh3rdPool() {
-    let pool = Object.keys(sel).map(g => sel[g][2]).filter(t => t!=="");
+    // Collect all teams ranked 3rd across all groups
+    let pool = Object.keys(groupState).map(g => groupState[g]["3rd"]).filter(t => t !== "");
     for(let i=1; i<=8; i++) {
         let el = document.getElementById(`b3_${i}`); let cur = el.value;
         el.innerHTML = `<option value="">3rd #${i}</option>` + pool.map(t => `<option value="${t}" ${t===cur?'selected':''} ${b3rd.includes(t)&&t!==cur?'disabled':''}>${flags[t]} ${codes[t]}</option>`).join('');
