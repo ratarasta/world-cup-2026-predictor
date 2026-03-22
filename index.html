@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FINAL</title>
+    <title>Version 6.1 FINAL</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root { --line-color: #222; --accent: #00ff88; --bg: #050505; --card: rgba(26, 26, 26, 0.7); --box-w: 85px; --gold: #ffcc00; }
@@ -24,7 +24,7 @@
         .best-3rd-wrapper { display: flex; justify-content: center; margin-bottom: 30px; }
         .best-3rd-container { width: 300px; background: rgba(10,10,10,0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 15px; backdrop-filter: blur(5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .best-3rd-container h4 { margin: 0 0 10px 0; color: var(--accent); text-align: center; letter-spacing: 1px; font-size: 11px; }
-        .rank-limit-line { border-top: 1px dashed #444; margin: 8px 0; position: relative; height: 1px; width: 100%; }
+        .rank-limit-line { border-top: 2px dashed #ff4444; margin: 10px 0; position: relative; height: 1px; width: 100%; filter: drop-shadow(0 0 3px #ff4444); }
         .rank-limit-line::after { content: "QUALIFICATION CUT-OFF"; position: absolute; right: 0; top: -14px; font-size: 7px; color: #ff4444; font-weight: bold; }
 
         .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: 60px 10px 100px 10px; position: relative; gap: 10px; }
@@ -105,7 +105,7 @@
     <div class="bracket-side right-bracket">
         <div class="round">
             <h3>QF</h3>
-            <div class="matchup" id="m17"><div id="M98_T" class="team empty" onclick="adv(this,'M102_T')">...</div><div id="M98_B" class="team empty" onclick="adv(this,'M102_T')">...</div></div>
+            <div class="matchup" id="m17"><div id="M102_T" class="team empty" onclick="adv(this,'FINAL_R')">...</div><div id="M98_B" class="team empty" onclick="adv(this,'M102_T')">...</div></div>
             <div class="matchup" id="m18"><div id="M100_T" class="team empty" onclick="adv(this,'M102_B')">...</div><div id="M100_B" class="team empty" onclick="adv(this,'M102_B')">...</div></div>
         </div>
         <div class="round">
@@ -217,8 +217,14 @@ function syncAllGroupsToBracket() {
         thirdList.innerHTML = "";
         newOrder.forEach((t, i) => { thirdList.innerHTML += `<div class="draggable-team" draggable="true" data-team="${t}" data-rank="${i+1}º">${flags[t]} ${codes[t]}</div>`; });
         updateVisualRanks(thirdList);
+        
+        // REVISED DIVIDER LOGIC (坐於第9名之上)
         const items = thirdList.querySelectorAll('.draggable-team');
-        if(items[7]) items[7].insertAdjacentHTML('afterend', '<div class="rank-limit-line"></div>');
+        if(items[8]) {
+            items[8].insertAdjacentHTML('beforebegin', '<div class="rank-limit-line"></div>');
+        } else if (items.length > 8) {
+            thirdList.innerHTML += '<div class="rank-limit-line"></div>';
+        }
     }
 
     const qualifiers = [...thirdList.querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team')).slice(0, 8);
@@ -228,7 +234,6 @@ function syncAllGroupsToBracket() {
         const newContent = `${flags[team]} ${codes[team]}`;
         if (slotEl && slotEl.innerHTML !== newContent) { clearBranch(slotId); slotEl.innerHTML = newContent; slotEl.classList.remove('winner', 'empty'); }
     });
-    // Final sanity check: Clear bracket slots if fewer than 8 teams exist
     for (let i = qualifiers.length; i < 8; i++) {
         const slotId = `slot_3rd_${i+1}`;
         const slotEl = document.getElementById(slotId);
