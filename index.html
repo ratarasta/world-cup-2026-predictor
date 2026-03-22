@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Version 4.2</title>
+    <title>Version 4.3</title>
     <style>
         :root { --line-color: #333; --accent: #00ff88; --bg: #0b0b0b; --card: #1a1a1a; --box-w: 85px; }
         body { background: var(--bg); color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; font-size: 12px; overflow-x: auto; }
@@ -73,7 +73,6 @@
 
 <div class="tournament-wrapper" id="tree-container">
     <svg id="bracket-svg"></svg>
-    
     <div class="bracket-side left-bracket">
         <div class="round">
             <h3>R32</h3>
@@ -199,6 +198,7 @@ function updateVisualRanks(list) {
     list.querySelectorAll('.draggable-team').forEach((item, index) => item.setAttribute('data-rank', (index + 1) + "º"));
 }
 
+// CRITICAL UPDATE: The Group-to-Final Ripple Sync
 function syncAllGroupsToBracket() {
     const groups = document.querySelectorAll('.group-box');
     const all3rdTeams = [];
@@ -210,10 +210,12 @@ function syncAllGroupsToBracket() {
             const slotId = `s_${group}${rank}`;
             const slotEl = document.getElementById(slotId);
             const newContent = `${flags[team]} ${codes[team]}`;
+            
+            // If the content is different, it means the team changed positions. Wipe branch.
             if (slotEl && slotEl.innerHTML !== newContent) {
-                clearBranch(slotId);
+                clearBranch(slotId); 
                 slotEl.innerHTML = newContent;
-                slotEl.classList.remove('empty', 'winner');
+                slotEl.classList.remove('winner'); // Remove the winning state if team changed
             }
         });
         all3rdTeams.push(teamsInOrder[2]);
@@ -245,29 +247,15 @@ function up3(i,v) {
     drawAllLines();
 }
 
-// PRECISION POSITIONING: Ensure team stays in top/bottom slot correctly
 function adv(el, nId) {
     if(el.classList.contains('empty') || el.innerHTML.includes("...") || el.innerHTML.length < 3) return;
-    
-    // 1. Scrub the branch of the slot we are moving AWAY from
     clearBranch(el.id);
-
-    // 2. Locate target
     const target = document.getElementById(nId);
-    
-    // 3. Scrub target before overwriting
-    if (target.innerHTML !== "..." && target.innerHTML !== el.innerHTML) {
-        clearBranch(target.id);
-    }
-
-    // 4. Move Team
+    if (target.innerHTML !== "...") clearBranch(target.id);
     target.innerHTML = el.innerHTML; 
     target.classList.remove('empty');
-    
-    // 5. Visual Winner logic
     Array.from(el.parentElement.children).forEach(s => s.classList.remove('winner'));
     el.classList.add('winner');
-    
     drawAllLines();
 }
 
