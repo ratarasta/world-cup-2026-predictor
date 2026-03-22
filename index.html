@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drag & Drop Edition</title>
+    <title>Drag & Drop</title>
     <style>
         :root { --line-color: #333; --accent: #00ff88; --bg: #0b0b0b; --card: #1a1a1a; --box-w: 85px; }
         body { background: var(--bg); color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; font-size: 12px; overflow-x: auto; }
@@ -348,4 +348,22 @@ function drawAllLines() {
     });
 }
 
-function refresh3rdPool(
+function refresh3rdPool(optionalPool) {
+    let pool = optionalPool || [];
+    if (pool.length === 0) {
+        document.querySelectorAll('.group-box').forEach(box => {
+            const teamsInOrder = [...box.querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team'));
+            pool.push(teamsInOrder[2]);
+        });
+    }
+    for(let i=1; i<=8; i++) {
+        let el = document.getElementById(`b3_${i}`); let cur = el.value;
+        el.innerHTML = `<option value="">3rd #${i}</option>` + pool.map(t => `<option value="${t}" ${t===cur?'selected':''} ${b3rd.includes(t)&&t!==cur?'disabled':''}>${flags[t]} ${codes[t]}</option>`).join('');
+    }
+}
+
+window.addEventListener('resize', drawAllLines);
+init();
+</script>
+</body>
+</html>
