@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Version 4.4</title>
+    <title>2026 World Cup Predictor - Version 4.5</title>
     <style>
         :root { --line-color: #333; --accent: #00ff88; --bg: #0b0b0b; --card: #1a1a1a; --box-w: 85px; }
         body { background: var(--bg); color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; font-size: 12px; overflow-x: auto; }
@@ -219,11 +219,14 @@ function clearBranch(startId) {
     if (!nextId) return;
     const targetSlot = document.getElementById(nextId);
     if (targetSlot) {
-        if (nextId !== 'champion-name') { targetSlot.innerHTML = "..."; targetSlot.classList.add('empty'); } 
-        else { targetSlot.innerHTML = ""; }
-        targetSlot.classList.remove('winner');
-        const startEl = document.getElementById(startId);
-        if(startEl) startEl.classList.remove('winner');
+        if (nextId !== 'champion-name') { 
+            targetSlot.innerHTML = "..."; 
+            targetSlot.classList.add('empty'); 
+        } else { 
+            targetSlot.innerHTML = ""; 
+        }
+        // Remove winner status from ALL teams in this target slot's container
+        Array.from(targetSlot.parentElement.children).forEach(s => s.classList.remove('winner'));
         clearBranch(nextId);
     }
 }
@@ -233,7 +236,7 @@ function up3(i,v) {
     clearBranch(slotId);
     b3rd[i]=v; let s = document.getElementById(slotId);
     if(s){ 
-        s.innerHTML=v ? `${flags[v]} ${codes[v]}` : `3rd #${i+1}`; 
+        s.innerHTML = v ? `${flags[v]} ${codes[v]}` : `3rd #${i+1}`; 
         s.classList.toggle('empty', !v); 
         s.classList.remove('winner'); 
     }
@@ -243,15 +246,24 @@ function up3(i,v) {
 
 function adv(el, nId) {
     if(el.classList.contains('empty') || el.innerHTML.includes("...") || el.innerHTML.length < 3) return;
+    
+    // POSITIONAL LOCK: Identify which slot in the matchup we are currently in (Top or Bottom)
+    // and clear ONLY that lane forward
     clearBranch(el.id);
+
     const target = document.getElementById(nId);
+    // If the target already has someone else, clear their future too
     if (target.innerHTML !== "..." && target.innerHTML !== el.innerHTML) {
         clearBranch(target.id);
     }
+
     target.innerHTML = el.innerHTML; 
-    target.classList.remove('empty', 'winner'); // Fix font size bug by removing empty class
+    target.classList.remove('empty');
+    
+    // Highlight the specific team clicked as the winner of THIS match
     Array.from(el.parentElement.children).forEach(s => s.classList.remove('winner'));
     el.classList.add('winner');
+    
     drawAllLines();
 }
 
