@@ -3,102 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 World Cup Predictor - Version 5.0 Gold Edition</title>
+    <title>2026 World Cup Predictor - Version 5.1 Fix</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root { 
             --line-color: #222; 
             --accent: #00ff88; 
             --bg: #050505; 
-            --card: rgba(26, 26, 26, 0.7); /* Translucent for Glassmorphism */
+            --card: rgba(26, 26, 26, 0.7); 
             --box-w: 85px; 
             --gold: #ffcc00;
         }
         body { 
             background: var(--bg); 
             background-image: radial-gradient(circle at center, #111 0%, #050505 100%);
-            color: #eee; 
-            font-family: 'Oswald', sans-serif; 
+            color: #eee; font-family: 'Oswald', sans-serif; 
             margin: 0; padding: 20px; font-size: 13px; overflow-x: auto; 
         }
-        h1 { text-align: center; color: var(--accent); margin: 0 0 20px 0; text-transform: uppercase; letter-spacing: 4px; font-size: 24px; text-shadow: 0 0 10px rgba(0, 255, 136, 0.3); }
+        h1 { text-align: center; color: var(--accent); margin: 0 0 20px 0; text-transform: uppercase; letter-spacing: 4px; font-size: 24px; }
 
-        /* Glassmorphism Group Stage */
+        /* Group Stage Glassmorphism */
         .group-stage-wrapper { display: flex; flex-direction: column; gap: 15px; align-items: center; margin-bottom: 35px; }
         .group-row { display: grid; grid-template-columns: repeat(6, 130px); gap: 12px; }
-        
         .group-box { 
-            background: var(--card); 
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 10px; 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            border-radius: 8px; 
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            background: var(--card); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            padding: 10px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; 
+            transition: all 0.4s ease; position: relative;
         }
-        .group-box:hover { 
-            transform: scale(1.2); 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(0, 255, 136, 0.2); 
-            border-color: var(--accent); 
-            z-index: 100; 
-            background: rgba(20, 20, 20, 0.9);
-        }
-
-        .group-box h4 { margin: 0 0 8px 0; color: var(--accent); font-size: 11px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px; pointer-events: none;}
+        .group-box:hover { transform: scale(1.2); z-index: 100; border-color: var(--accent); background: rgba(20, 20, 20, 0.9); }
+        .group-box h4 { margin: 0 0 8px 0; color: var(--accent); font-size: 11px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px; }
         
         .team-list { display: flex; flex-direction: column; gap: 4px; }
         .draggable-team { 
             background: rgba(255,255,255,0.05); padding: 6px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05);
-            cursor: grab; display: flex; align-items: center; gap: 8px;
-            user-select: none; transition: 0.2s; font-size: 11px; font-weight: 400;
+            cursor: grab; display: flex; align-items: center; gap: 8px; font-size: 11px;
         }
-        .draggable-team:active { cursor: grabbing; }
-        .draggable-team.dragging { opacity: 0.4; border: 1px dashed var(--accent); background: rgba(0,255,136,0.1); }
+        .draggable-team.dragging { opacity: 0.3; }
         .draggable-team::before { content: attr(data-rank); width: 16px; font-size: 9px; color: #555; font-weight: bold; }
 
-        /* 3rd Place Stylized Selectors */
+        /* Best 3rd */
         .best-3rd-wrapper { text-align: center; margin-bottom: 30px; }
-        .best-3rd-container { display: inline-block; padding: 12px 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: rgba(10,10,10,0.8); backdrop-filter: blur(5px); }
+        .best-3rd-container { display: inline-block; padding: 12px 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: rgba(10,10,10,0.8); }
         .best-3rd-grid { display: flex; gap: 8px; justify-content: center; margin-top: 8px; }
-        .best-3rd-grid select { width: 95px; background: #111; color: white; border: 1px solid #333; padding: 4px; border-radius: 4px; font-family: 'Oswald'; font-size: 11px; cursor: pointer; }
+        .best-3rd-grid select { width: 95px; background: #111; color: white; border: 1px solid #333; padding: 4px; border-radius: 4px; font-family: 'Oswald'; }
 
-        /* Tournament Area */
+        /* Tournament Fixes */
         .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: 80px 10px 120px 10px; position: relative; gap: 15px; }
         .bracket-side { display: flex; align-items: flex-start; gap: 20px; }
         .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 95px; height: 850px; position: relative; }
-        .round h3 { font-size: 10px; color: #444; text-align: center; position: absolute; top: -30px; width: 100%; text-transform: uppercase; letter-spacing: 2px; }
+        .round h3 { font-size: 10px; color: #444; text-align: center; position: absolute; top: -30px; width: 100%; text-transform: uppercase; }
 
-        .matchup { background: var(--card); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(5px); border-radius: 6px; width: var(--box-w); margin: 5px auto; position: relative; z-index: 2; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .team { padding: 8px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s; white-space: nowrap; text-align: center; display: flex; justify-content: center; align-items: center; gap: 4px; height: 35px; box-sizing: border-box; font-weight: 500; font-size: 12px; letter-spacing: 0.5px; }
-        .team:hover { background: rgba(255,255,255,0.1); color: var(--accent); }
-        .winner { background: linear-gradient(to right, #0a2d1d, #113825) !important; color: var(--accent) !important; font-weight: bold; border-left: 3px solid var(--accent); }
-        .empty { color: #333; font-size: 10px; }
+        .matchup { background: var(--card); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; width: var(--box-w); margin: 5px auto; position: relative; z-index: 2; overflow: hidden; }
+        .team { 
+            padding: 8px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); 
+            transition: 0.2s; white-space: nowrap; text-align: center; 
+            display: flex; justify-content: center; align-items: center; 
+            height: 35px; box-sizing: border-box; font-size: 12px; /* FORCED SIZE */
+        }
+        .team:hover { background: rgba(255,255,255,0.1); }
+        .winner { background: linear-gradient(to right, #0a2d1d, #113825) !important; color: var(--accent) !important; font-weight: bold; }
+        .empty { color: #333; } /* Removed font-size shrink from here */
 
-        /* CENTER CHAMPION AREA */
+        /* Center Piece */
         .center-stage { display: flex; align-items: center; justify-content: center; gap: 20px; height: 850px; min-width: 260px; }
-        .final-column { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
-        
-        /* CHAMPION GLOW ANIMATION */
         @keyframes breathing {
-            0% { box-shadow: 0 0 20px rgba(255, 204, 0, 0.3); border-color: rgba(255, 204, 0, 0.6); }
-            50% { box-shadow: 0 0 40px rgba(255, 204, 0, 0.6); border-color: rgba(255, 204, 0, 1); }
-            100% { box-shadow: 0 0 20px rgba(255, 204, 0, 0.3); border-color: rgba(255, 204, 0, 0.6); }
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 204, 0, 0.3); border-color: rgba(255, 204, 0, 0.6); }
+            50% { box-shadow: 0 0 40px rgba(255, 204, 0, 0.6); border-color: var(--gold); }
         }
-
         #champion-display { 
-            position: absolute; bottom: 120%; margin-bottom: 25px; width: 110px; padding: 15px 10px; 
-            border: 2px solid var(--gold); border-radius: 12px; 
-            background: linear-gradient(145deg, #1a1a1a, #000); 
-            text-align: center; z-index: 3;
-            animation: breathing 3s ease-in-out infinite; 
+            position: absolute; bottom: 120%; width: 110px; padding: 15px 10px; 
+            border: 2px solid var(--gold); border-radius: 12px; background: #000; 
+            text-align: center; z-index: 3; animation: breathing 3s infinite; 
         }
-        #champion-display h2 { margin: 0; font-size: 9px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
-        #champion-name { font-size: 20px; font-weight: 700; margin-top: 8px; min-height: 28px; color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.2); }
-        .final-match { border: 2px solid var(--accent); background: #000; width: 95px; margin: 0; }
+        #champion-name { font-size: 20px; font-weight: 700; margin-top: 8px; min-height: 28px; color: #fff; }
+        .final-match { border: 2px solid var(--accent); background: #000; width: 95px; }
 
-        /* SVG DASHED LINES */
         #bracket-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
         .path-line { fill: none; stroke: #1a1a1a; stroke-width: 1.5; stroke-dasharray: 5, 4; transition: stroke 0.4s; }
         .path-line.active { stroke: var(--accent); stroke-dasharray: none; stroke-width: 2.5; filter: drop-shadow(0 0 5px var(--accent)); }
@@ -115,7 +94,7 @@
 
 <div class="best-3rd-wrapper">
     <div class="best-3rd-container">
-        <h4 style="margin: 0; font-size: 11px; color: var(--accent); letter-spacing: 1px;">BEST 3rd PLACE ADVANCEMENT</h4>
+        <h4 style="margin: 0; font-size: 11px; color: var(--accent);">BEST 3rd PLACE ADVANCEMENT</h4>
         <div id="third-selectors" class="best-3rd-grid"></div>
     </div>
 </div>
@@ -125,7 +104,7 @@
     
     <div class="bracket-side left-bracket">
         <div class="round">
-            <h3>Round of 32</h3>
+            <h3>R32</h3>
             <div class="matchup" id="m1"><div id="s_A1" class="team empty" onclick="adv(this,'M92_T')">1st A</div><div id="slot_3rd_3" class="team empty" onclick="adv(this,'M92_T')">3rd #3</div></div>
             <div class="matchup" id="m2"><div id="s_L1" class="team empty" onclick="adv(this,'M92_B')">1st L</div><div id="slot_3rd_4" class="team empty" onclick="adv(this,'M92_B')">3rd #4</div></div>
             <div class="matchup" id="m3"><div id="s_C1" class="team empty" onclick="adv(this,'M91_T')">1st C</div><div id="s_F2" class="team empty" onclick="adv(this,'M91_T')">2nd F</div></div>
@@ -136,14 +115,14 @@
             <div class="matchup" id="m8"><div id="slot_3rd_2" class="team empty" onclick="adv(this,'M89_B')">3rd #2</div><div id="s_I1" class="team empty" onclick="adv(this,'M89_B')">1st I</div></div>
         </div>
         <div class="round">
-            <h3>Round of 16</h3>
+            <h3>R16</h3>
             <div class="matchup" id="m9"><div id="M92_T" class="team empty" onclick="adv(this,'M99_T')">...</div><div id="M92_B" class="team empty" onclick="adv(this,'M99_T')">...</div></div>
             <div class="matchup" id="m10"><div id="M91_T" class="team empty" onclick="adv(this,'M99_B')">...</div><div id="M91_B" class="team empty" onclick="adv(this,'M99_B')">...</div></div>
             <div class="matchup" id="m11"><div id="M90_T" class="team empty" onclick="adv(this,'M97_T')">...</div><div id="M90_B" class="team empty" onclick="adv(this,'M97_T')">...</div></div>
             <div class="matchup" id="m12"><div id="M89_T" class="team empty" onclick="adv(this,'M97_B')">...</div><div id="M89_B" class="team empty" onclick="adv(this,'M97_B')">...</div></div>
         </div>
         <div class="round">
-            <h3>Quarter Final</h3>
+            <h3>QF</h3>
             <div class="matchup" id="m13"><div id="M99_T" class="team empty" onclick="adv(this,'M101_T')">...</div><div id="M99_B" class="team empty" onclick="adv(this,'M101_T')">...</div></div>
             <div class="matchup" id="m14"><div id="M97_T" class="team empty" onclick="adv(this,'M101_B')">...</div><div id="M97_B" class="team empty" onclick="adv(this,'M101_B')">...</div></div>
         </div>
@@ -160,19 +139,19 @@
 
     <div class="bracket-side right-bracket">
         <div class="round">
-            <h3>Quarter Final</h3>
+            <h3>QF</h3>
             <div class="matchup" id="m17"><div id="M98_T" class="team empty" onclick="adv(this,'M102_T')">...</div><div id="M98_B" class="team empty" onclick="adv(this,'M102_T')">...</div></div>
             <div class="matchup" id="m18"><div id="M100_T" class="team empty" onclick="adv(this,'M102_B')">...</div><div id="M100_B" class="team empty" onclick="adv(this,'M102_B')">...</div></div>
         </div>
         <div class="round">
-            <h3>Round of 16</h3>
+            <h3>R16</h3>
             <div class="matchup" id="m19"><div id="M93_T" class="team empty" onclick="adv(this,'M98_T')">...</div><div id="M93_B" class="team empty" onclick="adv(this,'M98_T')">...</div></div>
             <div class="matchup" id="m20"><div id="M94_T" class="team empty" onclick="adv(this,'M98_B')">...</div><div id="M94_B" class="team empty" onclick="adv(this,'M98_B')">...</div></div>
             <div class="matchup" id="m21"><div id="M95_T" class="team empty" onclick="adv(this,'M100_T')">...</div><div id="M95_B" class="team empty" onclick="adv(this,'M100_T')">...</div></div>
             <div class="matchup" id="m22"><div id="M96_T" class="team empty" onclick="adv(this,'M100_B')">...</div><div id="M96_B" class="team empty" onclick="adv(this,'M100_B')">...</div></div>
         </div>
         <div class="round">
-            <h3>Round of 32</h3>
+            <h3>R32</h3>
             <div class="matchup" id="m23"><div id="s_K2" class="team empty" onclick="adv(this,'M93_T')">2nd K</div><div id="s_L2" class="team empty" onclick="adv(this,'M93_T')">2nd L</div></div>
             <div class="matchup" id="m24"><div id="s_H1" class="team empty" onclick="adv(this,'M93_B')">1st H</div><div id="s_J2" class="team empty" onclick="adv(this,'M93_B')">2nd J</div></div>
             <div class="matchup" id="m25"><div id="s_D1" class="team empty" onclick="adv(this,'M94_T')">1st D</div><div id="slot_3rd_5" class="team empty" onclick="adv(this,'M94_T')">3rd #5</div></div>
@@ -186,7 +165,6 @@
 </div>
 
 <script>
-// (Previous Logic Script Remains EXACTLY same)
 const codes = {"Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czechia":"CZE","Canada":"CAN","Switzerland":"SUI","Qatar":"QAT","Italy":"ITA","Brazil":"BRA","Morocco":"MAR","Haiti":"HAI","Scotland":"SCO","USA":"USA","Paraguay":"PAR","Australia":"AUS","Slovakia":"SVK","Germany":"GER","Curaçao":"CUW","Ivory Coast":"CIV","Ecuador":"ECU","Netherlands":"NED","Japan":"JPN","Tunisia":"TUN","Ukraine":"UKR","Belgium":"BEL","Egypt":"EGY","Iran":"IRN","New Zealand":"NZL","Spain":"ESP","Cape Verde":"CPV","Saudi Arabia":"KSA","Uruguay":"URU","France":"FRA","Senegal":"SEN","Norway":"NOR","Iraq":"IRQ","Argentina":"ARG","Algeria":"DZ","Austria":"AUT","Jordan":"JOR","Portugal":"POR","Uzbekistan":"UZB","Colombia":"COL","Jamaica":"JAM","England":"ENG","Croatia":"CRO","Ghana":"GHA","Panama":"PAN"};
 const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
 const teams = {A:["Mexico","South Africa","South Korea","Czechia"], B:["Canada","Switzerland","Qatar","Italy"], C:["Brazil","Morocco","Haiti","Scotland"], D:["USA","Paraguay","Australia","Slovakia"], E:["Germany","Curaçao","Ivory Coast","Ecuador"], F:["Netherlands","Japan","Tunisia","Ukraine"], G:["Belgium","Egypt","Iran","New Zealand"], H:["Spain","Cape Verde","Saudi Arabia","Uruguay"], I:["France","Senegal","Norway","Iraq"], J:["Argentina","Algeria","Austria","Jordan"], K:["Portugal","Uzbekistan","Colombia","Jamaica"], L:["England","Croatia","Ghana","Panama"]};
@@ -217,9 +195,7 @@ function init() {
     const tDiv = document.getElementById('third-selectors');
     Object.keys(teams).forEach((g, idx) => {
         let h = `<div class="group-box" data-group="${g}"><h4>GROUP ${g}</h4><div class="team-list" id="list_${g}">`;
-        teams[g].forEach((t, i) => {
-            h += `<div class="draggable-team" draggable="true" data-team="${t}" data-rank="${i+1}º">${flags[t]} ${codes[t]}</div>`;
-        });
+        teams[g].forEach((t, i) => { h += `<div class="draggable-team" draggable="true" data-team="${t}" data-rank="${i+1}º">${flags[t]} ${codes[t]}</div>`; });
         h += `</div></div>`;
         if (idx < 6) r1.innerHTML += h; else r2.innerHTML += h;
     });
@@ -271,6 +247,7 @@ function syncAllGroupsToBracket() {
                 clearBranch(slotId);
                 slotEl.innerHTML = newContent;
                 slotEl.classList.remove('winner');
+                slotEl.classList.remove('empty'); // Ensure font size doesn't shrink
             }
         });
         all3rdTeams.push(teamsInOrder[2]);
@@ -295,7 +272,11 @@ function up3(i,v) {
     let slotId = `slot_3rd_${i+1}`;
     clearBranch(slotId);
     b3rd[i]=v; let s = document.getElementById(slotId);
-    if(s){ s.innerHTML = v ? `${flags[v]} ${codes[v]}` : `3rd #${i+1}`; s.classList.toggle('empty', !v); s.classList.remove('winner'); }
+    if(s){ 
+        s.innerHTML = v ? `${flags[v]} ${codes[v]}` : `3rd #${i+1}`; 
+        s.classList.toggle('empty', !v); 
+        s.classList.remove('winner'); 
+    }
     refresh3rdPool();
     drawAllLines();
 }
@@ -306,7 +287,7 @@ function adv(el, nId) {
     const target = document.getElementById(nId);
     if (target.innerHTML !== "..." && target.innerHTML !== el.innerHTML) clearBranch(target.id);
     target.innerHTML = el.innerHTML; 
-    target.classList.remove('empty', 'winner');
+    target.classList.remove('empty');
     Array.from(el.parentElement.children).forEach(s => s.classList.remove('winner'));
     el.classList.add('winner');
     drawAllLines();
