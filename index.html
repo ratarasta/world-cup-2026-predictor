@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drag & Drop</title>
+    <title>2026 World Cup Predictor - Version 4.1</title>
     <style>
         :root { --line-color: #333; --accent: #00ff88; --bg: #0b0b0b; --card: #1a1a1a; --box-w: 85px; }
         body { background: var(--bg); color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; font-size: 12px; overflow-x: auto; }
@@ -11,33 +11,19 @@
 
         .group-stage-wrapper { display: flex; flex-direction: column; gap: 12px; align-items: center; margin-bottom: 25px; }
         .group-row { display: grid; grid-template-columns: repeat(6, 130px); gap: 10px; }
-        
-        .group-box { 
-            background: var(--card); padding: 8px; border: 1px solid #333; border-radius: 6px; 
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-        }
-        /* REQUESTED SCALE: 1.2 */
+        .group-box { background: var(--card); padding: 8px; border: 1px solid #333; border-radius: 6px; transition: transform 0.3s ease, box-shadow 0.3s ease; position: relative; }
         .group-box:hover { transform: scale(1.2); box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); border-color: var(--accent); z-index: 100; }
-
         .group-box h4 { margin: 0 0 8px 0; color: var(--accent); font-size: 10px; text-align: center; border-bottom: 1px solid #333; padding-bottom: 4px; pointer-events: none;}
         
-        /* Drag and Drop Styles */
         .team-list { display: flex; flex-direction: column; gap: 4px; }
         .draggable-team { 
             background: #222; padding: 6px 8px; border-radius: 4px; border: 1px solid #444;
             cursor: grab; display: flex; align-items: center; gap: 6px;
-            user-select: none; transition: background 0.2s, border-color 0.2s;
-            position: relative; font-size: 10px;
+            user-select: none; transition: background 0.2s, border-color 0.2s; font-size: 10px;
         }
         .draggable-team:active { cursor: grabbing; }
         .draggable-team.dragging { opacity: 0.4; border: 1px dashed var(--accent); }
-        .draggable-team:hover { border-color: #666; background: #2a2a2a; }
-        
-        /* Rank Indicator on the left */
-        .draggable-team::before { 
-            content: attr(data-rank); width: 14px; font-size: 8px; color: #666; font-weight: bold;
-        }
+        .draggable-team::before { content: attr(data-rank); width: 14px; font-size: 8px; color: #666; font-weight: bold; }
 
         .best-3rd-wrapper { text-align: center; margin-bottom: 20px; }
         .best-3rd-container { display: inline-block; padding: 10px; border: 1px dashed #444; border-radius: 8px; background: #111; }
@@ -88,14 +74,14 @@
     <div class="bracket-side left-bracket">
         <div class="round">
             <h3>R32</h3>
-            <div class="matchup" id="m1"><div id="s_A1" class="team empty">1st A</div><div id="slot_3rd_3" class="team empty">3rd #3</div></div>
-            <div class="matchup" id="m2"><div id="s_L1" class="team empty">1st L</div><div id="slot_3rd_4" class="team empty">3rd #4</div></div>
-            <div class="matchup" id="m3"><div id="s_C1" class="team empty">1st C</div><div id="s_F2" class="team empty">2nd F</div></div>
-            <div class="matchup" id="m4"><div id="s_E2" class="team empty">2nd E</div><div id="s_I2" class="team empty">2nd I</div></div>
-            <div class="matchup" id="m5"><div id="s_A2" class="team empty">2nd A</div><div id="s_B2" class="team empty">2nd B</div></div>
-            <div class="matchup" id="m6"><div id="s_F1" class="team empty">1st F</div><div id="s_C2" class="team empty">2nd C</div></div>
-            <div class="matchup" id="m7"><div id="slot_3rd_1" class="team empty">3rd #1</div><div id="s_E1" class="team empty">1st E</div></div>
-            <div class="matchup" id="m8"><div id="slot_3rd_2" class="team empty">3rd #2</div><div id="s_I1" class="team empty">1st I</div></div>
+            <div class="matchup" id="m1"><div id="s_A1" class="team empty" onclick="adv(this,'M92_T')">1st A</div><div id="slot_3rd_3" class="team empty" onclick="adv(this,'M92_T')">3rd #3</div></div>
+            <div class="matchup" id="m2"><div id="s_L1" class="team empty" onclick="adv(this,'M92_B')">1st L</div><div id="slot_3rd_4" class="team empty" onclick="adv(this,'M92_B')">3rd #4</div></div>
+            <div class="matchup" id="m3"><div id="s_C1" class="team empty" onclick="adv(this,'M91_T')">1st C</div><div id="s_F2" class="team empty" onclick="adv(this,'M91_T')">2nd F</div></div>
+            <div class="matchup" id="m4"><div id="s_E2" class="team empty" onclick="adv(this,'M91_B')">2nd E</div><div id="s_I2" class="team empty" onclick="adv(this,'M91_B')">2nd I</div></div>
+            <div class="matchup" id="m5"><div id="s_A2" class="team empty" onclick="adv(this,'M90_T')">2nd A</div><div id="s_B2" class="team empty" onclick="adv(this,'M90_T')">2nd B</div></div>
+            <div class="matchup" id="m6"><div id="s_F1" class="team empty" onclick="adv(this,'M90_B')">1st F</div><div id="s_C2" class="team empty" onclick="adv(this,'M90_B')">2nd C</div></div>
+            <div class="matchup" id="m7"><div id="slot_3rd_1" class="team empty" onclick="adv(this,'M89_T')">3rd #1</div><div id="s_E1" class="team empty" onclick="adv(this,'M89_T')">1st E</div></div>
+            <div class="matchup" id="m8"><div id="slot_3rd_2" class="team empty" onclick="adv(this,'M89_B')">3rd #2</div><div id="s_I1" class="team empty" onclick="adv(this,'M89_B')">1st I</div></div>
         </div>
         <div class="round">
             <h3>R16</h3>
@@ -133,14 +119,14 @@
         </div>
         <div class="round">
             <h3>R32</h3>
-            <div class="matchup" id="m23"><div id="s_K2" class="team empty">2nd K</div><div id="s_L2" class="team empty">2nd L</div></div>
-            <div class="matchup" id="m24"><div id="s_H1" class="team empty">1st H</div><div id="s_J2" class="team empty">2nd J</div></div>
-            <div class="matchup" id="m25"><div id="s_D1" class="team empty">1st D</div><div id="slot_3rd_5" class="team empty">3rd #5</div></div>
-            <div class="matchup" id="m26"><div id="s_G1" class="team empty">1st G</div><div id="slot_3rd_6" class="team empty">3rd #6</div></div>
-            <div class="matchup" id="m27"><div id="s_J1" class="team empty">1st J</div><div id="s_H2" class="team empty">2nd H</div></div>
-            <div class="matchup" id="m28"><div id="s_D2" class="team empty">2nd D</div><div id="s_G2" class="team empty">2nd G</div></div>
-            <div class="matchup" id="m29"><div id="s_B1" class="team empty">1st B</div><div id="slot_3rd_7" class="team empty">3rd #7</div></div>
-            <div class="matchup" id="m30"><div id="s_K1" class="team empty">1st K</div><div id="slot_3rd_8" class="team empty">3rd #8</div></div>
+            <div class="matchup" id="m23"><div id="s_K2" class="team empty" onclick="adv(this,'M93_T')">2nd K</div><div id="s_L2" class="team empty" onclick="adv(this,'M93_T')">2nd L</div></div>
+            <div class="matchup" id="m24"><div id="s_H1" class="team empty" onclick="adv(this,'M93_B')">1st H</div><div id="s_J2" class="team empty" onclick="adv(this,'M93_B')">2nd J</div></div>
+            <div class="matchup" id="m25"><div id="s_D1" class="team empty" onclick="adv(this,'M94_T')">1st D</div><div id="slot_3rd_5" class="team empty" onclick="adv(this,'M94_T')">3rd #5</div></div>
+            <div class="matchup" id="m26"><div id="s_G1" class="team empty" onclick="adv(this,'M94_B')">1st G</div><div id="slot_3rd_6" class="team empty" onclick="adv(this,'M94_B')">3rd #6</div></div>
+            <div class="matchup" id="m27"><div id="s_J1" class="team empty" onclick="adv(this,'M95_T')">1st J</div><div id="s_H2" class="team empty" onclick="adv(this,'M95_T')">2nd H</div></div>
+            <div class="matchup" id="m28"><div id="s_D2" class="team empty" onclick="adv(this,'M95_B')">2nd D</div><div id="s_G2" class="team empty" onclick="adv(this,'M95_B')">2nd G</div></div>
+            <div class="matchup" id="m29"><div id="s_B1" class="team empty" onclick="adv(this,'M96_T')">1st B</div><div id="slot_3rd_7" class="team empty" onclick="adv(this,'M96_T')">3rd #7</div></div>
+            <div class="matchup" id="m30"><div id="s_K1" class="team empty" onclick="adv(this,'M96_B')">1st K</div><div id="slot_3rd_8" class="team empty" onclick="adv(this,'M96_B')">3rd #8</div></div>
         </div>
     </div>
 </div>
@@ -162,25 +148,19 @@ const nextMap = {
 };
 
 let b3rd = Array(8).fill("");
-let dragSrcEl = null;
 
 function init() {
     const r1 = document.getElementById('row-1'); const r2 = document.getElementById('row-2');
     const tDiv = document.getElementById('third-selectors');
-    
     Object.keys(teams).forEach((g, idx) => {
         let h = `<div class="group-box" data-group="${g}"><h4>GROUP ${g}</h4><div class="team-list" id="list_${g}">`;
         teams[g].forEach((t, i) => {
-            h += `<div class="draggable-team" draggable="true" data-team="${t}" data-rank="${i+1}º">
-                    ${flags[t]} ${codes[t]}
-                  </div>`;
+            h += `<div class="draggable-team" draggable="true" data-team="${t}" data-rank="${i+1}º">${flags[t]} ${codes[t]}</div>`;
         });
         h += `</div></div>`;
         if (idx < 6) r1.innerHTML += h; else r2.innerHTML += h;
     });
-
     for(let i=1;i<=8;i++) tDiv.innerHTML += `<select id="b3_${i}" onchange="up3(${i-1},this.value)"><option value="">3rd #${i}</option></select>`;
-    
     setupDragEvents();
     syncAllGroupsToBracket();
     setTimeout(drawAllLines, 200);
@@ -189,29 +169,13 @@ function init() {
 function setupDragEvents() {
     const lists = document.querySelectorAll('.team-list');
     lists.forEach(list => {
-        list.addEventListener('dragstart', e => {
-            if (e.target.classList.contains('draggable-team')) {
-                dragSrcEl = e.target;
-                e.target.classList.add('dragging');
-            }
-        });
-
-        list.addEventListener('dragend', e => {
-            if (e.target.classList.contains('draggable-team')) {
-                e.target.classList.remove('dragging');
-                syncAllGroupsToBracket();
-            }
-        });
-
+        list.addEventListener('dragstart', e => { if (e.target.classList.contains('draggable-team')) e.target.classList.add('dragging'); });
+        list.addEventListener('dragend', e => { if (e.target.classList.contains('draggable-team')) { e.target.classList.remove('dragging'); syncAllGroupsToBracket(); } });
         list.addEventListener('dragover', e => {
             e.preventDefault();
             const afterElement = getDragAfterElement(list, e.clientY);
             const draggable = document.querySelector('.dragging');
-            if (afterElement == null) {
-                list.appendChild(draggable);
-            } else {
-                list.insertBefore(draggable, afterElement);
-            }
+            if (afterElement == null) list.appendChild(draggable); else list.insertBefore(draggable, afterElement);
             updateVisualRanks(list);
         });
     });
@@ -222,45 +186,33 @@ function getDragAfterElement(container, y) {
     return draggableElements.reduce((closest, child) => {
         const box = child.getBoundingClientRect();
         const offset = y - box.top - box.height / 2;
-        if (offset < 0 && offset > closest.offset) {
-            return { offset: offset, element: child };
-        } else {
-            return closest;
-        }
+        if (offset < 0 && offset > closest.offset) return { offset: offset, element: child }; else return closest;
     }, { offset: Number.NEGATIVE_INFINITY }).element;
 }
 
 function updateVisualRanks(list) {
-    const items = list.querySelectorAll('.draggable-team');
-    items.forEach((item, index) => {
-        item.setAttribute('data-rank', (index + 1) + "º");
-    });
+    list.querySelectorAll('.draggable-team').forEach((item, index) => item.setAttribute('data-rank', (index + 1) + "º"));
 }
 
 function syncAllGroupsToBracket() {
     const groups = document.querySelectorAll('.group-box');
     const all3rdTeams = [];
-
     groups.forEach(box => {
         const group = box.getAttribute('data-group');
         const teamsInOrder = [...box.querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team'));
-        
-        // 1st, 2nd, 3rd logic
-        ["1st", "2nd", "3rd"].forEach((rankStr, i) => {
-            const team = teamsInOrder[i];
-            const slotId = `s_${group}${i+1}`;
+        [1, 2, 3].forEach(rank => {
+            const team = teamsInOrder[rank-1];
+            const slotId = `s_${group}${rank}`;
             const slotEl = document.getElementById(slotId);
-            
-            // If the team in this slot changed, ripple clear
-            if (slotEl && slotEl.innerHTML !== `${flags[team]} ${codes[team]}`) {
+            const newContent = `${flags[team]} ${codes[team]}`;
+            if (slotEl && slotEl.innerHTML !== newContent) {
                 clearBranch(slotId);
-                slotEl.innerHTML = `${flags[team]} ${codes[team]}`;
+                slotEl.innerHTML = newContent;
                 slotEl.classList.remove('empty', 'winner');
             }
         });
         all3rdTeams.push(teamsInOrder[2]);
     });
-
     refresh3rdPool(all3rdTeams);
     drawAllLines();
 }
@@ -361,7 +313,6 @@ function refresh3rdPool(optionalPool) {
         el.innerHTML = `<option value="">3rd #${i}</option>` + pool.map(t => `<option value="${t}" ${t===cur?'selected':''} ${b3rd.includes(t)&&t!==cur?'disabled':''}>${flags[t]} ${codes[t]}</option>`).join('');
     }
 }
-
 window.addEventListener('resize', drawAllLines);
 init();
 </script>
