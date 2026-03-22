@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 World Cup Predictor - Version 3.3</title>
+    <title>2x Zoom</title>
     <style>
         :root { --line-color: #333; --accent: #00ff88; --bg: #0b0b0b; --card: #1a1a1a; --box-w: 85px; }
         body { background: var(--bg); color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; font-size: 12px; overflow-x: auto; }
@@ -11,13 +11,32 @@
 
         .group-stage-wrapper { display: flex; flex-direction: column; gap: 12px; align-items: center; margin-bottom: 25px; }
         .group-row { display: grid; grid-template-columns: repeat(6, 160px); gap: 10px; }
-        .group-box { background: var(--card); padding: 8px; border: 1px solid #333; border-radius: 6px; transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .group-box:hover { transform: scale(1.08); box-shadow: 0 0 15px rgba(0, 255, 136, 0.2); border-color: var(--accent); z-index: 10; }
+        
+        .group-box { 
+            background: var(--card); padding: 8px; border: 1px solid #333; border-radius: 6px; 
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s;
+            position: relative;
+        }
+
+        /* MASSIVE HOVER ANIMATION (2x Size) */
+        .group-box:hover { 
+            transform: scale(2.0); 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 255, 136, 0.4); 
+            border-color: var(--accent);
+            z-index: 100;
+            background: #111; /* Darker on hover for focus */
+        }
+
         .group-box h4 { margin: 0 0 6px 0; color: var(--accent); font-size: 11px; text-align: center; border-bottom: 1px solid #333; padding-bottom: 4px; }
         .team-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; gap: 4px; }
         .team-label { font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-grow: 1; }
-        .group-box select { width: 55px; background: #222; color: white; border: 1px solid #444; padding: 1px; font-size: 9px; border-radius: 3px; cursor: pointer; }
+        
+        .group-box select { 
+            width: 55px; background: #222; color: white; border: 1px solid #444; 
+            padding: 1px; font-size: 9px; border-radius: 3px; cursor: pointer;
+        }
 
+        /* Rest of the bracket styles from V3.3 */
         .best-3rd-wrapper { text-align: center; margin-bottom: 20px; }
         .best-3rd-container { display: inline-block; padding: 10px; border: 1px dashed #444; border-radius: 8px; background: #111; }
         .best-3rd-grid { display: flex; gap: 5px; justify-content: center; margin-top: 5px; }
@@ -129,6 +148,7 @@ const codes = {"Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czechia"
 const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
 const teams = {A:["Mexico","South Africa","South Korea","Czechia"], B:["Canada","Switzerland","Qatar","Italy"], C:["Brazil","Morocco","Haiti","Scotland"], D:["USA","Paraguay","Australia","Slovakia"], E:["Germany","Curaçao","Ivory Coast","Ecuador"], F:["Netherlands","Japan","Tunisia","Ukraine"], G:["Belgium","Egypt","Iran","New Zealand"], H:["Spain","Cape Verde","Saudi Arabia","Uruguay"], I:["France","Senegal","Norway","Iraq"], J:["Argentina","Algeria","Austria","Jordan"], K:["Portugal","Uzbekistan","Colombia","Jamaica"], L:["England","Croatia","Ghana","Panama"]};
 
+// THE GPS SYSTEM
 const nextMap = {
     's_A1':'M92_T','slot_3rd_3':'M92_T','s_L1':'M92_B','slot_3rd_4':'M92_B','s_C1':'M91_T','s_F2':'M91_T','s_E2':'M91_B','s_I2':'M91_B',
     's_A2':'M90_T','s_B2':'M90_T','s_F1':'M90_B', 's_C2':'M90_B', 'slot_3rd_1':'M89_T', 's_E1':'M89_T', 'slot_3rd_2':'M89_B', 's_I1':'M89_B',
@@ -171,18 +191,13 @@ function init() {
 }
 
 function upGroupLocked(group, team, rank) {
-    // 1. Wipe old branch for this rank if it's being replaced
     if (rank && rank !== "4th") clearBranch(`s_${group}${rank.charAt(0)}`);
-    
-    // 2. Wipe old branch for where the team WAS before this change
     const previousRank = Object.keys(groupState[group]).find(k => groupState[group][k] === team);
     if (previousRank && previousRank !== "4th") clearBranch(`s_${group}${previousRank.charAt(0)}`);
 
-    // 3. Update internal state
     Object.keys(groupState[group]).forEach(r => { if(groupState[group][r] === team) groupState[group][r] = ""; });
     if (rank) groupState[group][rank] = team;
 
-    // 4. Update visuals for the group ranking slots
     ["1st", "2nd", "3rd"].forEach(r => {
         const val = groupState[group][r];
         const slotId = `s_${group}${r.charAt(0)}`;
@@ -194,14 +209,11 @@ function upGroupLocked(group, team, rank) {
         }
     });
 
-    // 5. GLOBAL GROUP REFRESH: Re-sync all dropdowns to enforce "One rank per group"
-    const currentTaken = Object.values(groupState[group]).filter(v => v !== "");
     teams[group].forEach(t => {
         const selEl = document.getElementById(`sel_${group}_${t.replace(/\s/g,'_')}`);
         const currentVal = selEl.value;
         Array.from(selEl.options).forEach(opt => {
             if (opt.value) {
-                // Disable option if it's taken by someone else
                 const takenBySomeoneElse = Object.entries(groupState[group]).some(([r, name]) => r === opt.value && name !== "" && name !== t);
                 opt.disabled = takenBySomeoneElse;
             }
