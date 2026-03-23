@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>v9.1 Mobile-Ready</title>
+    <title>v9.1 GOLD</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -16,32 +16,31 @@
             background-image: radial-gradient(circle at center, #111 0%, #050505 100%); 
             color: #eee; font-family: 'Oswald', sans-serif; 
             margin: 0; padding: 20px; font-size: 12px; 
-            overflow-x: auto; /* Essential for scrolling right */
+            overflow-x: auto; 
             position: relative;
-            min-width: fit-content; /* Fixes the "Blocked Left Side" issue on mobile */
+            /* CRITICAL: Forces mobile browsers to show the full left-to-right spread */
+            min-width: fit-content; 
         }
         
         #stadium-backdrop { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 350px; height: 350px; background: url('https://i.postimg.cc/L8KpgjLY/2026-Fifa-Cup.png') no-repeat center center; background-size: contain; opacity: 0.15; z-index: 0; pointer-events: none; }
         
         h1 { text-align: center; color: var(--accent); margin: 0 0 15px 0; text-transform: uppercase; letter-spacing: 4px; font-size: 24px; text-shadow: 0 0 10px rgba(0, 255, 136, 0.3); position: relative; z-index: 2;}
 
-        /* DASHBOARD LAYOUT */
-        .dashboard-wrapper { display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 40px; position: relative; z-index: 2; width: 100%;}
+        /* DASHBOARD LAYOUT - Always side-by-side */
+        .dashboard-wrapper { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 20px; 
+            margin-bottom: 40px; 
+            position: relative; 
+            z-index: 2; 
+            flex-direction: row !important; /* Force side-by-side even on mobile */
+        }
+        
         .group-stage-wrapper { display: flex; flex-direction: column; gap: 12px; }
         .group-row { display: grid; grid-template-columns: repeat(4, 110px); gap: 15px; }
         .dashboard-divider { width: 1px; background: rgba(255,255,255,0.15); height: 280px; margin: 0 10px; }
-
-        /* MOBILE SPECIFIC OVERRIDES - Does not change Desktop */
-        @media (max-width: 1000px) {
-            h1 { font-size: 20px; letter-spacing: 2px; }
-            .dashboard-wrapper { 
-                flex-direction: column; /* Stack vertically on phones */
-                align-items: center; 
-                gap: 30px;
-            }
-            .dashboard-divider { display: none; } /* Hide line when stacked */
-            .tournament-wrapper { justify-content: flex-start; padding-left: 10px; } /* Prevent left blocking */
-        }
 
         .group-box, .best-3rd-container { 
             background: var(--card); backdrop-filter: blur(10px); padding: 8px; border: 1px solid rgba(255,255,255,0.1); 
@@ -53,7 +52,6 @@
         .best-3rd-container { width: 120px; padding: 12px; }
         .group-box h4, .best-3rd-container h4 { margin: 0 0 8px 0; color: var(--accent); font-size: 10px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px; pointer-events: none;}
 
-        /* UNIFIED BLOCKS */
         .draggable-team { 
             background: rgba(255,255,255,0.05); border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); 
             cursor: grab; display: flex; align-items: center; justify-content: center; gap: 4px; user-select: none; 
@@ -63,11 +61,10 @@
         .draggable-team.dragging { opacity: 0.2; transform: scale(0.95); }
         .draggable-team::before { content: attr(data-rank); width: 14px; font-size: 8px; color: #666; font-weight: bold; }
 
-        .team-list { display: flex; flex-direction: column; gap: 4px; align-items: center; min-height: 40px;}
+        .team-list { display: flex; flex-direction: column; gap: 4px; align-items: center; }
         #list_3rd .draggable-team:nth-child(8) { margin-bottom: 25px; position: relative; }
         #list_3rd .draggable-team:nth-child(8)::after { content: "QUALIFICATION CUT-OFF"; position: absolute; bottom: -18px; left: 0; right: 0; border-bottom: 1px dashed #444; height: 1px; text-align: right; font-size: 7px; color: #666; letter-spacing: 1px; }
 
-        /* BRACKET GEOMETRY */
         .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: 60px 10px 100px 10px; position: relative; gap: 10px; z-index: 1;}
         .bracket-side { display: flex; align-items: flex-start; gap: 15px; }
         .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 90px; height: 800px; position: relative; }
