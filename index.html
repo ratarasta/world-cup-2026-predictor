@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>10 GOLD</title>
+    <title>v9.9.2 GOLD</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
             --line-color: #444; --accent: #00ff88; --bg: #050505; --card: rgba(26, 26, 26, 0.7); 
             --box-w: 85px; --box-h: 35px; --gold: #ffcc00; 
-            /* Unified Transparencies */
-            --qual-bg: rgba(0, 255, 136, 0.15);
+            /* Multi-tier transparencies */
+            --qual-bg: rgba(0, 255, 136, 0.15); /* For Seeded & Best 3rd Winners */
+            --playoff-bg: rgba(0, 255, 136, 0.07); /* New even more transparent 3rd place */
         }
         
         body { 
@@ -58,30 +59,21 @@
             transition: background 0.3s ease, color 0.3s ease; overflow: hidden;
         }
         
-        /* 🟢 QUALIFICATION LOGIC */
-        /* Rank 1 & 2: Green BG + Bold Green Text */
+        /* 1st & 2nd: Pop with Solid Neon Green Text */
         .draggable-team[data-rank="1º"], .draggable-team[data-rank="2º"] { 
-            background: var(--qual-bg); 
-            color: var(--accent); 
-            font-weight: 700;
-            border-color: rgba(0,255,136,0.2);
+            background: var(--qual-bg); color: var(--accent); font-weight: 700; border-color: rgba(0,255,136,0.3);
         }
-        /* Rank 3: Green BG + White Text */
+        /* 3rd: Subtle Background, White Text */
         .draggable-team[data-rank="3º"] { 
-            background: var(--qual-bg); 
-            color: #eee;
+            background: var(--playoff-bg); color: #eee;
         }
-        
-        /* Rank 4: Standard Dimmed */
+        /* 4th: Dimmed */
         .draggable-team[data-rank="4º"] { opacity: 0.8; }
 
-        /* SPECIAL RULES FOR BEST 3rd LIST (First 8 get Bold Green Font) */
+        /* BEST 3rd LIST Logic */
         #list_3rd .draggable-team { background: rgba(255,255,255,0.05); color: #eee; }
         #list_3rd .draggable-team:nth-child(-n+8) { 
-            background: var(--qual-bg); 
-            color: var(--accent);
-            font-weight: 700;
-            border-color: rgba(0,255,136,0.2);
+            background: var(--qual-bg); color: var(--accent); font-weight: 700; border-color: rgba(0,255,136,0.3);
         }
 
         .draggable-team.dragging { opacity: 0.1; transform: scale(0.9); }
@@ -91,25 +83,19 @@
         #list_3rd .draggable-team:nth-child(8) { margin-bottom: 25px; position: relative; }
         #list_3rd .draggable-team:nth-child(8)::after { content: "QUALIFICATION CUT-OFF"; position: absolute; bottom: -18px; left: 0; right: 0; border-bottom: 1px dashed #444; height: 1px; text-align: right; font-size: 7px; color: #666; letter-spacing: 1px; }
 
-        /* BRACKET GEOMETRY */
         .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: 60px 10px 100px 10px; position: relative; gap: 10px; z-index: 1;}
         .bracket-side { display: flex; align-items: flex-start; gap: 15px; }
         .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 90px; height: 800px; position: relative; }
         .round h3 { font-size: 10px; color: #444; text-align: center; position: absolute; top: -20px; width: 100%; text-transform: uppercase; letter-spacing: 2px;}
 
         .matchup { background: var(--card); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(5px); border-radius: 4px; width: var(--box-w); margin: 3px auto; position: relative; z-index: 5; }
-        .team { 
-            padding: 6px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s; 
-            white-space: nowrap; text-align: center; display: flex; justify-content: center; align-items: center; 
-            gap: 4px; height: var(--box-h); box-sizing: border-box; font-weight: 500; font-size: 16px; 
-        }
+        .team { padding: 6px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s; white-space: nowrap; text-align: center; display: flex; justify-content: center; align-items: center; gap: 4px; height: var(--box-h); box-sizing: border-box; font-weight: 500; font-size: 16px; }
         .team:hover { background: rgba(255,255,255,0.1); color: var(--accent); }
         .winner { background: linear-gradient(to right, #0a2d1d, #113825) !important; color: var(--accent) !important; font-weight: bold; }
         .empty { color: #333; font-weight: 400; font-size: 10px; }
 
         .center-stage { display: flex; align-items: center; justify-content: center; gap: 15px; height: 800px; min-width: 240px; position: relative; z-index: 4; }
         .final-column { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
-        
         @keyframes breathing { 0%, 100% { box-shadow: 0 0 20px rgba(255, 204, 0, 0.3); } 50% { box-shadow: 0 0 40px rgba(255, 204, 0, 0.6); } }
         #champion-display { position: absolute; bottom: 115%; margin-bottom: 20px; width: 110px; padding: 12px 8px; border: 2px solid var(--gold); border-radius: 10px; background: #000; text-align: center; animation: breathing 3s infinite; z-index: 10; }
         #champion-display h2 { margin: 0; font-size: 10px; color: gold; text-transform: uppercase; letter-spacing: 1px; }
@@ -260,6 +246,7 @@ function getDragAfterElement(container, y) {
 function updateVisualRanks(list) {
     list.querySelectorAll('.draggable-team').forEach((item, index) => {
         item.setAttribute('data-rank', (index + 1) + "º");
+        if(list.id === 'list_3rd') item.style.borderLeft = index < 8 ? '3px solid var(--accent)' : '3px solid #333';
     });
 }
 
