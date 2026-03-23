@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>v9.2 GOLD mobile</title>
+    <title>v9.4 GOLD</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -12,41 +12,38 @@
         }
         
         body { 
-            background: var(--bg); 
-            background-image: radial-gradient(circle at center, #111 0%, #050505 100%); 
-            color: #eee; font-family: 'Oswald', sans-serif; 
-            margin: 0; padding: 20px; font-size: 12px; 
-            overflow-x: auto; 
-            position: relative;
-            /* CRITICAL: Forces mobile browsers to show the full left-to-right spread */
-            min-width: fit-content; 
+            background: var(--bg); background-image: radial-gradient(circle at center, #111 0%, #050505 100%); 
+            color: #eee; font-family: 'Oswald', sans-serif; margin: 0; padding: 20px; font-size: 12px; 
+            overflow-x: auto; position: relative; display: inline-block; min-width: 100%;
         }
         
         #stadium-backdrop { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 350px; height: 350px; background: url('https://i.postimg.cc/L8KpgjLY/2026-Fifa-Cup.png') no-repeat center center; background-size: contain; opacity: 0.15; z-index: 0; pointer-events: none; }
-        
         h1 { text-align: center; color: var(--accent); margin: 0 0 15px 0; text-transform: uppercase; letter-spacing: 4px; font-size: 24px; text-shadow: 0 0 10px rgba(0, 255, 136, 0.3); position: relative; z-index: 2;}
 
-        /* DASHBOARD LAYOUT - Always side-by-side */
-        .dashboard-wrapper { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 20px; 
-            margin-bottom: 40px; 
-            position: relative; 
-            z-index: 2; 
-            flex-direction: row !important; /* Force side-by-side even on mobile */
-        }
-        
+        .dashboard-wrapper { display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 40px; position: relative; z-index: 2; flex-direction: row; }
         .group-stage-wrapper { display: flex; flex-direction: column; gap: 12px; }
         .group-row { display: grid; grid-template-columns: repeat(4, 110px); gap: 15px; }
         .dashboard-divider { width: 1px; background: rgba(255,255,255,0.15); height: 280px; margin: 0 10px; }
 
+        /* REFINED STABLE BOXES */
         .group-box, .best-3rd-container { 
-            background: var(--card); backdrop-filter: blur(10px); padding: 8px; border: 1px solid rgba(255,255,255,0.1); 
-            border-radius: 8px; transition: all 0.3s ease; position: relative; 
+            background: var(--card); backdrop-filter: blur(10px); padding: 8px; 
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; 
+            transition: transform 0.2s ease, border-color 0.2s ease; 
+            position: relative; z-index: 1; transform: translateZ(0); /* Force GPU Layer */
         }
-        .group-box:hover, .best-3rd-container:hover { transform: scale(1.1); z-index: 100; background: rgba(20, 20, 20, 0.95); border-color: var(--accent); box-shadow: 0 0 25px rgba(0, 255, 136, 0.3); }
+
+        /* VECTOR HOVER: No shadows to prevent Safari ghosting */
+        @media (hover: hover) {
+            body:not(.is-dragging) .group-box:hover, 
+            body:not(.is-dragging) .best-3rd-container:hover { 
+                transform: scale(1.1) translateZ(0); 
+                z-index: 100; 
+                background: rgba(20, 20, 20, 0.98); 
+                border: 1px solid var(--accent); /* Solid border is safer than shadow */
+                outline: 1px solid var(--accent); /* Double-line for neon effect without shadow */
+            }
+        }
 
         .group-box { width: 100px; }
         .best-3rd-container { width: 120px; padding: 12px; }
@@ -56,34 +53,30 @@
             background: rgba(255,255,255,0.05); border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); 
             cursor: grab; display: flex; align-items: center; justify-content: center; gap: 4px; user-select: none; 
             font-size: 16px; font-weight: 500; width: var(--box-w); height: var(--box-h); box-sizing: border-box;
-            transition: transform 0.25s cubic-bezier(0.2, 0, 0.2, 1), background 0.2s; overflow: hidden;
+            transition: transform 0.2s ease; overflow: hidden;
         }
-        .draggable-team.dragging { opacity: 0.2; transform: scale(0.95); }
+        .draggable-team.dragging { opacity: 0.1; transform: scale(0.8); }
         .draggable-team::before { content: attr(data-rank); width: 14px; font-size: 8px; color: #666; font-weight: bold; }
 
         .team-list { display: flex; flex-direction: column; gap: 4px; align-items: center; }
         #list_3rd .draggable-team:nth-child(8) { margin-bottom: 25px; position: relative; }
-        #list_3rd .draggable-team:nth-child(8)::after { content: "QUALIFICATION CUT-OFF"; position: absolute; bottom: -18px; left: 0; right: 0; border-bottom: 1px dashed #444; height: 1px; text-align: right; font-size: 7px; color: #666; letter-spacing: 1px; }
+        #list_3rd .draggable-team:nth-child(8)::after { content: "QUALIFICATION"; position: absolute; bottom: -18px; left: 0; right: 0; border-bottom: 1px dashed #444; height: 1px; text-align: right; font-size: 7px; color: #666; }
 
+        /* BRACKET */
         .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: 60px 10px 100px 10px; position: relative; gap: 10px; z-index: 1;}
         .bracket-side { display: flex; align-items: flex-start; gap: 15px; }
         .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 90px; height: 800px; position: relative; }
         .round h3 { font-size: 10px; color: #444; text-align: center; position: absolute; top: -20px; width: 100%; text-transform: uppercase; letter-spacing: 2px;}
 
         .matchup { background: var(--card); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(5px); border-radius: 4px; width: var(--box-w); margin: 3px auto; position: relative; z-index: 5; }
-        .team { 
-            padding: 6px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s; 
-            white-space: nowrap; text-align: center; display: flex; justify-content: center; align-items: center; 
-            gap: 4px; height: var(--box-h); box-sizing: border-box; font-weight: 500; font-size: 16px; 
-        }
+        .team { padding: 6px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s; white-space: nowrap; text-align: center; display: flex; justify-content: center; align-items: center; gap: 4px; height: var(--box-h); box-sizing: border-box; font-weight: 500; font-size: 16px; }
         .team:hover { background: rgba(255,255,255,0.1); color: var(--accent); }
         .winner { background: linear-gradient(to right, #0a2d1d, #113825) !important; color: var(--accent) !important; font-weight: bold; }
         .empty { color: #333; font-weight: 400; font-size: 10px; }
 
         .center-stage { display: flex; align-items: center; justify-content: center; gap: 15px; height: 800px; min-width: 240px; position: relative; z-index: 4; }
         .final-column { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
-        
-        @keyframes breathing { 0%, 100% { box-shadow: 0 0 20px rgba(255, 204, 0, 0.3); } 50% { box-shadow: 0 0 40px rgba(255, 204, 0, 0.6); } }
+        @keyframes breathing { 0%, 100% { border-color: rgba(255,204,0,0.5); } 50% { border-color: var(--gold); } }
         #champion-display { position: absolute; bottom: 115%; margin-bottom: 20px; width: 110px; padding: 12px 8px; border: 2px solid var(--gold); border-radius: 10px; background: #000; text-align: center; animation: breathing 3s infinite; z-index: 10; }
         #champion-display h2 { margin: 0; font-size: 10px; color: gold; text-transform: uppercase; letter-spacing: 1px; }
         #champion-name { font-size: 20px; font-weight: 800; margin-top: 6px; min-height: 24px; color: #fff; }
@@ -94,22 +87,15 @@
         .path-line.active { stroke: var(--accent); stroke-dasharray: none; stroke-width: 2.5; filter: drop-shadow(0 0 4px var(--accent)); opacity: 1; }
     </style>
 </head>
-<body>
+<body id="main-body">
 
 <div id="stadium-backdrop"></div>
 <h1>2026 WORLD CUP PREDICTOR</h1>
 
 <div class="dashboard-wrapper">
-    <div class="group-stage-wrapper">
-        <div class="group-row" id="row-1"></div>
-        <div class="group-row" id="row-2"></div>
-        <div class="group-row" id="row-3"></div>
-    </div>
+    <div class="group-stage-wrapper"><div class="group-row" id="row-1"></div><div class="group-row" id="row-2"></div><div class="group-row" id="row-3"></div></div>
     <div class="dashboard-divider"></div>
-    <div class="best-3rd-container">
-        <h4>BEST 3rd PLACE RANKINGS</h4>
-        <div id="list_3rd" class="team-list"></div>
-    </div>
+    <div class="best-3rd-container"><h4>BEST 3rd PLACE RANKINGS</h4><div id="list_3rd" class="team-list"></div></div>
 </div>
 
 <div class="tournament-wrapper" id="tree-container">
@@ -195,8 +181,19 @@ function init() {
 
 function setupDragEvents() {
     document.querySelectorAll('.team-list').forEach(list => {
-        list.addEventListener('dragstart', e => { if (e.target.classList.contains('draggable-team')) { e.target.classList.add('dragging'); e.dataTransfer.setData('sourceList', list.id); } });
-        list.addEventListener('dragend', e => { if (e.target.classList.contains('draggable-team')) { e.target.classList.remove('dragging'); syncAllGroupsToBracket(); } });
+        list.addEventListener('dragstart', e => { 
+            if (e.target.classList.contains('draggable-team')) { 
+                e.target.classList.add('dragging'); 
+                document.getElementById('main-body').classList.add('is-dragging');
+            } 
+        });
+        list.addEventListener('dragend', e => { 
+            if (e.target.classList.contains('draggable-team')) { 
+                e.target.classList.remove('dragging'); 
+                document.getElementById('main-body').classList.remove('is-dragging');
+                syncAllGroupsToBracket(); 
+            } 
+        });
         list.addEventListener('dragover', e => {
             const draggingEl = document.querySelector('.dragging'); if (!draggingEl) return;
             if (list.id !== draggingEl.parentElement.id) { e.dataTransfer.dropEffect = 'none'; return; }
@@ -223,11 +220,9 @@ function updateVisualRanks(list) {
 }
 
 function syncAllGroupsToBracket() {
-    const groups = document.querySelectorAll('.group-box');
-    const thirdPlacePool = [];
+    const groups = document.querySelectorAll('.group-box'); const thirdPlacePool = [];
     groups.forEach(box => {
-        const group = box.getAttribute('data-group');
-        const teamsInOrder = [...box.querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team'));
+        const group = box.getAttribute('data-group'); const teamsInOrder = [...box.querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team'));
         [1, 2].forEach(rank => {
             const team = teamsInOrder[rank-1]; const slotId = `s_${group}${rank}`; const slotEl = document.getElementById(slotId);
             const newContent = `${flags[team]} ${codes[team]}`;
@@ -235,18 +230,14 @@ function syncAllGroupsToBracket() {
         });
         thirdPlacePool.push(teamsInOrder[2]);
     });
-
-    const thirdList = document.getElementById('list_3rd');
-    const existingInList = [...thirdList.querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team'));
-    const isDifferent = JSON.stringify(thirdPlacePool.sort()) !== JSON.stringify(existingInList.sort());
-    if (isDifferent) {
+    const thirdList = document.getElementById('list_3rd'); const existingInList = [...thirdList.querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team'));
+    if (JSON.stringify(thirdPlacePool.sort()) !== JSON.stringify(existingInList.sort())) {
         const newOrder = existingInList.filter(t => thirdPlacePool.includes(t));
         thirdPlacePool.forEach(t => { if(!newOrder.includes(t)) newOrder.push(t); });
         if(existingInList.length === 0) newOrder.sort((a,b) => (fifaRanks[a] || 99) - (fifaRanks[b] || 99));
         thirdList.innerHTML = ""; newOrder.forEach((t, i) => { thirdList.innerHTML += `<div class="draggable-team" draggable="true" data-team="${t}" data-rank="${i+1}º">${flags[t]} ${codes[t]}</div>`; });
         updateVisualRanks(thirdList);
     }
-
     const qualifiers = [...thirdList.querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team')).slice(0, 8);
     qualifiers.forEach((team, i) => {
         const slotId = `slot_3rd_${i+1}`; const slotEl = document.getElementById(slotId);
