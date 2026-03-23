@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>JULBOL 1.1</title>
+    <title>JULBOL 1.2</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
             --line-color: #444; 
-            --accent: #00ff88; /* Locked to Green */
+            --accent: #00ff88; 
             --bg: #050505; 
             --card: rgba(26, 26, 26, 0.7); 
             --box-w: 85px; --box-h: 35px; --gold: #ffcc00; 
@@ -22,7 +22,6 @@
         
         #stadium-backdrop { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 350px; height: 350px; background: url('https://i.postimg.cc/L8KpgjLY/2026-Fifa-Cup.png') no-repeat center center; background-size: contain; opacity: 0.15; z-index: 0; pointer-events: none; }
         
-        /* 🏆 HEADER SECTION */
         .header-nav {
             background: #000;
             padding: 20px 0;
@@ -45,7 +44,6 @@
             position: relative; 
         }
 
-        /* DASHBOARD */
         .dashboard-wrapper { display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 40px; position: relative; z-index: 2; flex-direction: row !important; padding: 0 20px; }
         .group-stage-wrapper { display: flex; flex-direction: column; gap: 12px; }
         .group-row { display: grid; grid-template-columns: repeat(4, 110px); gap: 15px; }
@@ -91,7 +89,6 @@
         .draggable-team::before { content: attr(data-rank); width: 14px; font-size: 8px; color: #666; font-weight: bold; }
         .team-list { display: flex; flex-direction: column; gap: 4px; align-items: center; }
 
-        /* BRACKET */
         .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: 40px 20px 100px 20px; position: relative; gap: 10px; z-index: 1;}
         .bracket-side { display: flex; align-items: flex-start; gap: 15px; }
         .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 90px; height: 800px; position: relative; }
@@ -119,10 +116,9 @@
         }
 
         #bracket-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-        .path-line { fill: none; stroke: var(--line-color); stroke-width: 1.5; stroke-dasharray: 5, 4; transition: 0.4s; opacity: 0.6; }
+        .path-line { fill: none; stroke: var(--line-color); stroke-width: 1.5; stroke-dasharray: 5, 4; transition: stroke 0.4s; opacity: 0.6; }
         .path-line.active { stroke: var(--accent); stroke-dasharray: none; stroke-width: 2.5; filter: drop-shadow(0 0 4px var(--accent)); opacity: 1; }
 
-        /* FOOTER ACTIONS */
         .footer-nav { 
             padding: 50px 20px; border-top: 1px solid rgba(255,255,255,0.1); 
             display: flex; flex-direction: column; align-items: center; gap: 20px; 
@@ -131,7 +127,7 @@
         
         .id-input-group { display: flex; flex-direction: column; align-items: center; gap: 15px; width: 320px; }
         #bracket-name-input { 
-            background: #111; border: 1px solid #555; color: #fff; padding: 15px; width: 100%; 
+            background: #111; border: 1px solid #555; color: #fff; padding: 12px; width: 100%; 
             border-radius: 8px; text-align: center; font-family: 'Oswald'; text-transform: uppercase; 
             letter-spacing: 2px; font-size: 14px;
         }
@@ -141,7 +137,6 @@
             cursor: pointer; text-transform: uppercase; transition: 0.3s; letter-spacing: 1px;
         }
 
-        /* MODAL */
         #snapshot-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0,0,0,0.95); z-index: 2000; justify-content: center; align-items: center;
@@ -257,7 +252,7 @@
 
 <script>
 const codes = {"Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czechia":"CZE","Canada":"CAN","Switzerland":"SUI","Qatar":"QAT","Italy":"ITA","Brazil":"BRA","Morocco":"MAR","Haiti":"HTI","Scotland":"SCO","USA":"USA","Paraguay":"PAR","Australia":"AUS","Slovakia":"SVK","Germany":"GER","Curaçao":"CUW","Ivory Coast":"CIV","Ecuador":"ECU","Netherlands":"NED","Japan":"JPN","Tunisia":"TUN","Ukraine":"UKR","Belgium":"BEL","Egypt":"EGY","Iran":"IRN","New Zealand":"NZL","Spain":"ESP","Cape Verde":"CPV","Saudi Arabia":"KSA","Uruguay":"URU","France":"FRA","Senegal":"SEN","Norway":"NOR","Iraq":"IRQ","Argentina":"ARG","Algeria":"DZA","Austria":"AUT","Jordan":"JOR","Portugal":"POR","Uzbekistan":"UZB","Colombia":"COL","Jamaica":"JAM","England":"ENG","Croatia":"CRO","Ghana":"GHA","Panama":"PAN"};
-const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁥󠁮ッグ󠁿","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴󠁧󠁢󠁥󠁮ッグ󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
+const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
 const teams = {A:["Mexico","South Korea","Czechia","South Africa"], B:["Italy","Switzerland","Canada","Qatar"], C:["Brazil","Morocco","Scotland","Haiti"], D:["USA","Australia","Paraguay","Slovakia"], E:["Germany","Ecuador","Ivory Coast","Curaçao"], F:["Netherlands","Japan","Ukraine","Tunisia"], G:["Belgium","Iran","Egypt","New Zealand"], H:["Spain","Uruguay","Saudi Arabia","Cape Verde"], I:["France","Senegal","Norway","Iraq"], J:["Argentina","Austria","Algeria","Jordan"], K:["Portugal","Colombia","Uzbekistan","Jamaica"], L:["England","Croatia","Ghana","Panama"]};
 const fifaRanks = {"Argentina":1,"France":2,"Belgium":3,"England":4,"Brazil":5,"Portugal":6,"Netherlands":7,"Spain":8,"Italy":9,"Croatia":10,"USA":11,"Colombia":12,"Morocco":13,"Uruguay":14,"Germany":15,"Japan":16,"Switzerland":17,"Senegal":18,"Iran":19,"Mexico":20,"Ukraine":21,"South Korea":22,"Australia":23,"Austria":24,"Ecuador":25,"Algeria":26,"South Africa":27,"Norway":28,"Uzbekistan":29,"Czechia":30,"Saudi Arabia":31,"Ghana":32,"Iraq":33,"Cape Verde":34,"Jamaica":35,"Jordan":36,"Paraguay":37,"Panama":38,"Slovakia":39,"Tunisia":40,"Canada":41,"Haiti":42,"Curaçao":43,"New Zealand":44,"Scotland":45,"Qatar":46};
 const nextMap = {'s_A1':'M92_T','slot_3rd_3':'M92_T','s_L1':'M92_B','slot_3rd_4':'M92_B','s_C1':'M91_T','s_F2':'M91_T','s_E2':'M91_B','s_I2':'M91_B','s_A2':'M90_T','s_B2':'M90_T','s_F1':'M90_B', 's_C2':'M90_B', 'slot_3rd_1':'M89_T', 's_E1':'M89_T', 'slot_3rd_2':'M89_B', 's_I1':'M89_B','M92_T':'M99_T','M92_B':'M99_T','M91_T':'M99_B','M91_B':'M99_B','M90_T':'M97_T','M90_B':'M97_T','M89_T':'M97_B','M89_B':'M97_B','M99_T':'M101_T','M99_B':'M101_T','M97_T':'M101_B','M97_B':'M101_B','s_K2':'M93_T', 's_L2':'M93_T', 's_H1':'M93_B', 's_J2':'M93_B','s_D1':'M94_T', 'slot_3rd_5':'M94_T', 's_G1':'M94_B', 'slot_3rd_6':'M94_B','s_J1':'M95_T', 's_H2':'M95_T', 's_D2':'M95_B', 's_G2':'M95_B','s_B1':'M96_T', 'slot_3rd_7':'M96_T', 's_K1':'M96_B', 'slot_3rd_8':'M96_B','M93_T':'M98_T','M93_B':'M98_T','M94_T':'M98_B','M94_B':'M98_B','M95_T':'M100_T','M95_B':'M100_T','M96_T':'M100_B','M96_B':'M100_B','M98_T':'M102_T','M98_B':'M102_T','M100_T':'M102_B','M100_B':'M102_B','M101_T':'FINAL_L','M101_B':'FINAL_L','M102_T':'FINAL_R','M102_B':'FINAL_R','FINAL_L':'champion-name','FINAL_R':'champion-name'};
