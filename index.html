@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>Golden Gay v10.7</title>
+    <title>Golden Gay v10.8</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -58,13 +58,10 @@
             background: rgba(255,255,255,0.05); border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); 
             cursor: grab; display: flex; align-items: center; justify-content: center; gap: 4px; user-select: none; 
             font-size: 16px; font-weight: 500; width: var(--box-w); height: var(--box-h); box-sizing: border-box;
-            transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease; overflow: hidden;
+            transition: background 0.4s ease, color 0.4s ease; overflow: hidden;
         }
         
-        .draggable-team[data-rank="1º"], .draggable-team[data-rank="2º"] { 
-            background: color-mix(in srgb, var(--accent), transparent 85%); 
-            color: var(--accent); font-weight: 700; border-color: color-mix(in srgb, var(--accent), transparent 70%);
-        }
+        .draggable-team[data-rank="1º"], .draggable-team[data-rank="2º"] { background: color-mix(in srgb, var(--accent), transparent 85%); color: var(--accent); font-weight: 700; border-color: color-mix(in srgb, var(--accent), transparent 70%); }
         .draggable-team[data-rank="3º"] { background: color-mix(in srgb, var(--accent), transparent 93%); color: #eee; }
         .draggable-team[data-rank="4º"] { opacity: 0.8; }
         #list_3rd .draggable-team:nth-child(-n+8) { background: color-mix(in srgb, var(--accent), transparent 85%); color: var(--accent); font-weight: 700; border-color: color-mix(in srgb, var(--accent), transparent 70%); }
@@ -87,65 +84,78 @@
 
         .center-stage { display: flex; align-items: center; justify-content: center; gap: 15px; height: 800px; min-width: 240px; position: relative; z-index: 4; }
         .final-column { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
-        @keyframes breathing { 0%, 100% { box-shadow: 0 0 20px color-mix(in srgb, var(--accent), transparent 60%); } 50% { box-shadow: 0 0 40px var(--accent); } }
+        
         #champion-display { position: absolute; bottom: 115%; margin-bottom: 20px; width: 110px; padding: 12px 8px; border: 2px solid var(--accent); border-radius: 10px; background: #000; text-align: center; animation: breathing 3s infinite; z-index: 10; transition: border-color 0.4s; }
         #champion-display h2 { margin: 0; font-size: 10px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
         #champion-name { font-size: 20px; font-weight: 800; margin-top: 6px; min-height: 24px; color: #fff; }
         .final-match { border: 2px solid var(--accent); background: #111; width: var(--box-w); margin: 0; }
 
+        /* BRACKET SIGNATURE TAG */
+        #bracket-signature { 
+            position: absolute; top: 110%; width: 300px; text-align: center;
+            font-size: 28px; font-weight: 700; color: #fff; text-transform: uppercase;
+            letter-spacing: 3px; text-shadow: 0 0 15px rgba(255,255,255,0.6);
+            pointer-events: none; opacity: 0.9;
+        }
+
         #bracket-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
         .path-line { fill: none; stroke: var(--line-color); stroke-width: 1.5; stroke-dasharray: 5, 4; transition: stroke 0.4s; opacity: 0.6; }
         .path-line.active { stroke: var(--accent); stroke-dasharray: none; stroke-width: 2.5; filter: drop-shadow(0 0 4px var(--accent)); opacity: 1; }
 
-        /* IDENTIFICATION BOX DISPLAY (In-Bracket) */
-        #bracket-identity-tag { text-align: center; margin-bottom: 20px; font-size: 18px; color: #aaa; letter-spacing: 2px; text-transform: uppercase; font-weight: 300; min-height: 20px;}
-
         /* FOOTER ACTION AREA */
         .footer-nav { 
-            margin-top: 50px; padding: 40px 20px; border-top: 1px solid rgba(255,255,255,0.1); 
-            display: flex; flex-direction: column; align-items: center; gap: 25px; 
-            position: relative; z-index: 10; background: rgba(0,0,0,0.8); width: 100%; box-sizing: border-box;
+            margin-top: 80px; padding: 50px 20px; border-top: 1px solid rgba(255,255,255,0.1); 
+            display: flex; flex-direction: column; align-items: center; gap: 30px; 
+            position: relative; z-index: 10; background: rgba(0,0,0,0.9); width: 100%; box-sizing: border-box;
         }
-        .color-palette-label { font-size: 32px; margin-bottom: 5px; cursor: default; }
+        .color-palette-label { font-size: 40px; margin-bottom: 5px; cursor: default; }
         .color-picker { display: flex; gap: 15px; }
-        .color-dot { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid rgba(255,255,255,0.2); transition: 0.2s; }
+        .color-dot { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid rgba(255,255,255,0.2); transition: 0.2s; }
         .color-dot.active { border-color: white; box-shadow: 0 0 15px var(--accent); transform: scale(1.2); }
         
-        .id-input-group { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 300px; }
+        .id-input-group { display: flex; flex-direction: column; align-items: center; gap: 15px; width: 320px; }
         #bracket-name-input { 
-            background: #111; border: 1px solid #444; color: #fff; padding: 12px; width: 100%; 
-            border-radius: 5px; text-align: center; font-family: 'Oswald'; text-transform: uppercase; letter-spacing: 1px;
+            background: #111; border: 1px solid #555; color: #fff; padding: 15px; width: 100%; 
+            border-radius: 8px; text-align: center; font-family: 'Oswald'; text-transform: uppercase; 
+            letter-spacing: 2px; font-size: 16px;
         }
+        #bracket-name-input:focus { border-color: var(--accent); outline: none; }
         .save-lock-btn { 
-            background: var(--accent); color: #000; border: none; padding: 12px 40px; 
-            font-family: 'Oswald'; font-weight: 700; font-size: 16px; border-radius: 5px; 
-            cursor: pointer; text-transform: uppercase; transition: 0.3s;
+            background: var(--accent); color: #000; border: none; padding: 15px 50px; 
+            font-family: 'Oswald'; font-weight: 700; font-size: 18px; border-radius: 8px; 
+            cursor: pointer; text-transform: uppercase; transition: 0.3s; letter-spacing: 1px;
         }
+        .save-lock-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
 
         /* MODAL POPUP */
         #snapshot-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center;
+            background: rgba(0,0,0,0.95); z-index: 2000; justify-content: center; align-items: center;
+            backdrop-filter: blur(5px);
         }
         .modal-content {
-            background: #111; border: 2px solid var(--accent); padding: 40px; border-radius: 15px; 
-            text-align: center; max-width: 400px;
+            background: #000; border: 2px solid var(--accent); padding: 50px; border-radius: 20px; 
+            text-align: center; max-width: 450px; box-shadow: 0 0 50px rgba(0,0,0,1);
         }
-        .modal-content h2 { color: var(--accent); margin-top: 0; }
-        .modal-content p { color: #ccc; line-height: 1.6; margin-bottom: 30px; }
-        .close-modal-btn { background: #333; color: white; border: none; padding: 10px 25px; cursor: pointer; border-radius: 5px; text-transform: uppercase; font-family: 'Oswald'; }
+        .modal-content h2 { color: var(--accent); margin-top: 0; font-size: 24px; letter-spacing: 2px; }
+        .modal-content p { color: #ccc; line-height: 1.6; margin-bottom: 35px; font-size: 16px; }
+        .close-modal-btn { background: var(--accent); color: #000; border: none; padding: 12px 30px; cursor: pointer; border-radius: 5px; text-transform: uppercase; font-family: 'Oswald'; font-weight: bold; }
 
-        /* SNAPSHOT VIEW */
+        /* SNAPSHOT VIEW MODES */
         .snapshot-view .footer-nav { display: none !important; }
-        .snapshot-view #stadium-backdrop { opacity: 0.05; }
+        .snapshot-view #stadium-backdrop { opacity: 0.08; }
+        #exit-snapshot { display: none; position: fixed; top: 20px; right: 20px; z-index: 2100; background: #fff; color: #000; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; font-family: 'Oswald'; }
+        .snapshot-view #exit-snapshot { display: block; }
+
+        @media print { .footer-nav, #exit-snapshot, #snapshot-modal { display: none !important; } }
     </style>
 </head>
 <body onclick="handleGlobalClick(event)">
 
 <div id="stadium-backdrop"></div>
+<div id="exit-snapshot" onclick="exitSnapshot()">✕ CLOSE PREVIEW</div>
 
 <h1>2026 WORLD CUP PREDICTOR</h1>
-<div id="bracket-identity-tag"></div>
 
 <div class="dashboard-wrapper">
     <div class="group-stage-wrapper"><div class="group-row" id="row-1"></div><div class="group-row" id="row-2"></div><div class="group-row" id="row-3"></div></div>
@@ -185,6 +195,7 @@
         <div class="final-column">
             <div id="champion-display"><h2>🏆 WORLD CHAMPION</h2><div id="champion-name"></div></div>
             <div class="matchup final-match" id="mf"><div id="FINAL_L" class="team empty" onclick="setWinner(this)">...</div><div id="FINAL_R" class="team empty" onclick="setWinner(this)">...</div></div>
+            <div id="bracket-signature"></div>
         </div>
         <div class="matchup" id="m16"><div id="M102_T" class="team empty" onclick="adv(this,'FINAL_R')">...</div><div id="M102_B" class="team empty" onclick="adv(this,'FINAL_R')">...</div></div>
     </div>
@@ -227,16 +238,16 @@
         <div class="color-dot" style="background: #ffffff;" onclick="changeTheme('#ffffff', this)"></div>
     </div>
     <div class="id-input-group">
-        <input type="text" id="bracket-name-input" placeholder="NAME YOUR BRACKET..." maxlength="30">
+        <input type="text" id="bracket-name-input" placeholder="ENTER YOUR NAME..." maxlength="25" oninput="updateSignature(this.value)">
         <button class="save-lock-btn" onclick="prepareForSnapshot()">LOCK & SAVE</button>
     </div>
 </div>
 
 <div id="snapshot-modal">
     <div class="modal-content">
-        <h2>BRACKET LOCKED! 📸</h2>
-        <p>Take a screenshot now to save your fabulous 2026 predictions.</p>
-        <button class="close-modal-btn" onclick="exitSnapshot()">GO BACK & EDIT</button>
+        <h2>READY FOR SNAPSHOT! 📸</h2>
+        <p>Take your screenshot now to save your fabulous bracket. <b>Note:</b> Save before refreshing or leaving this page!</p>
+        <button class="close-modal-btn" onclick="exitSnapshot()">EDIT BRACKET</button>
     </div>
 </div>
 
@@ -254,12 +265,13 @@ function changeTheme(color, el) {
     drawAllLines();
 }
 
+function updateSignature(val) {
+    document.getElementById('bracket-signature').innerText = val;
+}
+
 function prepareForSnapshot() {
-    const nameInput = document.getElementById('bracket-name-input').value;
-    document.getElementById('bracket-identity-tag').innerText = nameInput;
     document.body.classList.add('snapshot-view');
     document.getElementById('snapshot-modal').style.display = 'flex';
-    // Clear any active group editing
     document.querySelectorAll('.is-editing').forEach(box => box.classList.remove('is-editing'));
     setTimeout(drawAllLines, 50);
 }
