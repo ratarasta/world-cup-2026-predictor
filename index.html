@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>v9.9.2 GOLD</title>
+    <title>v10 GOLD</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
             --line-color: #444; --accent: #00ff88; --bg: #050505; --card: rgba(26, 26, 26, 0.7); 
             --box-w: 85px; --box-h: 35px; --gold: #ffcc00; 
-            /* Multi-tier transparencies */
-            --qual-bg: rgba(0, 255, 136, 0.15); /* For Seeded & Best 3rd Winners */
-            --playoff-bg: rgba(0, 255, 136, 0.07); /* New even more transparent 3rd place */
+            --qual-bg: rgba(0, 255, 136, 0.15);
+            --playoff-bg: rgba(0, 255, 136, 0.07);
         }
         
         body { 
@@ -59,19 +58,18 @@
             transition: background 0.3s ease, color 0.3s ease; overflow: hidden;
         }
         
-        /* 1st & 2nd: Pop with Solid Neon Green Text */
+        /* Rank 1 & 2: Green BG + Bold Green Text */
         .draggable-team[data-rank="1º"], .draggable-team[data-rank="2º"] { 
             background: var(--qual-bg); color: var(--accent); font-weight: 700; border-color: rgba(0,255,136,0.3);
         }
-        /* 3rd: Subtle Background, White Text */
+        /* Rank 3: Playoff BG + White Text */
         .draggable-team[data-rank="3º"] { 
             background: var(--playoff-bg); color: #eee;
         }
-        /* 4th: Dimmed */
         .draggable-team[data-rank="4º"] { opacity: 0.8; }
 
-        /* BEST 3rd LIST Logic */
-        #list_3rd .draggable-team { background: rgba(255,255,255,0.05); color: #eee; }
+        /* BEST 3rd LIST (Cleaned - No left-border line) */
+        #list_3rd .draggable-team { background: rgba(255,255,255,0.05); color: #eee; border-left: 1px solid rgba(255,255,255,0.05); }
         #list_3rd .draggable-team:nth-child(-n+8) { 
             background: var(--qual-bg); color: var(--accent); font-weight: 700; border-color: rgba(0,255,136,0.3);
         }
@@ -113,16 +111,9 @@
 <h1>2026 WORLD CUP PREDICTOR</h1>
 
 <div class="dashboard-wrapper">
-    <div class="group-stage-wrapper">
-        <div class="group-row" id="row-1"></div>
-        <div class="group-row" id="row-2"></div>
-        <div class="group-row" id="row-3"></div>
-    </div>
+    <div class="group-stage-wrapper"><div class="group-row" id="row-1"></div><div class="group-row" id="row-2"></div><div class="group-row" id="row-3"></div></div>
     <div class="dashboard-divider"></div>
-    <div class="best-3rd-container" onclick="enterEditMode(this, event)">
-        <h4>BEST 3rd PLACE RANKINGS</h4>
-        <div id="list_3rd" class="team-list"></div>
-    </div>
+    <div class="best-3rd-container" onclick="enterEditMode(this, event)"><h4>BEST 3rd PLACE RANKINGS</h4><div id="list_3rd" class="team-list"></div></div>
 </div>
 
 <div class="tournament-wrapper" id="tree-container">
@@ -246,7 +237,6 @@ function getDragAfterElement(container, y) {
 function updateVisualRanks(list) {
     list.querySelectorAll('.draggable-team').forEach((item, index) => {
         item.setAttribute('data-rank', (index + 1) + "º");
-        if(list.id === 'list_3rd') item.style.borderLeft = index < 8 ? '3px solid var(--accent)' : '3px solid #333';
     });
 }
 
