@@ -3,58 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Version 8.2 PRO</title>
+    <title>2026 World Cup Predictor - Version 8.3 PRO HD</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --line-color: #222; --accent: #00ff88; --bg: #050505; --card: rgba(26, 26, 26, 0.7); --box-w: 85px; --gold: #ffcc00; }
+        :root { --line-color: #444; /* Brighter Slate Grey for leading lines */ --accent: #00ff88; --bg: #050505; --card: rgba(26, 26, 26, 0.7); --box-w: 85px; --gold: #ffcc00; }
         
-        body { 
-            background: var(--bg); 
-            background-image: radial-gradient(circle at center, #111 0%, #050505 100%); 
-            color: #eee; font-family: 'Oswald', sans-serif; 
-            margin: 0; padding: 20px; font-size: 12px; overflow-x: auto; 
-            position: relative;
-        }
-
-        #stadium-backdrop {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 350px; height: 350px;
-            background: url('https://i.postimg.cc/L8KpgjLY/2026-Fifa-Cup.png') no-repeat center center;
-            background-size: contain; opacity: 0.15; z-index: 0; pointer-events: none;
-        }
-
+        body { background: var(--bg); background-image: radial-gradient(circle at center, #111 0%, #050505 100%); color: #eee; font-family: 'Oswald', sans-serif; margin: 0; padding: 20px; font-size: 12px; overflow-x: auto; position: relative;}
+        
+        #stadium-backdrop { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 350px; height: 350px; background: url('https://i.postimg.cc/L8KpgjLY/2026-Fifa-Cup.png') no-repeat center center; background-size: contain; opacity: 0.15; z-index: 0; pointer-events: none; }
         h1 { text-align: center; color: var(--accent); margin: 0 0 15px 0; text-transform: uppercase; letter-spacing: 4px; font-size: 24px; text-shadow: 0 0 10px rgba(0, 255, 136, 0.3); position: relative; z-index: 2;}
 
         .group-stage-wrapper { display: flex; flex-direction: column; gap: 12px; align-items: center; margin-bottom: 25px; position: relative; z-index: 2;}
         .group-row { display: grid; grid-template-columns: repeat(6, 130px); gap: 10px; }
         
         .draggable-team { 
-            background: rgba(255,255,255,0.05); padding: 6px 8px; border-radius: 4px; 
-            border: 1px solid rgba(255,255,255,0.05); cursor: grab; 
-            display: flex; align-items: center; gap: 6px; user-select: none; 
-            font-size: 16px; font-weight: 500;
+            background: rgba(255,255,255,0.05); padding: 6px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); 
+            cursor: grab; display: flex; align-items: center; gap: 6px; user-select: none; font-size: 16px; font-weight: 500;
             transition: transform 0.25s cubic-bezier(0.2, 0, 0.2, 1), background 0.2s;
         }
-        
-        .draggable-team:active { cursor: grabbing; transform: scale(1.02); }
         .draggable-team.dragging { opacity: 0.2; transform: scale(0.95); }
 
         .group-box { background: var(--card); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 8px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; transition: transform 0.3s ease; position: relative; }
         .group-box:hover { transform: scale(1.1); z-index: 100; background: rgba(20, 20, 20, 0.95); border-color: var(--accent); }
         .group-box h4 { margin: 0 0 8px 0; color: var(--accent); font-size: 10px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px; pointer-events: none;}
         
-        .team-list { display: flex; flex-direction: column; gap: 4px; min-height: 50px;} /* Min-height keeps container targetable */
+        .team-list { display: flex; flex-direction: column; gap: 4px; min-height: 50px;}
         .draggable-team::before { content: attr(data-rank); width: 14px; font-size: 8px; color: #666; font-weight: bold; }
 
         .best-3rd-wrapper { display: flex; justify-content: center; margin-bottom: 30px; position: relative; z-index: 2;}
         .best-3rd-container { width: 140px; background: rgba(10,10,10,0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; backdrop-filter: blur(5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .best-3rd-container h4 { margin: 0 0 10px 0; color: var(--accent); text-align: center; letter-spacing: 1px; font-size: 9px; line-height: 1.2; }
-        
         #list_3rd .draggable-team:nth-child(8) { margin-bottom: 25px; position: relative; }
-        #list_3rd .draggable-team:nth-child(8)::after {
-            content: "QUALIFICATION CUT-OFF"; position: absolute; bottom: -18px; left: 0; right: 0;
-            border-bottom: 1px dashed #444; height: 1px; text-align: right; font-size: 7px; color: #666; letter-spacing: 1px;
-        }
+        #list_3rd .draggable-team:nth-child(8)::after { content: "QUALIFICATION CUT-OFF"; position: absolute; bottom: -18px; left: 0; right: 0; border-bottom: 1px dashed #444; height: 1px; text-align: right; font-size: 7px; color: #666; letter-spacing: 1px; }
 
         .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: 60px 10px 100px 10px; position: relative; gap: 10px; z-index: 1;}
         .bracket-side { display: flex; align-items: flex-start; gap: 15px; }
@@ -76,14 +56,15 @@
         .final-match { border: 2px solid var(--accent); background: #111; width: 85px; margin: 0; }
 
         #bracket-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-        .path-line { fill: none; stroke: #1a1a1a; stroke-width: 1.5; stroke-dasharray: 4, 3; transition: stroke 0.3s; }
-        .path-line.active { stroke: var(--accent); stroke-dasharray: none; stroke-width: 2.5; filter: drop-shadow(0 0 3px var(--accent)); }
+        
+        /* UPDATED BRIGHTER PATH LINES */
+        .path-line { fill: none; stroke: var(--line-color); stroke-width: 1.5; stroke-dasharray: 5, 4; transition: stroke 0.4s, stroke-width 0.4s; opacity: 0.6; }
+        .path-line.active { stroke: var(--accent); stroke-dasharray: none; stroke-width: 2.5; filter: drop-shadow(0 0 4px var(--accent)); opacity: 1; }
     </style>
 </head>
 <body>
 
 <div id="stadium-backdrop"></div>
-
 <h1>2026 WORLD CUP PREDICTOR</h1>
 
 <div class="group-stage-wrapper">
@@ -185,29 +166,20 @@ function setupDragEvents() {
         list.addEventListener('dragstart', e => { 
             if (e.target.classList.contains('draggable-team')) {
                 e.target.classList.add('dragging');
-                // Store the ID of the list where the drag started
                 e.dataTransfer.setData('sourceList', list.id);
             }
         });
-
         list.addEventListener('dragend', e => { 
             if (e.target.classList.contains('draggable-team')) { 
                 e.target.classList.remove('dragging'); 
                 syncAllGroupsToBracket(); 
             } 
         });
-
         list.addEventListener('dragover', e => {
             const draggingEl = document.querySelector('.dragging');
             if (!draggingEl) return;
-
-            // VALIDATION: Only allow move if current list matches source list
             const sourceListId = draggingEl.parentElement.id;
-            if (list.id !== sourceListId) {
-                e.dataTransfer.dropEffect = 'none';
-                return;
-            }
-
+            if (list.id !== sourceListId) { e.dataTransfer.dropEffect = 'none'; return; }
             e.preventDefault(); 
             const afterElement = getDragAfterElement(list, e.clientY);
             if (afterElement == null) list.appendChild(draggingEl); else list.insertBefore(draggingEl, afterElement);
@@ -266,7 +238,7 @@ function syncAllGroupsToBracket() {
     });
     for (let i = qualifiers.length; i < 8; i++) {
         const slotId = `slot_3rd_${i+1}`; const slotEl = document.getElementById(slotId);
-        if (slotEl && slotEl.innerHTML !== `3rd #${i+1}`) { clearBranch(slotId); slotEl.innerHTML = `3rd #${i+1}`; slotEl.classList.add('empty', 'winner'); }
+        if (slotEl && slotEl.innerHTML !== `3rd #${i+1}`) { clearBranch(slotId); slotEl.innerHTML = `3rd #${i+1}`; slotEl.classList.add('empty'); }
     }
     drawAllLines();
 }
