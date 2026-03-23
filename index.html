@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>6.9</title>
+    <title>6.3 STABLE</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root { --line-color: #222; --accent: #00ff88; --bg: #050505; --card: rgba(26, 26, 26, 0.7); --box-w: 85px; --gold: #ffcc00; }
         body { background: var(--bg); background-image: radial-gradient(circle at center, #111 0%, #050505 100%); color: #eee; font-family: 'Oswald', sans-serif; margin: 0; padding: 20px; font-size: 12px; overflow-x: auto; }
         h1 { text-align: center; color: var(--accent); margin: 0 0 15px 0; text-transform: uppercase; letter-spacing: 4px; font-size: 24px; text-shadow: 0 0 10px rgba(0, 255, 136, 0.3); }
 
-        /* Group Stage */
         .group-stage-wrapper { display: flex; flex-direction: column; gap: 12px; align-items: center; margin-bottom: 25px; }
         .group-row { display: grid; grid-template-columns: repeat(6, 130px); gap: 10px; }
         .group-box { background: var(--card); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 8px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; transition: transform 0.3s ease, box-shadow 0.3s ease; position: relative; }
@@ -26,6 +25,7 @@
         .best-3rd-container { width: 300px; background: rgba(10,10,10,0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 15px; backdrop-filter: blur(5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .best-3rd-container h4 { margin: 0 0 10px 0; color: var(--accent); text-align: center; letter-spacing: 1px; font-size: 11px; }
         
+        /* THE STABLE LINE: Anchored between 8th and 9th child */
         #list_3rd .draggable-team:nth-child(8) { margin-bottom: 25px; position: relative; }
         #list_3rd .draggable-team:nth-child(8)::after {
             content: "QUALIFICATION CUT-OFF";
@@ -35,36 +35,18 @@
         }
 
         .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: 60px 10px 100px 10px; position: relative; gap: 10px; }
-        
-        /* THE LOGO FIX: Absolutely positioned so it doesn't push boxes */
-        #bracket-logo {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 180px;
-            height: 180px;
-            background: url('https://upload.wikimedia.org/wikipedia/commons/4/42/2026_FIFA_World_Cup_Logo.svg') no-repeat center center;
-            background-size: contain;
-            opacity: 0.12;
-            filter: brightness(2) grayscale(0.5);
-            pointer-events: none;
-            z-index: 0;
-        }
-
         .bracket-side { display: flex; align-items: flex-start; gap: 15px; }
         .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 90px; height: 800px; position: relative; }
         .round h3 { font-size: 9px; color: #444; text-align: center; position: absolute; top: -20px; width: 100%; text-transform: uppercase; letter-spacing: 2px;}
 
         .matchup { background: var(--card); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(5px); border-radius: 4px; width: var(--box-w); margin: 3px auto; position: relative; z-index: 2; }
-        .team { padding: 6px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s; white-space: nowrap; text-align: center; display: flex; justify-content: center; align-items: center; gap: 4px; height: 30px; box-sizing: border-box; font-weight: 600; font-size: 14px; }
+        .team { padding: 6px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s; white-space: nowrap; text-align: center; display: flex; justify-content: center; align-items: center; gap: 4px; height: 30px; box-sizing: border-box; font-weight: 500; }
         .team:hover { background: rgba(255,255,255,0.1); color: var(--accent); }
         .winner { background: linear-gradient(to right, #0a2d1d, #113825) !important; color: var(--accent) !important; font-weight: bold; }
-        .empty { color: #333; font-weight: 400; }
+        .empty { color: #333; font-size: 9px; }
 
-        .center-stage { display: flex; align-items: center; justify-content: center; gap: 15px; height: 800px; min-width: 240px; position: relative; }
+        .center-stage { display: flex; align-items: center; justify-content: center; gap: 15px; height: 800px; min-width: 240px; }
         .final-column { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
-        
         @keyframes breathing { 0%, 100% { box-shadow: 0 0 20px rgba(255, 204, 0, 0.3); border-color: rgba(255, 204, 0, 0.6); } 50% { box-shadow: 0 0 40px rgba(255, 204, 0, 0.6); border-color: var(--gold); } }
         #champion-display { position: absolute; bottom: 115%; margin-bottom: 20px; width: 100px; padding: 12px 8px; border: 2px solid var(--gold); border-radius: 10px; background: #000; text-align: center; animation: breathing 3s infinite; z-index: 3; }
         #champion-display h2 { margin: 0; font-size: 8px; color: gold; text-transform: uppercase; letter-spacing: 1px; }
@@ -72,7 +54,7 @@
         .final-match { border: 2px solid var(--accent); background: #111; width: 85px; margin: 0; }
 
         #bracket-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-        .path-line { fill: none; stroke: #1a1a1a; stroke-width: 1.5; stroke-dasharray: 4, 3; transition: stroke 0.3s; }
+        .path-line { fill: none; stroke: #1a1a1a; stroke-width: 1.5; stroke-dasharray: 4, 3; transition: stroke 0.4s; }
         .path-line.active { stroke: var(--accent); stroke-dasharray: none; stroke-width: 2.5; filter: drop-shadow(0 0 3px var(--accent)); }
     </style>
 </head>
@@ -93,7 +75,7 @@
 </div>
 
 <div class="tournament-wrapper" id="tree-container">
-    <div id="bracket-logo"></div> <svg id="bracket-svg"></svg>
+    <svg id="bracket-svg"></svg>
     <div class="bracket-side left-bracket">
         <div class="round">
             <h3>R32</h3>
@@ -155,8 +137,8 @@
 </div>
 
 <script>
-const codes = {"Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czechia":"CZE","Canada":"CAN","Switzerland":"SUI","Qatar":"QAT","Italy":"ITA","Brazil":"BRA","Morocco":"MAR","Haiti":"HAI","Scotland":"SCO","USA":"USA","Paraguay":"PAR","Australia":"AUS","Slovakia":"SVK","Germany":"GER","Curaçao":"CUW","Ivory Coast":"CIV","Ecuador":"ECU","Netherlands":"NED","Japan":"JPN","Tunisia":"TUN","Ukraine":"UKR","Belgium":"BEL","Egypt":"EGY","Iran":"IRN","New Zealand":"NZL","Spain":"ESP","Cape Verde":"CPV","Saudi Arabia":"KSA","Uruguay":"URU","France":"FRA","Senegal":"SEN","Norway":"NOR","Iraq":"IRQ","Argentina":"ARG","Algeria":"DZ","Austria":"AUT","Jordan":"JOR","Portugal":"POR","Uzbekistan":"UZB","Colombia":"COL","Jamaica":"JAM","England":"ENG","Croatia":"CRO","Ghana":"GHA","Panama":"PAN"};
-const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴󠁧󠁢󠁥󠁮ッグ󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
+const codes = {"Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czechia":"CZE","Canada":"CAN","Switzerland":"SUI","Qatar":"QAT","Italy":"ITA","Brazil":"BRA","Morocco":"MAR","Haiti":"HAI","Scotland":"SCO","USA":"USA","Paraguay":"PAR","Australia":"AUS","Slovakia":"SVK","Germany":"GER","Curaçao":"CUW","Ivory Coast":"CIV","Ecuador":"ECU","Netherlands":"NED","Japan":"JPN","Tunisia":"TUN","Ukraine":"UKR","Belgium":"BEL","Egypt":"EGY","Iran":"IRN","New Zealand":"NZL","Spain":"ESP","Cape Verde":"CPV","Saudi Arabia":"KSA","Uruguay":"URU","France":"FRA","Senegal":"🇸🇳","Norway":"NOR","Iraq":"IRQ","Argentina":"ARG","Algeria":"DZ","Austria":"AUT","Jordan":"JOR","Portugal":"POR","Uzbekistan":"UZB","Colombia":"COL","Jamaica":"JAM","England":"ENG","Croatia":"CRO","Ghana":"GHA","Panama":"PAN"};
+const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
 const teams = {A:["Mexico","South Korea","Czechia","South Africa"], B:["Italy","Switzerland","Canada","Qatar"], C:["Brazil","Morocco","Scotland","Haiti"], D:["USA","Australia","Paraguay","Slovakia"], E:["Germany","Ecuador","Ivory Coast","Curaçao"], F:["Netherlands","Japan","Ukraine","Tunisia"], G:["Belgium","Iran","Egypt","New Zealand"], H:["Spain","Uruguay","Saudi Arabia","Cape Verde"], I:["France","Senegal","Norway","Iraq"], J:["Argentina","Austria","Algeria","Jordan"], K:["Portugal","Colombia","Uzbekistan","Jamaica"], L:["England","Croatia","Ghana","Panama"]};
 const fifaRanks = {"Argentina":1,"France":2,"Belgium":3,"England":4,"Brazil":5,"Portugal":6,"Netherlands":7,"Spain":8,"Italy":9,"Croatia":10,"USA":11,"Colombia":12,"Morocco":13,"Uruguay":14,"Germany":15,"Japan":16,"Switzerland":17,"Senegal":18,"Iran":19,"Mexico":20,"Ukraine":21,"South Korea":22,"Australia":23,"Austria":24,"Ecuador":25,"Algeria":26,"South Africa":27,"Norway":28,"Uzbekistan":29,"Czechia":30,"Saudi Arabia":31,"Ghana":32,"Iraq":33,"Cape Verde":34,"Jamaica":35,"Jordan":36,"Paraguay":37,"Panama":38,"Slovakia":39,"Tunisia":40,"Canada":41,"Haiti":42,"Curaçao":43,"New Zealand":44,"Scotland":45,"Qatar":46};
 
@@ -304,7 +286,7 @@ function drawAllLines() {
         {from: 'm9', to: 'M99_T'}, {from: 'm10', to: 'M99_B'}, {from: 'm11', to: 'M97_T'}, {from: 'm12', to: 'M97_B'},
         {from: 'm13', to: 'M101_T'}, {from: 'm14', to: 'M101_B'}, {from: 'm15', to: 'FINAL_L'}, 
         {from: 'mf', to: 'champion-display'},
-        {from: 'm16', to: 'FINAL_R'}, {from: 'm17', to: 'M102_T'}, {from: 'm18', to: 'M102_B'},
+        {from: 'm16', to: 'FINAL_R'}, {from: 'm17', to: 'M98_T'}, {from: 'm18', to: 'M98_B'},
         {from: 'm19', to: 'M98_T'}, {from: 'm20', to: 'M98_B'}, {from: 'm21', to: 'M100_T'}, {from: 'm22', to: 'M100_B'},
         {from: 'm23', to: 'M93_T'}, {from: 'm24', to: 'M93_B'}, {from: 'm25', to: 'M94_T'}, {from: 'm26', to: 'M94_B'},
         {from: 'm27', to: 'M95_T'}, {from: 'm28', to: 'M95_B'}, {from: 'm29', to: 'M96_T'}, {from: 'm30', to: 'M96_B'}
