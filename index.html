@@ -3,19 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Version 8.1 PRO Motion</title>
+    <title>2026 World Cup Predictor - Version 7.8 PRO</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --line-color: #222; --accent: #00ff88; --bg: #050505; --card: rgba(26, 26, 26, 0.7); --box-w: 85px; --gold: #ffcc00; }
+        body { background: var(--bg); background-image: radial-gradient(circle at center, #111 0%, #050505 100%); color: #eee; font-family: 'Oswald', sans-serif; margin: 0; padding: 20px; font-size: 12px; overflow-x: auto; position: relative;}
         
-        body { 
-            background: var(--bg); 
-            background-image: radial-gradient(circle at center, #111 0%, #050505 100%); 
-            color: #eee; font-family: 'Oswald', sans-serif; 
-            margin: 0; padding: 20px; font-size: 12px; overflow-x: auto; 
-            position: relative;
-        }
-
         #stadium-backdrop {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 350px; height: 350px;
@@ -27,24 +20,13 @@
 
         .group-stage-wrapper { display: flex; flex-direction: column; gap: 12px; align-items: center; margin-bottom: 25px; position: relative; z-index: 2;}
         .group-row { display: grid; grid-template-columns: repeat(6, 130px); gap: 10px; }
-        
-        /* SMOOTH MOTION CSS */
-        .draggable-team { 
-            background: rgba(255,255,255,0.05); padding: 6px 8px; border-radius: 4px; 
-            border: 1px solid rgba(255,255,255,0.05); cursor: grab; 
-            display: flex; align-items: center; gap: 6px; user-select: none; 
-            font-size: 16px; font-weight: 500;
-            transition: transform 0.25s cubic-bezier(0.2, 0, 0.2, 1), background 0.2s, box-shadow 0.25s; /* The Motion Buffer */
-        }
-        
-        .draggable-team:active { cursor: grabbing; transform: scale(1.02); box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
-        .draggable-team.dragging { opacity: 0.2; transform: scale(0.95); }
-
         .group-box { background: var(--card); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 8px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; transition: transform 0.3s ease; position: relative; }
-        .group-box:hover { transform: scale(1.1); z-index: 100; background: rgba(20, 20, 20, 0.95); border-color: var(--accent); }
+        .group-box:hover { transform: scale(1.15); box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); border-color: var(--accent); z-index: 100; background: rgba(20, 20, 20, 0.9); }
         .group-box h4 { margin: 0 0 8px 0; color: var(--accent); font-size: 10px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px; pointer-events: none;}
         
         .team-list { display: flex; flex-direction: column; gap: 4px; }
+        .draggable-team { background: rgba(255,255,255,0.05); padding: 6px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); cursor: grab; display: flex; align-items: center; gap: 6px; user-select: none; transition: background 0.2s; font-size: 16px; font-weight: 500; }
+        .draggable-team.dragging { opacity: 0.4; border: 1px dashed var(--accent); }
         .draggable-team::before { content: attr(data-rank); width: 14px; font-size: 8px; color: #666; font-weight: bold; }
 
         .best-3rd-wrapper { display: flex; justify-content: center; margin-bottom: 30px; position: relative; z-index: 2;}
