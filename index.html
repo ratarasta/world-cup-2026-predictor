@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>Golden Gay v10.8</title>
+    <title>v10.9 Final</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -70,7 +70,7 @@
         .draggable-team::before { content: attr(data-rank); width: 14px; font-size: 8px; color: #666; font-weight: bold; }
         .team-list { display: flex; flex-direction: column; gap: 4px; align-items: center; }
 
-        /* BRACKET */
+        /* TOURNAMENT WRAPPER */
         .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: 60px 10px 100px 10px; position: relative; gap: 10px; z-index: 1;}
         .bracket-side { display: flex; align-items: flex-start; gap: 15px; }
         .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 90px; height: 800px; position: relative; }
@@ -90,10 +90,9 @@
         #champion-name { font-size: 20px; font-weight: 800; margin-top: 6px; min-height: 24px; color: #fff; }
         .final-match { border: 2px solid var(--accent); background: #111; width: var(--box-w); margin: 0; }
 
-        /* BRACKET SIGNATURE TAG */
         #bracket-signature { 
-            position: absolute; top: 110%; width: 300px; text-align: center;
-            font-size: 28px; font-weight: 700; color: #fff; text-transform: uppercase;
+            position: absolute; top: 110%; width: 400px; text-align: center;
+            font-size: 24px; font-weight: 700; color: #fff; text-transform: uppercase;
             letter-spacing: 3px; text-shadow: 0 0 15px rgba(255,255,255,0.6);
             pointer-events: none; opacity: 0.9;
         }
@@ -102,7 +101,7 @@
         .path-line { fill: none; stroke: var(--line-color); stroke-width: 1.5; stroke-dasharray: 5, 4; transition: stroke 0.4s; opacity: 0.6; }
         .path-line.active { stroke: var(--accent); stroke-dasharray: none; stroke-width: 2.5; filter: drop-shadow(0 0 4px var(--accent)); opacity: 1; }
 
-        /* FOOTER ACTION AREA */
+        /* 🌈 FOOTER SPECTRUM */
         .footer-nav { 
             margin-top: 80px; padding: 50px 20px; border-top: 1px solid rgba(255,255,255,0.1); 
             display: flex; flex-direction: column; align-items: center; gap: 30px; 
@@ -119,43 +118,41 @@
             border-radius: 8px; text-align: center; font-family: 'Oswald'; text-transform: uppercase; 
             letter-spacing: 2px; font-size: 16px;
         }
-        #bracket-name-input:focus { border-color: var(--accent); outline: none; }
         .save-lock-btn { 
             background: var(--accent); color: #000; border: none; padding: 15px 50px; 
             font-family: 'Oswald'; font-weight: 700; font-size: 18px; border-radius: 8px; 
             cursor: pointer; text-transform: uppercase; transition: 0.3s; letter-spacing: 1px;
         }
-        .save-lock-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
 
         /* MODAL POPUP */
         #snapshot-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0,0,0,0.95); z-index: 2000; justify-content: center; align-items: center;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
         }
         .modal-content {
             background: #000; border: 2px solid var(--accent); padding: 50px; border-radius: 20px; 
             text-align: center; max-width: 450px; box-shadow: 0 0 50px rgba(0,0,0,1);
         }
-        .modal-content h2 { color: var(--accent); margin-top: 0; font-size: 24px; letter-spacing: 2px; }
-        .modal-content p { color: #ccc; line-height: 1.6; margin-bottom: 35px; font-size: 16px; }
-        .close-modal-btn { background: var(--accent); color: #000; border: none; padding: 12px 30px; cursor: pointer; border-radius: 5px; text-transform: uppercase; font-family: 'Oswald'; font-weight: bold; }
+        .modal-content h2 { color: var(--accent); margin-top: 0; font-size: 28px; letter-spacing: 2px; }
+        .modal-content p { color: #ccc; line-height: 1.6; margin-bottom: 35px; font-size: 18px; }
+        .close-modal-btn { 
+            background: var(--accent); color: #000; border: none; padding: 15px 30px; 
+            cursor: pointer; border-radius: 5px; text-transform: uppercase; 
+            font-family: 'Oswald'; font-weight: bold; font-size: 14px;
+        }
 
-        /* SNAPSHOT VIEW MODES */
+        /* VIEWPORT TOGGLES */
         .snapshot-view .footer-nav { display: none !important; }
-        .snapshot-view #stadium-backdrop { opacity: 0.08; }
-        #exit-snapshot { display: none; position: fixed; top: 20px; right: 20px; z-index: 2100; background: #fff; color: #000; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; font-family: 'Oswald'; }
-        .snapshot-view #exit-snapshot { display: block; }
-
-        @media print { .footer-nav, #exit-snapshot, #snapshot-modal { display: none !important; } }
+        .snapshot-view #stadium-backdrop { opacity: 0.05; }
     </style>
 </head>
 <body onclick="handleGlobalClick(event)">
 
 <div id="stadium-backdrop"></div>
-<div id="exit-snapshot" onclick="exitSnapshot()">✕ CLOSE PREVIEW</div>
 
-<h1>2026 WORLD CUP PREDICTOR</h1>
+<h1 id="main-title">2026 WORLD CUP PREDICTOR</h1>
+<div id="bracket-identity-tag" style="display:none;"></div>
 
 <div class="dashboard-wrapper">
     <div class="group-stage-wrapper"><div class="group-row" id="row-1"></div><div class="group-row" id="row-2"></div><div class="group-row" id="row-3"></div></div>
@@ -243,11 +240,11 @@
     </div>
 </div>
 
-<div id="snapshot-modal">
-    <div class="modal-content">
+<div id="snapshot-modal" onclick="closeModalOnBg(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
         <h2>READY FOR SNAPSHOT! 📸</h2>
-        <p>Take your screenshot now to save your fabulous bracket. <b>Note:</b> Save before refreshing or leaving this page!</p>
-        <button class="close-modal-btn" onclick="exitSnapshot()">EDIT BRACKET</button>
+        <p>Make sure to take a screenshot of your bracket before leaving the page.</p>
+        <button class="close-modal-btn" onclick="exitSnapshot()">GO BACK AND TAKE A SCREENSHOT</button>
     </div>
 </div>
 
@@ -279,6 +276,10 @@ function prepareForSnapshot() {
 function exitSnapshot() {
     document.body.classList.remove('snapshot-view');
     document.getElementById('snapshot-modal').style.display = 'none';
+}
+
+function closeModalOnBg(e) {
+    if (e.target.id === 'snapshot-modal') exitSnapshot();
 }
 
 function enterEditMode(el, e) {
