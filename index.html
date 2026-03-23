@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>v10.9 Final</title>
+    <title>GOLDEN 11</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -58,7 +58,7 @@
             background: rgba(255,255,255,0.05); border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); 
             cursor: grab; display: flex; align-items: center; justify-content: center; gap: 4px; user-select: none; 
             font-size: 16px; font-weight: 500; width: var(--box-w); height: var(--box-h); box-sizing: border-box;
-            transition: background 0.4s ease, color 0.4s ease; overflow: hidden;
+            transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease; overflow: hidden;
         }
         
         .draggable-team[data-rank="1º"], .draggable-team[data-rank="2º"] { background: color-mix(in srgb, var(--accent), transparent 85%); color: var(--accent); font-weight: 700; border-color: color-mix(in srgb, var(--accent), transparent 70%); }
@@ -70,7 +70,7 @@
         .draggable-team::before { content: attr(data-rank); width: 14px; font-size: 8px; color: #666; font-weight: bold; }
         .team-list { display: flex; flex-direction: column; gap: 4px; align-items: center; }
 
-        /* TOURNAMENT WRAPPER */
+        /* BRACKET */
         .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: 60px 10px 100px 10px; position: relative; gap: 10px; z-index: 1;}
         .bracket-side { display: flex; align-items: flex-start; gap: 15px; }
         .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 90px; height: 800px; position: relative; }
@@ -134,7 +134,7 @@
             background: #000; border: 2px solid var(--accent); padding: 50px; border-radius: 20px; 
             text-align: center; max-width: 450px; box-shadow: 0 0 50px rgba(0,0,0,1);
         }
-        .modal-content h2 { color: var(--accent); margin-top: 0; font-size: 28px; letter-spacing: 2px; }
+        .modal-content h2 { color: var(--accent); margin: 0 0 10px 0; font-size: 28px; letter-spacing: 2px; }
         .modal-content p { color: #ccc; line-height: 1.6; margin-bottom: 35px; font-size: 18px; }
         .close-modal-btn { 
             background: var(--accent); color: #000; border: none; padding: 15px 30px; 
@@ -151,8 +151,7 @@
 
 <div id="stadium-backdrop"></div>
 
-<h1 id="main-title">2026 WORLD CUP PREDICTOR</h1>
-<div id="bracket-identity-tag" style="display:none;"></div>
+<h1>2026 WORLD CUP PREDICTOR</h1>
 
 <div class="dashboard-wrapper">
     <div class="group-stage-wrapper"><div class="group-row" id="row-1"></div><div class="group-row" id="row-2"></div><div class="group-row" id="row-3"></div></div>
@@ -235,7 +234,7 @@
         <div class="color-dot" style="background: #ffffff;" onclick="changeTheme('#ffffff', this)"></div>
     </div>
     <div class="id-input-group">
-        <input type="text" id="bracket-name-input" placeholder="ENTER YOUR NAME..." maxlength="25" oninput="updateSignature(this.value)">
+        <input type="text" id="bracket-name-input" placeholder="NAME THIS BRACKET" maxlength="25" oninput="updateSignature(this.value)">
         <button class="save-lock-btn" onclick="prepareForSnapshot()">LOCK & SAVE</button>
     </div>
 </div>
