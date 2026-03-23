@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 World Cup Predictor - Version 8.7 PRO Dashboard</title>
+    <title>8.8 PRO</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -21,16 +21,38 @@
         #stadium-backdrop { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 350px; height: 350px; background: url('https://i.postimg.cc/L8KpgjLY/2026-Fifa-Cup.png') no-repeat center center; background-size: contain; opacity: 0.15; z-index: 0; pointer-events: none; }
         h1 { text-align: center; color: var(--accent); margin: 0 0 25px 0; text-transform: uppercase; letter-spacing: 4px; font-size: 24px; text-shadow: 0 0 10px rgba(0, 255, 136, 0.3); position: relative; z-index: 2;}
 
-        /* DASHBOARD LAYOUT: Groups + Divider + Best 3rds */
-        .dashboard-wrapper { display: flex; justify-content: center; align-items: flex-start; gap: 30px; margin-bottom: 40px; position: relative; z-index: 2; }
+        /* DASHBOARD LAYOUT */
+        .dashboard-wrapper { display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 40px; position: relative; z-index: 2; }
         
         .group-stage-wrapper { display: flex; flex-direction: column; gap: 12px; }
         .group-row { display: grid; grid-template-columns: repeat(4, 110px); gap: 15px; }
 
-        .dashboard-divider { width: 1px; background: rgba(255,255,255,0.1); align-self: stretch; margin: 0 10px; }
+        .dashboard-divider { width: 1px; background: rgba(255,255,255,0.15); height: 280px; margin: 0 10px; }
 
-        .best-3rd-container { width: 120px; background: rgba(10,10,10,0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; backdrop-filter: blur(5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .best-3rd-container h4 { margin: 0 0 10px 0; color: var(--accent); text-align: center; letter-spacing: 1px; font-size: 9px; line-height: 1.2; }
+        /* UNIFIED BOX ANIMATIONS (Groups & 3rds) */
+        .group-box, .best-3rd-container { 
+            background: var(--card); 
+            backdrop-filter: blur(10px); 
+            padding: 8px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 8px; 
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease; 
+            position: relative; 
+        }
+
+        .group-box:hover, .best-3rd-container:hover { 
+            transform: scale(1.1); 
+            z-index: 100; 
+            background: rgba(20, 20, 20, 0.95); 
+            border-color: var(--accent); 
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.3);
+        }
+
+        .group-box { width: 100px; }
+        .best-3rd-container { width: 120px; padding: 12px; }
+
+        .group-box h4, .best-3rd-container h4 { margin: 0 0 8px 0; color: var(--accent); font-size: 10px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px; pointer-events: none;}
+        .best-3rd-container h4 { font-size: 9px; letter-spacing: 1px; line-height: 1.2; }
 
         /* Unified Blocks */
         .draggable-team { 
@@ -42,10 +64,6 @@
         .draggable-team.dragging { opacity: 0.2; transform: scale(0.95); }
         .draggable-team::before { content: attr(data-rank); width: 14px; font-size: 8px; color: #666; font-weight: bold; }
 
-        .group-box { background: var(--card); backdrop-filter: blur(10px); padding: 8px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; transition: 0.3s; width: 100px; }
-        .group-box:hover { transform: scale(1.1); z-index: 100; background: rgba(20, 20, 20, 0.95); border-color: var(--accent); }
-        .group-box h4 { margin: 0 0 8px 0; color: var(--accent); font-size: 10px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px; }
-        
         .team-list { display: flex; flex-direction: column; gap: 4px; align-items: center; }
 
         #list_3rd .draggable-team:nth-child(8) { margin-bottom: 25px; position: relative; }
@@ -160,7 +178,7 @@
 </div>
 
 <script>
-// --- Standard Pro Logic ---
+// Logic preserved from V8.6 PRO
 const codes = {"Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czechia":"CZE","Canada":"CAN","Switzerland":"SUI","Qatar":"QAT","Italy":"ITA","Brazil":"BRA","Morocco":"MAR","Haiti":"HAI","Scotland":"SCO","USA":"USA","Paraguay":"PAR","Australia":"AUS","Slovakia":"SVK","Germany":"GER","Curaçao":"CUW","Ivory Coast":"CIV","Ecuador":"ECU","Netherlands":"NED","Japan":"JPN","Tunisia":"TUN","Ukraine":"UKR","Belgium":"BEL","EGY":"EGY","Iran":"IRN","New Zealand":"NZL","Spain":"ESP","Cape Verde":"CPV","Saudi Arabia":"KSA","Uruguay":"URU","France":"FRA","Senegal":"SEN","Norway":"NOR","Iraq":"IRQ","Argentina":"ARG","Algeria":"DZ","Austria":"AUT","Jordan":"JOR","Portugal":"POR","Uzbekistan":"UZB","Colombia":"COL","Jamaica":"JAM","England":"ENG","Croatia":"CRO","Ghana":"GHA","Panama":"PAN"};
 const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","EGY":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
 const teams = {A:["Mexico","South Korea","Czechia","South Africa"], B:["Italy","Switzerland","Canada","Qatar"], C:["Brazil","Morocco","Scotland","Haiti"], D:["USA","Australia","Paraguay","Slovakia"], E:["Germany","Ecuador","Ivory Coast","Curaçao"], F:["Netherlands","Japan","Ukraine","Tunisia"], G:["Belgium","Iran","EGY","New Zealand"], H:["Spain","Uruguay","Saudi Arabia","Cape Verde"], I:["France","Senegal","Norway","Iraq"], J:["Argentina","Austria","Algeria","Jordan"], K:["Portugal","Colombia","Uzbekistan","Jamaica"], L:["England","Croatia","Ghana","Panama"]};
