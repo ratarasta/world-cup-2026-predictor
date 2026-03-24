@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>JULBOL 1.2.5</title>
+    <title>JULBOL 1.2.6</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -48,7 +48,7 @@
         .draggable-team::before { content: attr(data-rank); width: 14px; font-size: 8px; color: #666; font-weight: bold; }
         .team-list { display: flex; flex-direction: column; gap: 4px; align-items: center; }
 
-        .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: 40px 20px 80px 20px; position: relative; gap: 10px; z-index: 1;}
+        .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: 40px 20px 100px 20px; position: relative; gap: 10px; z-index: 1;}
         .bracket-side { display: flex; align-items: flex-start; gap: 15px; }
         .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 90px; height: 800px; position: relative; }
         .round h3 { font-size: 10px; color: #444; text-align: center; position: absolute; top: -20px; width: 100%; text-transform: uppercase; letter-spacing: 2px;}
@@ -66,23 +66,23 @@
         #champion-name { font-size: 20px; font-weight: 800; margin-top: 6px; min-height: 24px; color: #fff; }
         .final-match { border: 2px solid var(--accent); background: #111; width: var(--box-w); margin: 0; }
 
-        /* BRACKET SIGNATURE MOVED TO CENTER STAGE, DIRECTLY ABOVE CHAMPION PESTEDAL */
+        /* BRACKET SIGNATURE AT THE ABSOLUTE BOTTOM, BETWEEN THE MATCHES */
         #bracket-signature { 
             position: absolute; 
-            top: 250px; /* Positioned centrally between QF and Final */
+            bottom: 30px; /* Positioned at the very base, aligned with bottom row of R32 matches */
             left: 50%; 
             transform: translateX(-50%); 
-            width: 600px; 
+            width: 100%; 
             text-align: center;
-            font-size: 24px; 
+            font-size: 32px; /* Font size increased as requested */
             font-weight: 700; 
             color: #fff; 
             text-transform: uppercase;
             letter-spacing: 3px; 
-            text-shadow: 0 0 15px rgba(255,255,255,0.6);
+            text-shadow: 0 0 20px rgba(255,255,255,0.8); /* Glow effect boosted */
             pointer-events: none; 
             opacity: 0.9;
-            z-index: 15; /* Sits above everything in the central column */
+            z-index: 15; /* Ensure it stays visible above the lines */
         }
 
         #bracket-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
@@ -136,7 +136,7 @@
             <div class="matchup" id="m1"><div id="s_A1" class="team empty" onclick="adv(this,'M92_T')">1st A</div><div id="slot_3rd_3" class="team empty" onclick="adv(this,'M92_T')">3rd #3</div></div>
             <div class="matchup" id="m2"><div id="s_L1" class="team empty" onclick="adv(this,'M92_B')">1st L</div><div id="slot_3rd_4" class="team empty" onclick="adv(this,'M92_B')">3rd #4</div></div>
             <div class="matchup" id="m3"><div id="s_C1" class="team empty" onclick="adv(this,'M91_T')">1st C</div><div id="s_F2" class="team empty" onclick="adv(this,'M91_T')">2nd F</div></div>
-            <div class="matchup" id="m4"><div id="s_E2" class="team empty" onclick="adv(this,'M91_B')">2nd E</div><div id="s_I2" class="team empty" onclick="adv(this,'M91_B')">2nd I</div></div>
+            <div class="matchup" id="m4"><div id="s_E2" class="team empty" onclick="adv(this,'M91_B')">2nd E</div><div id="s_I2" class="team empty" onclick="adv(this1,'M91_B')">2nd I</div></div>
             <div class="matchup" id="m5"><div id="s_A2" class="team empty" onclick="adv(this,'M90_T')">2nd A</div><div id="s_B2" class="team empty" onclick="adv(this,'M90_T')">2nd B</div></div>
             <div class="matchup" id="m6"><div id="s_F1" class="team empty" onclick="adv(this,'M90_B')">1st F</div><div id="s_C2" class="team empty" onclick="adv(this,'M90_B')">2nd C</div></div>
             <div class="matchup" id="m7"><div id="slot_3rd_1" class="team empty" onclick="adv(this,'M89_T')">3rd #1</div><div id="s_E1" class="team empty" onclick="adv(this,'M89_T')">1st E</div></div>
@@ -213,7 +213,7 @@ const ENTRY_GROUPS = "entry.2004720717";
 const ENTRY_BRACKET = "entry.219345092";
 
 // FLAGS & CODES (LOCKED FORMAT)
-const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"CPV","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
+const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴\uD83C\uDDFD\uD83C\uDDF9\uD83C\uDDF4\uD83C\uDDF9\uD83C\uDDF9\uD83C\uDDF1","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"CPV","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴\uD83C\uDDFD\uD83C\uDDF9\uD83C\uDDF4\uD83C\uDDF9\uD83C\uDDF9\uD83C\uDDF1","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
 // Overwriting special flag codes for England and Scotland to ensure browser stability
 flags["England"] = "🏴󠁧󠁢󠁥󠁮󠁧󠁿";
 flags["Scotland"] = "🏴󠁧󠁢󠁳󠁣󠁴󠁿";
@@ -229,13 +229,18 @@ function updateSignature(val) {
 }
 
 function prepareForSnapshot() {
-    const bracketName = document.getElementById('bracket-name-input').value || "Anonymous Bracket";
+    const bracketNameInput = document.getElementById('bracket-name-input').value;
+    const bracketName = bracketNameInput || "Anonymous JULBOL Bracket";
+    
     let groupResults = "";
     Object.keys(teams).forEach(g => {
-        const order = [...document.getElementById(`list_${g}`).querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team')).join('>');
+        const list = document.getElementById(`list_${g}`);
+        const order = [...list.querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team')).join('>');
         groupResults += `[G-${g}:${order}] `;
     });
-    groupResults += ` [BEST3rd:${[...document.getElementById('list_3rd').querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team')).join('>')}]`;
+    const thirdList = document.getElementById('list_3rd');
+    const thirdOrder = [...thirdList.querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team')).join('>');
+    groupResults += ` [BEST3rd:${thirdOrder}]`;
 
     let bracketResults = "";
     document.querySelectorAll('.matchup').forEach(m => {
@@ -243,11 +248,12 @@ function prepareForSnapshot() {
         if (winner) { bracketResults += `${m.id}:${winner.innerText.trim()} | `; }
     });
 
+    const formURL = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/formResponse`;
     const formData = new FormData();
     formData.append(ENTRY_NAME, bracketName);
     formData.append(ENTRY_GROUPS, groupResults);
     formData.append(ENTRY_BRACKET, bracketResults);
-    fetch(`https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/formResponse`, { method: 'POST', mode: 'no-cors', body: formData });
+    fetch(formURL, { method: 'POST', mode: 'no-cors', body: formData });
 
     document.body.classList.add('snapshot-view');
     document.getElementById('snapshot-modal').style.display = 'flex';
