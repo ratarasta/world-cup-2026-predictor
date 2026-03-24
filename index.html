@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>JULBOL 1.2.6</title>
+    <title>JULBOL 1.2.7</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
             --line-color: #444; 
             --accent: #00ff88; 
+            --reset-red: #cc0000; /* New Reset Red */
             --bg: #050505; 
             --card: rgba(26, 26, 26, 0.7); 
             --box-w: 85px; --box-h: 35px; --gold: #ffcc00; 
@@ -55,6 +56,7 @@
 
         .matchup { background: var(--card); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(5px); border-radius: 4px; width: var(--box-w); margin: 3px auto; position: relative; z-index: 5; }
         .team { padding: 6px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s; white-space: nowrap; text-align: center; display: flex; justify-content: center; align-items: center; gap: 4px; height: var(--box-h); box-sizing: border-box; font-weight: 500; font-size: 16px; }
+        .team:hover { background: rgba(255,255,255,0.1); color: var(--accent); }
         .winner { background: color-mix(in srgb, var(--accent), black 80%) !important; color: var(--accent) !important; font-weight: bold; }
         .empty { color: #333; font-weight: 400; font-size: 10px; }
 
@@ -66,23 +68,10 @@
         #champion-name { font-size: 20px; font-weight: 800; margin-top: 6px; min-height: 24px; color: #fff; }
         .final-match { border: 2px solid var(--accent); background: #111; width: var(--box-w); margin: 0; }
 
-        /* BRACKET SIGNATURE AT THE ABSOLUTE BOTTOM, BETWEEN THE MATCHES */
         #bracket-signature { 
-            position: absolute; 
-            bottom: 30px; /* Positioned at the very base, aligned with bottom row of R32 matches */
-            left: 50%; 
-            transform: translateX(-50%); 
-            width: 100%; 
-            text-align: center;
-            font-size: 32px; /* Font size increased as requested */
-            font-weight: 700; 
-            color: #fff; 
-            text-transform: uppercase;
-            letter-spacing: 3px; 
-            text-shadow: 0 0 20px rgba(255,255,255,0.8); /* Glow effect boosted */
-            pointer-events: none; 
-            opacity: 0.9;
-            z-index: 15; /* Ensure it stays visible above the lines */
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); width: 100%; text-align: center;
+            font-size: 32px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 3px;
+            text-shadow: 0 0 20px rgba(255,255,255,0.8); pointer-events: none; opacity: 0.9; z-index: 15;
         }
 
         #bracket-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
@@ -92,7 +81,15 @@
         .footer-nav { padding: 50px 20px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; gap: 20px; position: relative; z-index: 10; background: rgba(0,0,0,0.9); width: 100%; box-sizing: border-box; }
         .id-input-group { display: flex; flex-direction: column; align-items: center; gap: 15px; width: 320px; }
         #bracket-name-input { background: #111; border: 1px solid #555; color: #fff; padding: 12px; width: 100%; border-radius: 8px; text-align: center; font-family: 'Oswald'; text-transform: uppercase; letter-spacing: 2px; font-size: 14px; }
-        .save-lock-btn { background: var(--accent); color: #000; border: none; padding: 15px 50px; font-family: 'Oswald'; font-weight: 700; font-size: 18px; border-radius: 8px; cursor: pointer; text-transform: uppercase; transition: 0.3s; letter-spacing: 1px; }
+        
+        /* FOOTER BUTTONS CONTAINER */
+        .footer-btns-group { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+        
+        .save-lock-btn { background: var(--accent); color: #000; border: none; padding: 15px 50px; font-family: 'Oswald'; font-weight: 700; font-size: 18px; border-radius: 8px; cursor: pointer; text-transform: uppercase; transition: 0.3s; letter-spacing: 1px; width: 100%; box-sizing: border-box;}
+        
+        /* RED RESET BUTTON STYLE */
+        .reset-btn { background: var(--reset-red); color: #fff; padding: 8px 30px; font-size: 12px; font-weight: 500; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); }
+        .reset-btn:hover { background: color-mix(in srgb, var(--reset-red), black 20%); }
 
         #snapshot-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
         .modal-content { background: #000; border: 2px solid var(--accent); padding: 50px; border-radius: 20px; text-align: center; max-width: 450px; box-shadow: 0 0 50px rgba(0,0,0,1); }
@@ -127,7 +124,6 @@
 
 <div class="tournament-wrapper" id="tree-container">
     <svg id="bracket-svg"></svg>
-    
     <div id="bracket-signature"></div>
 
     <div class="bracket-side left-bracket">
@@ -136,7 +132,7 @@
             <div class="matchup" id="m1"><div id="s_A1" class="team empty" onclick="adv(this,'M92_T')">1st A</div><div id="slot_3rd_3" class="team empty" onclick="adv(this,'M92_T')">3rd #3</div></div>
             <div class="matchup" id="m2"><div id="s_L1" class="team empty" onclick="adv(this,'M92_B')">1st L</div><div id="slot_3rd_4" class="team empty" onclick="adv(this,'M92_B')">3rd #4</div></div>
             <div class="matchup" id="m3"><div id="s_C1" class="team empty" onclick="adv(this,'M91_T')">1st C</div><div id="s_F2" class="team empty" onclick="adv(this,'M91_T')">2nd F</div></div>
-            <div class="matchup" id="m4"><div id="s_E2" class="team empty" onclick="adv(this,'M91_B')">2nd E</div><div id="s_I2" class="team empty" onclick="adv(this1,'M91_B')">2nd I</div></div>
+            <div class="matchup" id="m4"><div id="s_E2" class="team empty" onclick="adv(this,'M91_B')">2nd E</div><div id="s_I2" class="team empty" onclick="adv(this,'M91_B')">2nd I</div></div>
             <div class="matchup" id="m5"><div id="s_A2" class="team empty" onclick="adv(this,'M90_T')">2nd A</div><div id="s_B2" class="team empty" onclick="adv(this,'M90_T')">2nd B</div></div>
             <div class="matchup" id="m6"><div id="s_F1" class="team empty" onclick="adv(this,'M90_B')">1st F</div><div id="s_C2" class="team empty" onclick="adv(this,'M90_B')">2nd C</div></div>
             <div class="matchup" id="m7"><div id="slot_3rd_1" class="team empty" onclick="adv(this,'M89_T')">3rd #1</div><div id="s_E1" class="team empty" onclick="adv(this,'M89_T')">1st E</div></div>
@@ -193,7 +189,10 @@
 <div class="footer-nav">
     <div class="id-input-group">
         <input type="text" id="bracket-name-input" placeholder="NAME THIS BRACKET" maxlength="25" oninput="updateSignature(this.value)">
-        <button class="save-lock-btn" onclick="prepareForSnapshot()">SAVE</button>
+        <div class="footer-btns-group">
+            <button class="save-lock-btn" onclick="prepareForSnapshot()">SAVE</button>
+            <button class="save-lock-btn reset-btn" onclick="confirmReset()">PLAY AGAIN / RESET</button>
+        </div>
     </div>
 </div>
 
@@ -213,9 +212,9 @@ const ENTRY_GROUPS = "entry.2004720717";
 const ENTRY_BRACKET = "entry.219345092";
 
 // FLAGS & CODES (LOCKED FORMAT)
-const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴\uD83C\uDDFD\uD83C\uDDF9\uD83C\uDDF4\uD83C\uDDF9\uD83C\uDDF9\uD83C\uDDF1","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"CPV","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴\uD83C\uDDFD\uD83C\uDDF9\uD83C\uDDF4\uD83C\uDDF9\uD83C\uDDF9\uD83C\uDDF1","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
+const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"CPV","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴󠁧󠁢󠁥󠁮ッグ󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
 // Overwriting special flag codes for England and Scotland to ensure browser stability
-flags["England"] = "🏴󠁧󠁢󠁥󠁮󠁧󠁿";
+flags["England"] = "🏴󠁧󠁢󠁥󠁮ッグ󠁿";
 flags["Scotland"] = "🏴󠁧󠁢󠁳󠁣󠁴󠁿";
 
 const codes = {"Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czechia":"CZE","Canada":"CAN","Switzerland":"SUI","Qatar":"QAT","Italy":"ITA","Brazil":"BRA","Morocco":"MAR","Haiti":"HTI","Scotland":"SCO","USA":"USA","Paraguay":"PAR","Australia":"AUS","Slovakia":"SVK","Germany":"GER","Curaçao":"CUW","Ivory Coast":"CIV","Ecuador":"ECU","Netherlands":"NED","Japan":"JPN","Tunisia":"TUN","Ukraine":"UKR","Belgium":"BEL","Egypt":"EGY","Iran":"IRN","New Zealand":"NZL","Spain":"ESP","Cape Verde":"CPV","Saudi Arabia":"KSA","Uruguay":"URU","France":"FRA","Senegal":"SEN","Norway":"NOR","Iraq":"IRQ","Argentina":"ARG","Algeria":"DZA","Austria":"AUT","Jordan":"JOR","Portugal":"POR","Uzbekistan":"UZB","Colombia":"COL","Jamaica":"JAM","England":"ENG","Croatia":"CRO","Ghana":"GHA","Panama":"PAN"};
@@ -234,13 +233,10 @@ function prepareForSnapshot() {
     
     let groupResults = "";
     Object.keys(teams).forEach(g => {
-        const list = document.getElementById(`list_${g}`);
-        const order = [...list.querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team')).join('>');
+        const order = [...document.getElementById(`list_${g}`).querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team')).join('>');
         groupResults += `[G-${g}:${order}] `;
     });
-    const thirdList = document.getElementById('list_3rd');
-    const thirdOrder = [...thirdList.querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team')).join('>');
-    groupResults += ` [BEST3rd:${thirdOrder}]`;
+    groupResults += ` [BEST3rd:${[...document.getElementById('list_3rd').querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team')).join('>')}]`;
 
     let bracketResults = "";
     document.querySelectorAll('.matchup').forEach(m => {
@@ -248,12 +244,11 @@ function prepareForSnapshot() {
         if (winner) { bracketResults += `${m.id}:${winner.innerText.trim()} | `; }
     });
 
-    const formURL = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/formResponse`;
     const formData = new FormData();
     formData.append(ENTRY_NAME, bracketName);
     formData.append(ENTRY_GROUPS, groupResults);
     formData.append(ENTRY_BRACKET, bracketResults);
-    fetch(formURL, { method: 'POST', mode: 'no-cors', body: formData });
+    fetch(`https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/formResponse`, { method: 'POST', mode: 'no-cors', body: formData });
 
     document.body.classList.add('snapshot-view');
     document.getElementById('snapshot-modal').style.display = 'flex';
@@ -264,6 +259,35 @@ function prepareForSnapshot() {
 function exitSnapshot() {
     document.body.classList.remove('snapshot-view');
     document.getElementById('snapshot-modal').style.display = 'none';
+}
+
+function confirmReset() {
+    if (confirm("⚠️ ARE YOU SURE? This will completely clear your bracket and reset all group standings.")) {
+        playAgain();
+    }
+}
+
+function playAgain() {
+    // 1. Reset bracket slots
+    document.querySelectorAll('.team').forEach(el => {
+        if (el.id === 'champion-name') {
+            el.innerHTML = "";
+        } else if (!el.id.startsWith('s_') || el.id.startsWith('slot_3rd')) {
+            el.innerHTML = "...";
+            el.classList.add('empty');
+        }
+        el.classList.remove('winner');
+    });
+    
+    // 2. Clear signature area
+    document.getElementById('bracket-signature').innerText = "";
+    document.getElementById('bracket-name-input').value = "";
+    
+    // 3. Clear 3rd place table content
+    document.getElementById('list_3rd').innerHTML = "";
+    
+    // 4. Re-run init logic to rebuild groups in original order and sync slots
+    init();
 }
 
 function closeModalOnBg(e) { if (e.target.id === 'snapshot-modal') exitSnapshot(); }
@@ -283,7 +307,9 @@ function handleGlobalClick(e) {
 
 function init() {
     const r1 = document.getElementById('row-1'); const r2 = document.getElementById('row-2'); const r3 = document.getElementById('row-3');
+    // Important: Clear rows before building
     r1.innerHTML = ""; r2.innerHTML = ""; r3.innerHTML = "";
+    
     Object.keys(teams).forEach((g, idx) => {
         const sorted = [...teams[g]].sort((a,b) => (fifaRanks[a] || 99) - (fifaRanks[b] || 99));
         let h = `<div class="group-box" data-group="${g}" onclick="enterEditMode(this, event)"><h4>GROUP ${g}</h4><div class="team-list" id="list_${g}">`;
@@ -367,9 +393,8 @@ function clearBranch(startId) {
 }
 
 function adv(el, nId) {
-    if(el.classList.contains('empty') || el.innerHTML.includes("...") || el.innerHTML.length < 3) return;
+    if(el.classList.contains('empty') || el.innerHTML.includes("...")) return;
     clearBranch(el.id); const target = document.getElementById(nId);
-    if (target.innerHTML !== "..." && target.innerHTML !== el.innerHTML) clearBranch(target.id);
     target.innerHTML = el.innerHTML; target.classList.remove('empty');
     Array.from(el.parentElement.children).forEach(s => s.classList.remove('winner'));
     el.classList.add('winner'); drawAllLines();
