@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>JULBOL 1.3.0</title>
+    <title>JULBOL 1.3.1</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -49,14 +49,13 @@
         .draggable-team::before { content: attr(data-rank); width: 14px; font-size: 8px; color: #666; font-weight: bold; }
         .team-list { display: flex; flex-direction: column; gap: 4px; align-items: center; }
 
-        .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: 40px 20px 80px 20px; position: relative; gap: 10px; z-index: 1;}
+        .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: 40px 20px 100px 20px; position: relative; gap: 10px; z-index: 1;}
         .bracket-side { display: flex; align-items: flex-start; gap: 15px; }
         .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 90px; height: 800px; position: relative; }
         .round h3 { font-size: 10px; color: #444; text-align: center; position: absolute; top: -20px; width: 100%; text-transform: uppercase; letter-spacing: 2px;}
 
         .matchup { background: var(--card); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(5px); border-radius: 4px; width: var(--box-w); margin: 3px auto; position: relative; z-index: 5; }
         .team { padding: 6px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s; white-space: nowrap; text-align: center; display: flex; justify-content: center; align-items: center; gap: 4px; height: var(--box-h); box-sizing: border-box; font-weight: 500; font-size: 16px; }
-        .team:hover { background: rgba(255,255,255,0.1); color: var(--accent); }
         .winner { background: color-mix(in srgb, var(--accent), black 80%) !important; color: var(--accent) !important; font-weight: bold; }
         .empty { color: #333; font-weight: 400; font-size: 10px; }
 
@@ -106,9 +105,16 @@
 </div>
 
 <div class="dashboard-wrapper">
-    <div class="group-stage-wrapper"><div class="group-row" id="row-1"></div><div class="group-row" id="row-2"></div><div class="group-row" id="row-3"></div></div>
+    <div class="group-stage-wrapper">
+        <div class="group-row" id="row-1"></div>
+        <div class="group-row" id="row-2"></div>
+        <div class="group-row" id="row-3"></div>
+    </div>
     <div class="dashboard-divider"></div>
-    <div class="best-3rd-container" onclick="enterEditMode(this, event)"><h4>BEST 3rd PLACE RANKINGS</h4><div id="list_3rd" class="team-list"></div></div>
+    <div class="best-3rd-container" onclick="enterEditMode(this, event)">
+        <h4>BEST 3rd PLACE RANKINGS</h4>
+        <div id="list_3rd" class="team-list"></div>
+    </div>
 </div>
 
 <div class="tournament-wrapper" id="tree-container">
@@ -199,11 +205,9 @@ const ENTRY_NAME = "entry.1993303413";
 const ENTRY_GROUPS = "entry.2004720717";
 const ENTRY_BRACKET = "entry.219345092";
 
-const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"CPV","Saudi Arabia":"KSA","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
-flags["England"] = "🏴󠁧󠁢󠁥󠁮󠁧󠁿";
-flags["Scotland"] = "🏴󠁧󠁢󠁳󠁣󠁴󠁿";
-
-const codes = {"Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czechia":"CZE","Canada":"CAN","Switzerland":"SUI","Qatar":"QAT","Italy":"ITA","Brazil":"BRA","Morocco":"MAR","Haiti":"HTI","Scotland":"SCO","USA":"USA","Paraguay":"PAR","Australia":"AUS","Slovakia":"SVK","Germany":"GER","Curaçao":"CUW","Ivory Coast":"CIV","Ecuador":"ECU","Netherlands":"NED","Japan":"JPN","Tunisia":"TUN","Ukraine":"UKR","Belgium":"BEL","Egypt":"EGY","Iran":"IRN","New Zealand":"NZL","Spain":"ESP","Cape Verde":"CPV","Saudi Arabia":"KSA","Uruguay":"URU","France":"FRA","Senegal":"SEN","Norway":"NOR","Iraq":"IRQ","Argentina":"ARG","Algeria":"DZA","Austria":"AUT","Jordan":"JOR","Portugal":"POR","Uzbekistan":"UZB","Colombia":"COL","Jamaica":"JAM","England":"ENG","Croatia":"CRO","Ghana":"GHA","Panama":"PAN"};
+// FULLY STABLE FLAG MAPPING
+const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿"};
+const codes = {"Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czechia":"CZE","Canada":"CAN","Switzerland":"SUI","Qatar":"QAT","Italy":"ITA","Brazil":"BRA","Morocco":"MAR","Haiti":"HTI","Scotland":"SCO","USA":"USA","Paraguay":"PAR","Australia":"AUS","Slovakia":"SVK","Germany":"GER","Curaçao":"CUW","Ivory Coast":"CIV","Ecuador":"ECU","Netherlands":"NED","Japan":"JPN","Tunisia":"TUN","Ukraine":"UKR","Belgium":"BEL","Egypt":"EGY","Iran":"IRN","New Zealand":"NZL","Spain":"ESP","Cape Verde":"CPV","Saudi Arabia":"KSA","Uruguay":"URU","France":"FRA","Senegal":"🇸🇳","Norway":"NOR","Iraq":"IRQ","Argentina":"ARG","Algeria":"DZA","Austria":"AUT","Jordan":"JOR","Portugal":"POR","Uzbekistan":"UZB","Colombia":"COL","Jamaica":"JAM","England":"ENG","Croatia":"CRO","Ghana":"GHA","Panama":"PAN"};
 const teams = {A:["Mexico","South Korea","Czechia","South Africa"], B:["Italy","Switzerland","Canada","Qatar"], C:["Brazil","Morocco","Scotland","Haiti"], D:["USA","Australia","Paraguay","Slovakia"], E:["Germany","Ecuador","Ivory Coast","Curaçao"], F:["Netherlands","Japan","Ukraine","Tunisia"], G:["Belgium","Iran","Egypt","New Zealand"], H:["Spain","Uruguay","Saudi Arabia","Cape Verde"], I:["France","Senegal","Norway","Iraq"], J:["Argentina","Austria","Algeria","Jordan"], K:["Portugal","Colombia","Uzbekistan","Jamaica"], L:["England","Croatia","Ghana","Panama"]};
 const fifaRanks = {"Argentina":1,"France":2,"Belgium":3,"England":4,"Brazil":5,"Portugal":6,"Netherlands":7,"Spain":8,"Italy":9,"Croatia":10,"USA":11,"Colombia":12,"Morocco":13,"Uruguay":14,"Germany":15,"Japan":16,"Switzerland":17,"Senegal":18,"Iran":19,"Mexico":20,"Ukraine":21,"South Korea":22,"Australia":23,"Austria":24,"Ecuador":25,"Algeria":26,"South Africa":27,"Norway":28,"Uzbekistan":29,"Czechia":30,"Saudi Arabia":31,"Ghana":32,"Iraq":33,"Cape Verde":34,"Jamaica":35,"Jordan":36,"Paraguay":37,"Panama":38,"Slovakia":39,"Tunisia":40,"Canada":41,"Haiti":42,"Curaçao":43,"New Zealand":44,"Scotland":45,"Qatar":46};
 const nextMap = {'s_A1':'M92_T','slot_3rd_3':'M92_T','s_L1':'M92_B','slot_3rd_4':'M92_B','s_C1':'M91_T','s_F2':'M91_T','s_E2':'M91_B','s_I2':'M91_B','s_A2':'M90_T','s_B2':'M90_T','s_F1':'M90_B', 's_C2':'M90_B', 'slot_3rd_1':'M89_T', 's_E1':'M89_T', 'slot_3rd_2':'M89_B', 's_I1':'M89_B','M92_T':'M99_T','M92_B':'M99_T','M91_T':'M99_B','M91_B':'M99_B','M90_T':'M97_T','M90_B':'M97_T','M89_T':'M97_B','M89_B':'M97_B','M99_T':'M101_T','M99_B':'M101_T','M97_T':'M101_B','M97_B':'M101_B','s_K2':'M93_T', 's_L2':'M93_T', 's_H1':'M93_B', 's_J2':'M93_B','s_D1':'M94_T', 'slot_3rd_5':'M94_T', 's_G1':'M94_B', 'slot_3rd_6':'M94_B','s_J1':'M95_T', 's_H2':'M95_T', 's_D2':'M95_B', 's_G2':'M95_B','s_B1':'M96_T', 'slot_3rd_7':'M96_T', 's_K1':'M96_B', 'slot_3rd_8':'M96_B','M93_T':'M98_T','M93_B':'M98_T','M94_T':'M98_B','M94_B':'M98_B','M95_T':'M100_T','M95_B':'M100_T','M96_T':'M100_B','M96_B':'M100_B','M98_T':'M102_T','M98_B':'M102_T','M100_T':'M102_B','M100_B':'M102_B','M101_T':'FINAL_L','M101_B':'FINAL_L','M102_T':'FINAL_R','M102_B':'FINAL_R','FINAL_L':'champion-name','FINAL_R':'champion-name'};
@@ -212,7 +216,7 @@ function updateSignature(val) { document.getElementById('bracket-signature').inn
 
 function prepareForSnapshot() {
     const bracketNameInput = document.getElementById('bracket-name-input').value;
-    const bracketName = bracketNameInput || "Anonymous JULBOL Bracket";
+    const bracketName = bracketNameInput || "Anonymous Bracket";
     let groupResults = "";
     Object.keys(teams).forEach(g => {
         const list = document.getElementById(`list_${g}`);
@@ -241,9 +245,7 @@ function exitSnapshot() {
     document.getElementById('snapshot-modal').style.display = 'none';
 }
 
-/** 🚀 FULL RIPPLE RESET LOGIC 🚀 **/
 function playAgain() {
-    // Clear winners and downstream slots
     document.querySelectorAll('.team').forEach(el => {
         if (el.id === 'champion-name') el.innerHTML = "";
         else if (!el.id.startsWith('s_') || el.id.startsWith('slot_3rd')) { 
@@ -255,7 +257,7 @@ function playAgain() {
     document.getElementById('bracket-signature').innerText = "";
     document.getElementById('bracket-name-input').value = "";
     document.getElementById('list_3rd').innerHTML = "";
-    init(); // Rebuild group stage
+    init();
 }
 
 function closeModalOnBg(e) { if (e.target.id === 'snapshot-modal') exitSnapshot(); }
@@ -317,7 +319,6 @@ function updateVisualRanks(list) {
     });
 }
 
-/** 🌊 RIPPLE ENGINE 🌊 **/
 function syncAllGroupsToBracket() {
     const groups = document.querySelectorAll('.group-box');
     const thirdPlacePool = [];
@@ -327,15 +328,10 @@ function syncAllGroupsToBracket() {
         [1, 2].forEach(rank => {
             const team = teamsInOrder[rank-1]; const slotId = `s_${group}${rank}`; const slotEl = document.getElementById(slotId);
             const newContent = `${flags[team]} ${codes[team]}`;
-            if (slotEl && slotEl.innerHTML !== newContent) { 
-                clearBranch(slotId); 
-                slotEl.innerHTML = newContent; 
-                slotEl.classList.remove('winner', 'empty'); 
-            }
+            if (slotEl && slotEl.innerHTML !== newContent) { clearBranch(slotId); slotEl.innerHTML = newContent; slotEl.classList.remove('winner', 'empty'); }
         });
         thirdPlacePool.push(teamsInOrder[2]);
     });
-
     const thirdList = document.getElementById('list_3rd');
     const existingInList = [...thirdList.querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team'));
     if (JSON.stringify(thirdPlacePool.sort()) !== JSON.stringify(existingInList.sort())) {
@@ -345,16 +341,11 @@ function syncAllGroupsToBracket() {
         thirdList.innerHTML = ""; newOrder.forEach((t, i) => { thirdList.innerHTML += `<div class="draggable-team" draggable="true" data-team="${t}" data-rank="${i+1}º">${flags[t]} ${codes[t]}</div>`; });
         updateVisualRanks(thirdList);
     }
-
     const qualifiers = [...thirdList.querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team')).slice(0, 8);
     qualifiers.forEach((team, i) => {
         const slotId = `slot_3rd_${i+1}`; const slotEl = document.getElementById(slotId);
         const newContent = `${flags[team]} ${codes[team]}`;
-        if (slotEl && slotEl.innerHTML !== newContent) { 
-            clearBranch(slotId); 
-            slotEl.innerHTML = newContent; 
-            slotEl.classList.remove('winner', 'empty'); 
-        }
+        if (slotEl && slotEl.innerHTML !== newContent) { clearBranch(slotId); slotEl.innerHTML = newContent; slotEl.classList.remove('winner', 'empty'); }
     });
     for (let i = qualifiers.length; i < 8; i++) {
         const slotId = `slot_3rd_${i+1}`; const slotEl = document.getElementById(slotId);
