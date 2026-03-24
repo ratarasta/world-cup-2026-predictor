@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>JULBOL 1.2.4</title>
+    <title>JULBOL 1.2.5</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -66,13 +66,13 @@
         #champion-name { font-size: 20px; font-weight: 800; margin-top: 6px; min-height: 24px; color: #fff; }
         .final-match { border: 2px solid var(--accent); background: #111; width: var(--box-w); margin: 0; }
 
-        /* SIGNATURE MOVED TO BOTTOM OF BRACKET AREA */
+        /* BRACKET SIGNATURE MOVED TO CENTER STAGE, DIRECTLY ABOVE CHAMPION PESTEDAL */
         #bracket-signature { 
             position: absolute; 
-            bottom: 0; 
+            top: 250px; /* Positioned centrally between QF and Final */
             left: 50%; 
             transform: translateX(-50%); 
-            width: 100%; 
+            width: 600px; 
             text-align: center;
             font-size: 24px; 
             font-weight: 700; 
@@ -82,6 +82,7 @@
             text-shadow: 0 0 15px rgba(255,255,255,0.6);
             pointer-events: none; 
             opacity: 0.9;
+            z-index: 15; /* Sits above everything in the central column */
         }
 
         #bracket-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
@@ -126,6 +127,9 @@
 
 <div class="tournament-wrapper" id="tree-container">
     <svg id="bracket-svg"></svg>
+    
+    <div id="bracket-signature"></div>
+
     <div class="bracket-side left-bracket">
         <div class="round">
             <h3>R32</h3>
@@ -184,7 +188,6 @@
             <div class="matchup" id="m30"><div id="s_K1" class="team empty" onclick="adv(this,'M96_B')">1st K</div><div id="slot_3rd_8" class="team empty" onclick="adv(this,'M96_B')">3rd #8</div></div>
         </div>
     </div>
-    <div id="bracket-signature"></div>
 </div>
 
 <div class="footer-nav">
@@ -198,7 +201,7 @@
     <div class="modal-content" onclick="event.stopPropagation()">
         <h2>BRACKET PREDICTION SAVED</h2>
         <p>📸 Make sure to take a snapshot of your bracket before leaving 📸</p>
-        <button class="close-modal-btn" onclick="playAgain()">PLAY AGAIN</button>
+        <button class="close-modal-btn" onclick="exitSnapshot()">CLOSE</button>
     </div>
 </div>
 
@@ -210,7 +213,7 @@ const ENTRY_GROUPS = "entry.2004720717";
 const ENTRY_BRACKET = "entry.219345092";
 
 // FLAGS & CODES (LOCKED FORMAT)
-const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"\uD83C\uDDFD\uD83C\uDDF9\uD83C\uDDF4\uD83C\uDDF9\uD83C\uDDF9\uD83C\uDDF1","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"CPV","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"\uD83C\uDDFD\uD83C\uDDF9\uD83C\uDDF4\uD83C\uDDF9\uD83C\uDDF9\uD83C\uDDF1","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
+const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"CPV","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
 // Overwriting special flag codes for England and Scotland to ensure browser stability
 flags["England"] = "🏴󠁧󠁢󠁥󠁮󠁧󠁿";
 flags["Scotland"] = "🏴󠁧󠁢󠁳󠁣󠁴󠁿";
@@ -255,10 +258,6 @@ function prepareForSnapshot() {
 function exitSnapshot() {
     document.body.classList.remove('snapshot-view');
     document.getElementById('snapshot-modal').style.display = 'none';
-}
-
-function playAgain() {
-    location.reload(); // Simplest way to ensure a pure clean state
 }
 
 function closeModalOnBg(e) { if (e.target.id === 'snapshot-modal') exitSnapshot(); }
@@ -362,8 +361,9 @@ function clearBranch(startId) {
 }
 
 function adv(el, nId) {
-    if(el.classList.contains('empty') || el.innerHTML.includes("...")) return;
+    if(el.classList.contains('empty') || el.innerHTML.includes("...") || el.innerHTML.length < 3) return;
     clearBranch(el.id); const target = document.getElementById(nId);
+    if (target.innerHTML !== "..." && target.innerHTML !== el.innerHTML) clearBranch(target.id);
     target.innerHTML = el.innerHTML; target.classList.remove('empty');
     Array.from(el.parentElement.children).forEach(s => s.classList.remove('winner'));
     el.classList.add('winner'); drawAllLines();
