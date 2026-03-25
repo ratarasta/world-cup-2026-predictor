@@ -1,258 +1,252 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>JULBOL 1.8.5</title>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root { 
-            --line-color: #444; 
-            --accent: #00ff88; 
-            --reset-red: #cc0000; 
-            --bg: #050505; 
-            --card: rgba(26, 26, 26, 0.7); 
-            --box-w: 85px; --box-h: 35px; --gold: #ffcc00; 
-        }
-        
-        body { 
-            background: var(--bg); background-image: radial-gradient(circle at center, #111 0%, #050505 100%); 
-            color: #eee; font-family: 'Oswald', sans-serif; margin: 0; padding: 0; font-size: 12px; 
-            overflow-x: auto; position: relative; min-width: fit-content; 
-        }
-        
-        #stadium-backdrop { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 350px; height: 350px; background: url('https://i.postimg.cc/L8KpgjLY/2026-Fifa-Cup.png') no-repeat center center; background-size: contain; opacity: 0.15; z-index: 0; pointer-events: none; }
-        
-        .header-nav { background: #000; padding: 20px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 40px; position: relative; z-index: 2; }
-        h1 { text-align: center; color: #000; margin: 0; text-transform: uppercase; letter-spacing: 12px; font-size: 64px; font-weight: 900; -webkit-text-stroke: 2px var(--accent); text-shadow: 0 0 20px var(--accent); position: relative; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
+    <title>JULBOL 1.8.4</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --line-color: #444; 
+            --accent: #00ff88; 
+            --reset-red: #cc0000; 
+            --bg: #050505; 
+            --card: rgba(26, 26, 26, 0.7); 
+            --box-w: 85px; --box-h: 35px; --gold: #ffcc00; 
+        }
+        
+        body { 
+            background: var(--bg); background-image: radial-gradient(circle at center, #111 0%, #050505 100%); 
+            color: #eee; font-family: 'Oswald', sans-serif; margin: 0; padding: 0; font-size: 12px; 
+            overflow-x: auto; position: relative; min-width: fit-content; 
+        }
+        
+        #stadium-backdrop { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 350px; height: 350px; background: url('https://i.postimg.cc/L8KpgjLY/2026-Fifa-Cup.png') no-repeat center center; background-size: contain; opacity: 0.15; z-index: 0; pointer-events: none; }
+        
+        .header-nav { background: #000; padding: 20px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 40px; position: relative; z-index: 2; }
+        h1 { text-align: center; color: #000; margin: 0; text-transform: uppercase; letter-spacing: 12px; font-size: 64px; font-weight: 900; -webkit-text-stroke: 2px var(--accent); text-shadow: 0 0 20px var(--accent); position: relative; }
 
-        .dashboard-wrapper { display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 40px; position: relative; z-index: 2; flex-direction: row !important; padding: 0 20px; }
-        .group-stage-wrapper { display: flex; flex-direction: column; gap: 12px; }
-        .group-row { display: grid; grid-template-columns: repeat(4, 110px); gap: 15px; }
-        .dashboard-divider { width: 1px; background: rgba(255,255,255,0.15); height: 280px; margin: 0 10px; }
+        .dashboard-wrapper { display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 40px; position: relative; z-index: 2; flex-direction: row !important; padding: 0 20px; }
+        .group-stage-wrapper { display: flex; flex-direction: column; gap: 12px; }
+        .group-row { display: grid; grid-template-columns: repeat(4, 110px); gap: 15px; }
+        .dashboard-divider { width: 1px; background: rgba(255,255,255,0.15); height: 280px; margin: 0 10px; }
 
-        .group-box, .best-3rd-container { background: var(--card); backdrop-filter: blur(10px); padding: 8px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; transition: all 0.3s ease; position: relative; width: 100px; cursor: pointer; }
-        .best-3rd-container { width: 120px; padding: 12px; }
+        .group-box, .best-3rd-container { background: var(--card); backdrop-filter: blur(10px); padding: 8px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; transition: all 0.3s ease; position: relative; width: 100px; cursor: pointer; }
+        .best-3rd-container { width: 120px; padding: 12px; }
 
-        .is-editing { background: rgba(255, 255, 255, 0.05) !important; border-color: var(--accent) !important; box-shadow: 0 0 20px var(--accent); transform: scale(1.05); z-index: 100; }
-        @keyframes shake { 0% { transform: rotate(0deg); } 25% { transform: rotate(1.2deg); } 75% { transform: rotate(-1.2deg); } 100% { transform: rotate(0deg); } }
-        .is-editing .draggable-team { animation: shake 0.35s infinite ease-in-out; }
+        .is-editing { background: rgba(255, 255, 255, 0.05) !important; border-color: var(--accent) !important; box-shadow: 0 0 20px var(--accent); transform: scale(1.05); z-index: 100; }
+        @keyframes shake { 0% { transform: rotate(0deg); } 25% { transform: rotate(1.2deg); } 75% { transform: rotate(-1.2deg); } 100% { transform: rotate(0deg); } }
+        .is-editing .draggable-team { animation: shake 0.35s infinite ease-in-out; }
 
-        .group-box h4, .best-3rd-container h4 { margin: 0 0 8px 0; color: var(--accent); font-size: 10px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px; pointer-events: none;}
-        .draggable-team { background: rgba(255,255,255,0.05); border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); cursor: grab; display: flex; align-items: center; justify-content: center; gap: 4px; user-select: none; font-size: 16px; font-weight: 500; width: var(--box-w); height: var(--box-h); box-sizing: border-box; transition: background 0.4s ease, color 0.4s ease; overflow: hidden; }
-        
-        .draggable-team[data-rank="1º"], .draggable-team[data-rank="2º"] { background: color-mix(in srgb, var(--accent), transparent 85%); color: var(--accent); font-weight: 700; border-color: color-mix(in srgb, var(--accent), transparent 70%); }
-        .draggable-team[data-rank="3º"] { background: color-mix(in srgb, var(--accent), transparent 93%); color: #eee; }
-        .draggable-team[data-rank="4º"] { opacity: 0.8; }
-        #list_3rd .draggable-team:nth-child(-n+8) { background: color-mix(in srgb, var(--accent), transparent 85%); color: var(--accent); font-weight: 700; border-color: color-mix(in srgb, var(--accent), transparent 70%); }
-        .draggable-team.dragging { opacity: 0.1; transform: scale(0.9); }
-        .draggable-team::before { content: attr(data-rank); width: 14px; font-size: 8px; color: #666; font-weight: bold; }
-        .team-list { display: flex; flex-direction: column; gap: 4px; align-items: center; }
+        .group-box h4, .best-3rd-container h4 { margin: 0 0 8px 0; color: var(--accent); font-size: 10px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px; pointer-events: none;}
+        .draggable-team { background: rgba(255,255,255,0.05); border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); cursor: grab; display: flex; align-items: center; justify-content: center; gap: 4px; user-select: none; font-size: 16px; font-weight: 500; width: var(--box-w); height: var(--box-h); box-sizing: border-box; transition: background 0.4s ease, color 0.4s ease; overflow: hidden; }
+        
+        .draggable-team[data-rank="1º"], .draggable-team[data-rank="2º"] { background: color-mix(in srgb, var(--accent), transparent 85%); color: var(--accent); font-weight: 700; border-color: color-mix(in srgb, var(--accent), transparent 70%); }
+        .draggable-team[data-rank="3º"] { background: color-mix(in srgb, var(--accent), transparent 93%); color: #eee; }
+        .draggable-team[data-rank="4º"] { opacity: 0.8; }
+        #list_3rd .draggable-team:nth-child(-n+8) { background: color-mix(in srgb, var(--accent), transparent 85%); color: var(--accent); font-weight: 700; border-color: color-mix(in srgb, var(--accent), transparent 70%); }
+        .draggable-team.dragging { opacity: 0.1; transform: scale(0.9); }
+        .draggable-team::before { content: attr(data-rank); width: 14px; font-size: 8px; color: #666; font-weight: bold; }
+        .team-list { display: flex; flex-direction: column; gap: 4px; align-items: center; }
 
-        .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: 40px 20px 80px 20px; position: relative; gap: 10px; z-index: 1;}
-        .bracket-side { display: flex; align-items: flex-start; gap: 15px; }
-        .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 90px; height: 800px; position: relative; }
-        .round h3 { font-size: 10px; color: #444; text-align: center; position: absolute; top: -20px; width: 100%; text-transform: uppercase; letter-spacing: 2px;}
+        .tournament-wrapper { display: flex; justify-content: center; align-items: flex-start; padding: 40px 20px 80px 20px; position: relative; gap: 10px; z-index: 1;}
+        .bracket-side { display: flex; align-items: flex-start; gap: 15px; }
+        .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 90px; height: 800px; position: relative; }
+        .round h3 { font-size: 10px; color: #444; text-align: center; position: absolute; top: -20px; width: 100%; text-transform: uppercase; letter-spacing: 2px;}
 
-        .matchup { background: var(--card); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(5px); border-radius: 4px; width: var(--box-w); margin: 3px auto; position: relative; z-index: 5; }
-        .team { padding: 6px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s; white-space: nowrap; text-align: center; display: flex; justify-content: center; align-items: center; gap: 4px; height: var(--box-h); box-sizing: border-box; font-weight: 500; font-size: 16px; }
-        .winner { background: color-mix(in srgb, var(--accent), black 80%) !important; color: var(--accent) !important; font-weight: bold; }
-        .empty { color: #333; font-weight: 400; font-size: 10px; }
+        .matchup { background: var(--card); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(5px); border-radius: 4px; width: var(--box-w); margin: 3px auto; position: relative; z-index: 5; }
+        .team { padding: 6px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s; white-space: nowrap; text-align: center; display: flex; justify-content: center; align-items: center; gap: 4px; height: var(--box-h); box-sizing: border-box; font-weight: 500; font-size: 16px; }
+        .winner { background: color-mix(in srgb, var(--accent), black 80%) !important; color: var(--accent) !important; font-weight: bold; }
+        .empty { color: #333; font-weight: 400; font-size: 10px; }
 
-        .center-stage { display: flex; align-items: center; justify-content: center; gap: 15px; height: 800px; min-width: 240px; position: relative; z-index: 4; }
-        .final-column { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
-        
-        #champion-display { position: absolute; bottom: 115%; margin-bottom: 20px; width: 110px; padding: 12px 8px; border: 2px solid var(--accent); border-radius: 10px; background: #000; text-align: center; z-index: 10; }
-        #champion-display h2 { margin: 0; font-size: 10px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
-        #champion-name { font-size: 20px; font-weight: 800; margin-top: 6px; min-height: 24px; color: #fff; }
-        .final-match { border: 2px solid var(--accent); background: #111; width: var(--box-w); margin: 0; }
+        .center-stage { display: flex; align-items: center; justify-content: center; gap: 15px; height: 800px; min-width: 240px; position: relative; z-index: 4; }
+        .final-column { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+        
+        #champion-display { position: absolute; bottom: 115%; margin-bottom: 20px; width: 110px; padding: 12px 8px; border: 2px solid var(--accent); border-radius: 10px; background: #000; text-align: center; z-index: 10; }
+        #champion-display h2 { margin: 0; font-size: 10px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
+        #champion-name { font-size: 20px; font-weight: 800; margin-top: 6px; min-height: 24px; color: #fff; }
+        .final-match { border: 2px solid var(--accent); background: #111; width: var(--box-w); margin: 0; }
 
-        #bracket-signature { 
-            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 100%; text-align: center;
-            font-size: 32px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 3px;
-            text-shadow: 0 0 20px rgba(255,255,255,0.8); pointer-events: none; opacity: 0.9; z-index: 15;
-        }
+        #bracket-signature { 
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 100%; text-align: center;
+            font-size: 32px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 3px;
+            text-shadow: 0 0 20px rgba(255,255,255,0.8); pointer-events: none; opacity: 0.9; z-index: 15;
+        }
 
-        #bracket-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-        .path-line { fill: none; stroke: var(--line-color); stroke-width: 1.5; stroke-dasharray: 5, 4; transition: stroke 0.4s; opacity: 0.6; }
-        .path-line.active { stroke: var(--accent); stroke-dasharray: none; stroke-width: 2.5; filter: drop-shadow(0 0 4px var(--accent)); opacity: 1; }
+        #bracket-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        .path-line { fill: none; stroke: var(--line-color); stroke-width: 1.5; stroke-dasharray: 5, 4; transition: stroke 0.4s; opacity: 0.6; }
+        .path-line.active { stroke: var(--accent); stroke-dasharray: none; stroke-width: 2.5; filter: drop-shadow(0 0 4px var(--accent)); opacity: 1; }
 
-        .footer-nav { padding: 50px 20px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; gap: 20px; position: relative; z-index: 10; background: rgba(0,0,0,0.9); width: 100%; box-sizing: border-box; }
-        .id-input-group { display: flex; flex-direction: column; align-items: center; gap: 15px; width: 320px; }
-        #bracket-name-input { background: #111; border: 1px solid #555; color: #fff; padding: 12px; width: 100%; border-radius: 8px; text-align: center; font-family: 'Oswald'; text-transform: uppercase; letter-spacing: 2px; font-size: 14px; }
-        
-        .footer-btns-group { display: flex; flex-direction: column; gap: 10px; width: 100%; }
-        .save-lock-btn { background: var(--accent); color: #000; border: none; padding: 15px 50px; font-family: 'Oswald'; font-weight: 700; font-size: 18px; border-radius: 8px; cursor: pointer; text-transform: uppercase; transition: 0.3s; letter-spacing: 1px; width: 100%; box-sizing: border-box;}
-        .leaderboard-btn { background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 10px; font-family: 'Oswald'; border-radius: 8px; cursor: pointer; text-transform: uppercase; transition: 0.3s; width: 100%; font-size: 14px; }
-        .leaderboard-btn:hover { background: rgba(0, 255, 136, 0.1); }
-        .reset-btn { background: var(--reset-red); color: #fff; padding: 8px 30px; font-size: 12px; font-weight: 500; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); width: 100%; cursor: pointer; text-transform: uppercase; font-family: 'Oswald'; }
-        .reset-btn:hover { background: #ff0000; }
+        .footer-nav { padding: 50px 20px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; gap: 20px; position: relative; z-index: 10; background: rgba(0,0,0,0.9); width: 100%; box-sizing: border-box; }
+        .id-input-group { display: flex; flex-direction: column; align-items: center; gap: 15px; width: 320px; }
+        #bracket-name-input { background: #111; border: 1px solid #555; color: #fff; padding: 12px; width: 100%; border-radius: 8px; text-align: center; font-family: 'Oswald'; text-transform: uppercase; letter-spacing: 2px; font-size: 14px; }
+        
+        .footer-btns-group { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+        .save-lock-btn { background: var(--accent); color: #000; border: none; padding: 15px 50px; font-family: 'Oswald'; font-weight: 700; font-size: 18px; border-radius: 8px; cursor: pointer; text-transform: uppercase; transition: 0.3s; letter-spacing: 1px; width: 100%; box-sizing: border-box;}
+        .leaderboard-btn { background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 10px; font-family: 'Oswald'; border-radius: 8px; cursor: pointer; text-transform: uppercase; transition: 0.3s; width: 100%; font-size: 14px; }
+        .leaderboard-btn:hover { background: rgba(0, 255, 136, 0.1); }
+        .reset-btn { background: var(--reset-red); color: #fff; padding: 8px 30px; font-size: 12px; font-weight: 500; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); width: 100%; cursor: pointer; text-transform: uppercase; font-family: 'Oswald'; }
+        .reset-btn:hover { background: #ff0000; }
 
-        /* MODAL STYLING */
-        #snapshot-modal, #leaderboard-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
-        .modal-content { background: #000; border: 2px solid var(--accent); padding: 50px; border-radius: 20px; text-align: center; max-width: 450px; box-shadow: 0 0 50px rgba(0,0,0,1); }
-        
-        /* LEADERBOARD MODAL - SLIM & DARK */
-        .leaderboard-modal-content { 
-            max-width: 95%; 
-            width: 420px; 
-            height: 70vh; 
-            padding: 20px; 
-            position: relative;
-            background: #000 !important;
-        }
+        /* MODAL STYLING */
+        #snapshot-modal, #leaderboard-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
+        .modal-content { background: #000; border: 2px solid var(--accent); padding: 50px; border-radius: 20px; text-align: center; max-width: 450px; box-shadow: 0 0 50px rgba(0,0,0,1); }
+        
+        /* LEADERBOARD MODAL - SLIM & DARK */
+        .leaderboard-modal-content { 
+            max-width: 95%; 
+            width: 420px; 
+            height: 70vh; 
+            padding: 20px; 
+            position: relative;
+            background: #000 !important;
+        }
 
-        /* MODAL STYLING */
-#snapshot-modal, #leaderboard-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
-.modal-content { background: #000; border: 2px solid var(--accent); padding: 50px; border-radius: 20px; text-align: center; max-width: 450px; box-shadow: 0 0 50px rgba(0,0,0,1); }
-
-/* LEADERBOARD MODAL - SLIM & DARK */
-.leaderboard-modal-content { 
-    max-width: 95%; 
-    width: 420px; 
-    height: 75vh; 
-    padding: 20px; 
-    position: relative;
-    background: #000 !important;
+        .modal-content h2 { color: var(--accent); margin: 0 0 10px 0; font-size: 28px; letter-spacing: 2px; }
+        .modal-content p { color: #ccc; line-height: 1.6; margin-bottom: 35px; font-size: 18px; }
+        
+        /* UPDATED CENTERING LOGIC */
+.iframe-container { 
+    width: 100%; 
+    height: calc(100% - 70px); 
+    border-radius: 10px; 
+    overflow: hidden; 
+    background: #000; 
+    margin-top: 15px; 
+    position: relative;
+    /* This centers the iframe content itself */
+    display: flex;
+    justify-content: center; 
+    align-items: flex-start;
 }
 
-.modal-content h2 { color: var(--accent); margin: 0 0 10px 0; font-size: 28px; letter-spacing: 2px; }
-.modal-content p { color: #ccc; line-height: 1.6; margin-bottom: 35px; font-size: 18px; }
-
-/* FIX: Removes horizontal scroll but allows vertical */
-.iframe-container { 
-    width: 100%; 
-    height: calc(100% - 70px); 
-    border-radius: 10px; 
-    overflow-x: hidden; /* Blocks horizontal scroll */
-    overflow-y: auto;   /* Allows vertical scroll */
-    background: #000; 
-    margin-top: 15px; 
-    position: relative;
+/* DARK MODE IFRAME FILTER + SCALE */
+.iframe-container iframe { 
+    width: 85%; 
+    height: 100%; 
+    border: none; 
+    filter: invert(0.9) hue-rotate(180deg) brightness(1.1) contrast(1.1);
+    /* Some browsers need this to ensure the internal table respects centering */
+    margin: 0 auto;
 }
 
-/* DARK MODE IFRAME FILTER */
-.iframe-container iframe { 
-    width: 100%; 
-    height: 100%; 
-    border: none; 
-    filter: invert(0.9) hue-rotate(180deg) brightness(1.1) contrast(1.1);
-    display: block;
-}
-    </style>
+        .close-modal-btn { background: var(--accent); color: #000; border: none; padding: 15px 30px; cursor: pointer; border-radius: 5px; text-transform: uppercase; font-family: 'Oswald'; font-weight: bold; font-size: 14px; margin-top: 10px;}
+
+        .snapshot-view .footer-nav, .snapshot-view .header-nav { display: none !important; }
+        .snapshot-view #stadium-backdrop { opacity: 0.05; }
+    </style>
 </head>
 <body onclick="handleGlobalClick(event)">
 
 <div id="stadium-backdrop"></div>
 
 <div class="header-nav">
-    <h1>JULBOL</h1>
+    <h1>JULBOL</h1>
 </div>
 
 <div class="dashboard-wrapper">
-    <div class="group-stage-wrapper">
-        <div class="group-row" id="row-1"></div>
-        <div class="group-row" id="row-2"></div>
-        <div class="group-row" id="row-3"></div>
-    </div>
-    <div class="dashboard-divider"></div>
-    <div class="best-3rd-container" onclick="enterEditMode(this, event)">
-        <h4>BEST 3rd PLACE RANKINGS</h4>
-        <div id="list_3rd" class="team-list"></div>
-    </div>
+    <div class="group-stage-wrapper">
+        <div class="group-row" id="row-1"></div>
+        <div class="group-row" id="row-2"></div>
+        <div class="group-row" id="row-3"></div>
+    </div>
+    <div class="dashboard-divider"></div>
+    <div class="best-3rd-container" onclick="enterEditMode(this, event)">
+        <h4>BEST 3rd PLACE RANKINGS</h4>
+        <div id="list_3rd" class="team-list"></div>
+    </div>
 </div>
 
 <div class="tournament-wrapper" id="tree-container">
-    <svg id="bracket-svg"></svg>
-    <div id="bracket-signature"></div>
+    <svg id="bracket-svg"></svg>
+    <div id="bracket-signature"></div>
 
-    <div class="bracket-side left-bracket">
-        <div class="round">
-            <h3>R32</h3>
-            <div class="matchup" id="m1"><div id="s_A1" class="team empty" onclick="adv(this,'M92_T')">1st A</div><div id="slot_3rd_3" class="team empty" onclick="adv(this,'M92_T')">3rd #3</div></div>
-            <div class="matchup" id="m2"><div id="s_L1" class="team empty" onclick="adv(this,'M92_B')">1st L</div><div id="slot_3rd_4" class="team empty" onclick="adv(this,'M92_B')">3rd #4</div></div>
-            <div class="matchup" id="m3"><div id="s_C1" class="team empty" onclick="adv(this,'M91_T')">1st C</div><div id="s_F2" class="team empty" onclick="adv(this,'M91_T')">2nd F</div></div>
-            <div class="matchup" id="m4"><div id="s_E2" class="team empty" onclick="adv(this,'M91_B')">2nd E</div><div id="s_I2" class="team empty" onclick="adv(this,'M91_B')">2nd I</div></div>
-            <div class="matchup" id="m5"><div id="s_A2" class="team empty" onclick="adv(this,'M90_T')">2nd A</div><div id="s_B2" class="team empty" onclick="adv(this,'M90_T')">2nd B</div></div>
-            <div class="matchup" id="m6"><div id="s_F1" class="team empty" onclick="adv(this,'M90_B')">1st F</div><div id="s_C2" class="team empty" onclick="adv(this,'M90_B')">2nd C</div></div>
-            <div class="matchup" id="m7"><div id="slot_3rd_1" class="team empty" onclick="adv(this,'M89_T')">3rd #1</div><div id="s_E1" class="team empty" onclick="adv(this,'M89_T')">1st E</div></div>
-            <div class="matchup" id="m8"><div id="slot_3rd_2" class="team empty" onclick="adv(this,'M89_B')">3rd #2</div><div id="s_I1" class="team empty" onclick="adv(this,'M89_B')">1st I</div></div>
-        </div>
-        <div class="round">
-            <h3>R16</h3>
-            <div class="matchup" id="m9"><div id="M92_T" class="team empty" onclick="adv(this,'M99_T')">...</div><div id="M92_B" class="team empty" onclick="adv(this,'M99_T')">...</div></div>
-            <div class="matchup" id="m10"><div id="M91_T" class="team empty" onclick="adv(this,'M99_B')">...</div><div id="M91_B" class="team empty" onclick="adv(this,'M99_B')">...</div></div>
-            <div class="matchup" id="m11"><div id="M90_T" class="team empty" onclick="adv(this,'M97_T')">...</div><div id="M90_B" class="team empty" onclick="adv(this,'M97_T')">...</div></div>
-            <div class="matchup" id="m12"><div id="M89_T" class="team empty" onclick="adv(this,'M97_B')">...</div><div id="M89_B" class="team empty" onclick="adv(this,'M97_B')">...</div></div>
-        </div>
-        <div class="round">
-            <h3>QF</h3>
-            <div class="matchup" id="m13"><div id="M99_T" class="team empty" onclick="adv(this,'M101_T')">...</div><div id="M99_B" class="team empty" onclick="adv(this,'M101_T')">...</div></div>
-            <div class="matchup" id="m14"><div id="M97_T" class="team empty" onclick="adv(this,'M101_B')">...</div><div id="M97_B" class="team empty" onclick="adv(this,'M101_B')">...</div></div>
-        </div>
-    </div>
-    <div class="center-stage">
-        <div class="matchup" id="m15"><div id="M101_T" class="team empty" onclick="adv(this,'FINAL_L')">...</div><div id="M101_B" class="team empty" onclick="adv(this,'FINAL_L')">...</div></div>
-        <div class="final-column">
-            <div id="champion-display"><h2>🏆 WORLD CHAMPION</h2><div id="champion-name"></div></div>
-            <div class="matchup final-match" id="mf"><div id="FINAL_L" class="team empty" onclick="setWinner(this)">...</div><div id="FINAL_R" class="team empty" onclick="setWinner(this)">...</div></div>
-        </div>
-        <div class="matchup" id="m16"><div id="M102_T" class="team empty" onclick="adv(this,'FINAL_R')">...</div><div id="M102_B" class="team empty" onclick="adv(this,'FINAL_R')">...</div></div>
-    </div>
-    <div class="bracket-side right-bracket">
-        <div class="round">
-            <h3>QF</h3>
-            <div class="matchup" id="m17"><div id="M98_T" class="team empty" onclick="adv(this,'M102_T')">...</div><div id="M98_B" class="team empty" onclick="adv(this,'M102_T')">...</div></div>
-            <div class="matchup" id="m18"><div id="M100_T" class="team empty" onclick="adv(this,'M102_B')">...</div><div id="M100_B" class="team empty" onclick="adv(this,'M102_B')">...</div></div>
-        </div>
-        <div class="round">
-            <h3>R16</h3>
-            <div class="matchup" id="m19"><div id="M93_T" class="team empty" onclick="adv(this,'M98_T')">...</div><div id="M93_B" class="team empty" onclick="adv(this,'M98_T')">...</div></div>
-            <div class="matchup" id="m20"><div id="M94_T" class="team empty" onclick="adv(this,'M98_B')">...</div><div id="M94_B" class="team empty" onclick="adv(this,'M98_B')">...</div></div>
-            <div class="matchup" id="m21"><div id="M95_T" class="team empty" onclick="adv(this,'M100_T')">...</div><div id="M95_B" class="team empty" onclick="adv(this,'M100_T')">...</div></div>
-            <div class="matchup" id="m22"><div id="M96_T" class="team empty" onclick="adv(this,'M100_B')">...</div><div id="M96_B" class="team empty" onclick="adv(this,'M100_B')">...</div></div>
-        </div>
-        <div class="round">
-            <h3>R32</h3>
-            <div class="matchup" id="m23"><div id="s_K2" class="team empty" onclick="adv(this,'M93_T')">2nd K</div><div id="s_L2" class="team empty" onclick="adv(this,'M93_T')">2nd L</div></div>
-            <div class="matchup" id="m24"><div id="s_H1" class="team empty" onclick="adv(this,'M93_B')">1st H</div><div id="s_J2" class="team empty" onclick="adv(this,'M93_B')">2nd J</div></div>
-            <div class="matchup" id="m25"><div id="s_D1" class="team empty" onclick="adv(this,'M94_T')">1st D</div><div id="slot_3rd_5" class="team empty" onclick="adv(this,'M94_T')">3rd #5</div></div>
-            <div class="matchup" id="m26"><div id="s_G1" class="team empty" onclick="adv(this,'M94_B')">1st G</div><div id="slot_3rd_6" class="team empty" onclick="adv(this,'M94_B')">3rd #6</div></div>
-            <div class="matchup" id="m27"><div id="s_J1" class="team empty" onclick="adv(this,'M95_T')">1st J</div><div id="s_H2" class="team empty" onclick="adv(this,'M95_T')">2nd H</div></div>
-            <div class="matchup" id="m28"><div id="s_D2" class="team empty" onclick="adv(this,'M95_B')">2nd D</div><div id="s_G2" class="team empty" onclick="adv(this,'M95_B')">2nd G</div></div>
-            <div class="matchup" id="m29"><div id="s_B1" class="team empty" onclick="adv(this,'M96_T')">1st B</div><div id="slot_3rd_7" class="team empty" onclick="adv(this,'M96_T')">3rd #7</div></div>
-            <div class="matchup" id="m30"><div id="s_K1" class="team empty" onclick="adv(this,'M96_B')">1st K</div><div id="slot_3rd_8" class="team empty" onclick="adv(this,'M96_B')">3rd #8</div></div>
-        </div>
-    </div>
+    <div class="bracket-side left-bracket">
+        <div class="round">
+            <h3>R32</h3>
+            <div class="matchup" id="m1"><div id="s_A1" class="team empty" onclick="adv(this,'M92_T')">1st A</div><div id="slot_3rd_3" class="team empty" onclick="adv(this,'M92_T')">3rd #3</div></div>
+            <div class="matchup" id="m2"><div id="s_L1" class="team empty" onclick="adv(this,'M92_B')">1st L</div><div id="slot_3rd_4" class="team empty" onclick="adv(this,'M92_B')">3rd #4</div></div>
+            <div class="matchup" id="m3"><div id="s_C1" class="team empty" onclick="adv(this,'M91_T')">1st C</div><div id="s_F2" class="team empty" onclick="adv(this,'M91_T')">2nd F</div></div>
+            <div class="matchup" id="m4"><div id="s_E2" class="team empty" onclick="adv(this,'M91_B')">2nd E</div><div id="s_I2" class="team empty" onclick="adv(this,'M91_B')">2nd I</div></div>
+            <div class="matchup" id="m5"><div id="s_A2" class="team empty" onclick="adv(this,'M90_T')">2nd A</div><div id="s_B2" class="team empty" onclick="adv(this,'M90_T')">2nd B</div></div>
+            <div class="matchup" id="m6"><div id="s_F1" class="team empty" onclick="adv(this,'M90_B')">1st F</div><div id="s_C2" class="team empty" onclick="adv(this,'M90_B')">2nd C</div></div>
+            <div class="matchup" id="m7"><div id="slot_3rd_1" class="team empty" onclick="adv(this,'M89_T')">3rd #1</div><div id="s_E1" class="team empty" onclick="adv(this,'M89_T')">1st E</div></div>
+            <div class="matchup" id="m8"><div id="slot_3rd_2" class="team empty" onclick="adv(this,'M89_B')">3rd #2</div><div id="s_I1" class="team empty" onclick="adv(this,'M89_B')">1st I</div></div>
+        </div>
+        <div class="round">
+            <h3>R16</h3>
+            <div class="matchup" id="m9"><div id="M92_T" class="team empty" onclick="adv(this,'M99_T')">...</div><div id="M92_B" class="team empty" onclick="adv(this,'M99_T')">...</div></div>
+            <div class="matchup" id="m10"><div id="M91_T" class="team empty" onclick="adv(this,'M99_B')">...</div><div id="M91_B" class="team empty" onclick="adv(this,'M99_B')">...</div></div>
+            <div class="matchup" id="m11"><div id="M90_T" class="team empty" onclick="adv(this,'M97_T')">...</div><div id="M90_B" class="team empty" onclick="adv(this,'M97_T')">...</div></div>
+            <div class="matchup" id="m12"><div id="M89_T" class="team empty" onclick="adv(this,'M97_B')">...</div><div id="M89_B" class="team empty" onclick="adv(this,'M97_B')">...</div></div>
+        </div>
+        <div class="round">
+            <h3>QF</h3>
+            <div class="matchup" id="m13"><div id="M99_T" class="team empty" onclick="adv(this,'M101_T')">...</div><div id="M99_B" class="team empty" onclick="adv(this,'M101_T')">...</div></div>
+            <div class="matchup" id="m14"><div id="M97_T" class="team empty" onclick="adv(this,'M101_B')">...</div><div id="M97_B" class="team empty" onclick="adv(this,'M101_B')">...</div></div>
+        </div>
+    </div>
+    <div class="center-stage">
+        <div class="matchup" id="m15"><div id="M101_T" class="team empty" onclick="adv(this,'FINAL_L')">...</div><div id="M101_B" class="team empty" onclick="adv(this,'FINAL_L')">...</div></div>
+        <div class="final-column">
+            <div id="champion-display"><h2>🏆 WORLD CHAMPION</h2><div id="champion-name"></div></div>
+            <div class="matchup final-match" id="mf"><div id="FINAL_L" class="team empty" onclick="setWinner(this)">...</div><div id="FINAL_R" class="team empty" onclick="setWinner(this)">...</div></div>
+        </div>
+        <div class="matchup" id="m16"><div id="M102_T" class="team empty" onclick="adv(this,'FINAL_R')">...</div><div id="M102_B" class="team empty" onclick="adv(this,'FINAL_R')">...</div></div>
+    </div>
+    <div class="bracket-side right-bracket">
+        <div class="round">
+            <h3>QF</h3>
+            <div class="matchup" id="m17"><div id="M98_T" class="team empty" onclick="adv(this,'M102_T')">...</div><div id="M98_B" class="team empty" onclick="adv(this,'M102_T')">...</div></div>
+            <div class="matchup" id="m18"><div id="M100_T" class="team empty" onclick="adv(this,'M102_B')">...</div><div id="M100_B" class="team empty" onclick="adv(this,'M102_B')">...</div></div>
+        </div>
+        <div class="round">
+            <h3>R16</h3>
+            <div class="matchup" id="m19"><div id="M93_T" class="team empty" onclick="adv(this,'M98_T')">...</div><div id="M93_B" class="team empty" onclick="adv(this,'M98_T')">...</div></div>
+            <div class="matchup" id="m20"><div id="M94_T" class="team empty" onclick="adv(this,'M98_B')">...</div><div id="M94_B" class="team empty" onclick="adv(this,'M98_B')">...</div></div>
+            <div class="matchup" id="m21"><div id="M95_T" class="team empty" onclick="adv(this,'M100_T')">...</div><div id="M95_B" class="team empty" onclick="adv(this,'M100_T')">...</div></div>
+            <div class="matchup" id="m22"><div id="M96_T" class="team empty" onclick="adv(this,'M100_B')">...</div><div id="M96_B" class="team empty" onclick="adv(this,'M100_B')">...</div></div>
+        </div>
+        <div class="round">
+            <h3>R32</h3>
+            <div class="matchup" id="m23"><div id="s_K2" class="team empty" onclick="adv(this,'M93_T')">2nd K</div><div id="s_L2" class="team empty" onclick="adv(this,'M93_T')">2nd L</div></div>
+            <div class="matchup" id="m24"><div id="s_H1" class="team empty" onclick="adv(this,'M93_B')">1st H</div><div id="s_J2" class="team empty" onclick="adv(this,'M93_B')">2nd J</div></div>
+            <div class="matchup" id="m25"><div id="s_D1" class="team empty" onclick="adv(this,'M94_T')">1st D</div><div id="slot_3rd_5" class="team empty" onclick="adv(this,'M94_T')">3rd #5</div></div>
+            <div class="matchup" id="m26"><div id="s_G1" class="team empty" onclick="adv(this,'M94_B')">1st G</div><div id="slot_3rd_6" class="team empty" onclick="adv(this,'M94_B')">3rd #6</div></div>
+            <div class="matchup" id="m27"><div id="s_J1" class="team empty" onclick="adv(this,'M95_T')">1st J</div><div id="s_H2" class="team empty" onclick="adv(this,'M95_T')">2nd H</div></div>
+            <div class="matchup" id="m28"><div id="s_D2" class="team empty" onclick="adv(this,'M95_B')">2nd D</div><div id="s_G2" class="team empty" onclick="adv(this,'M95_B')">2nd G</div></div>
+            <div class="matchup" id="m29"><div id="s_B1" class="team empty" onclick="adv(this,'M96_T')">1st B</div><div id="slot_3rd_7" class="team empty" onclick="adv(this,'M96_T')">3rd #7</div></div>
+            <div class="matchup" id="m30"><div id="s_K1" class="team empty" onclick="adv(this,'M96_B')">1st K</div><div id="slot_3rd_8" class="team empty" onclick="adv(this,'M96_B')">3rd #8</div></div>
+        </div>
+    </div>
 </div>
 
 <div class="footer-nav">
-    <div class="id-input-group">
-        <input type="text" id="bracket-name-input" placeholder="NAME THIS BRACKET" maxlength="25" oninput="updateSignature(this.value)">
-        <div class="footer-btns-group">
-            <button class="save-lock-btn" onclick="prepareForSnapshot()">SAVE</button>
-            <button class="leaderboard-btn" onclick="openLeaderboard()">🏆 VIEW SCOREBOARD</button>
-            <button class="reset-btn" onclick="playAgain()">PLAY AGAIN / RESET</button>
-        </div>
-    </div>
+    <div class="id-input-group">
+        <input type="text" id="bracket-name-input" placeholder="NAME THIS BRACKET" maxlength="25" oninput="updateSignature(this.value)">
+        <div class="footer-btns-group">
+            <button class="save-lock-btn" onclick="prepareForSnapshot()">SAVE</button>
+            <button class="leaderboard-btn" onclick="openLeaderboard()">🏆 VIEW SCOREBOARD</button>
+            <button class="reset-btn" onclick="playAgain()">PLAY AGAIN / RESET</button>
+        </div>
+    </div>
 </div>
 
 <div id="snapshot-modal" onclick="closeModalOnBg(event)">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <h2>BRACKET PREDICTION SAVED</h2>
-        <p>📸 Make sure to take a snapshot of your bracket before leaving 📸</p>
-        <button class="close-modal-btn" onclick="exitSnapshot()">CLOSE</button>
-    </div>
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <h2>BRACKET PREDICTION SAVED</h2>
+        <p>📸 Make sure to take a snapshot of your bracket before leaving 📸</p>
+        <button class="close-modal-btn" onclick="exitSnapshot()">CLOSE</button>
+    </div>
 </div>
 
 <div id="leaderboard-modal" onclick="closeLeaderboardOnBg(event)">
-    <div class="modal-content leaderboard-modal-content" onclick="event.stopPropagation()">
-        <h2>🏆 LIVE LEADERBOARD</h2>
-        <div class="iframe-container">
-            <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQw9ufqzeyxhwBy_59J6hbwHKK19XkA1Ztw0sldVL37DYiiL4D0n7Fl8-XqWSeg0balSK731LYUpHUH/pubhtml?gid=2134320183&amp;single=true&amp;widget=false&amp;headers=false&amp;chrome=false"></iframe>
-        </div>
-        <button class="close-modal-btn" onclick="closeLeaderboard()">CLOSE</button>
-    </div>
+    <div class="modal-content leaderboard-modal-content" onclick="event.stopPropagation()">
+        <h2>🏆 LIVE LEADERBOARD</h2>
+        <div class="iframe-container">
+            <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQw9ufqzeyxhwBy_59J6hbwHKK19XkA1Ztw0sldVL37DYiiL4D0n7Fl8-XqWSeg0balSK731LYUpHUH/pubhtml?gid=2134320183&amp;single=true&amp;widget=false&amp;headers=false&amp;chrome=false&amp;rm=minimal"></iframe>
+        </div>
+        <button class="close-modal-btn" onclick="closeLeaderboard()">CLOSE</button>
+    </div>
 </div>
 
 <script>
@@ -260,25 +254,25 @@ const GOOGLE_FORM_ID = "1FAIpQLSf3EsXmtqWuLD6XW1reoQaUXEj9b7vGUtzpJeu6qQHib9Pv9g
 
 const ENTRY_NAME = "entry.1993303413";
 const groupEntryMap = {
-    A: ["entry.2004720717", "entry.219345092", "entry.1865515962", "entry.259526972"],
-    B: ["entry.742963949", "entry.1343226507", "entry.250891507", "entry.259302823"],
-    C: ["entry.1481691051", "entry.1370956470", "entry.1303798021", "entry.1815848585"],
-    D: ["entry.2098976013", "entry.234432999", "entry.1097886376", "entry.1557489522"],
-    E: ["entry.77457888", "entry.2044279350", "entry.1943197250", "entry.1009551808"],
-    F: ["entry.1839648253", "entry.460497728", "entry.2099068111", "entry.1650179191"],
-    G: ["entry.1601319809", "entry.2141214341", "entry.1831269389", "entry.193273714"],
-    H: ["entry.359293673", "entry.1759869016", "entry.1666080658", "entry.1015790480"],
-    I: ["entry.1658235281", "entry.1371108546", "entry.2078959857", "entry.2043590436"],
-    J: ["entry.455748744", "entry.1643493314", "entry.1589000941", "entry.1911364374"],
-    K: ["entry.1902048207", "entry.1843571484", "entry.1615511871", "entry.1746272915"],
-    L: ["entry.1697639453", "entry.1258859198", "entry.457313052", "entry.944660583"]
+    A: ["entry.2004720717", "entry.219345092", "entry.1865515962", "entry.259526972"],
+    B: ["entry.742963949", "entry.1343226507", "entry.250891507", "entry.259302823"],
+    C: ["entry.1481691051", "entry.1370956470", "entry.1303798021", "entry.1815848585"],
+    D: ["entry.2098976013", "entry.234432999", "entry.1097886376", "entry.1557489522"],
+    E: ["entry.77457888", "entry.2044279350", "entry.1943197250", "entry.1009551808"],
+    F: ["entry.1839648253", "entry.460497728", "entry.2099068111", "entry.1650179191"],
+    G: ["entry.1601319809", "entry.2141214341", "entry.1831269389", "entry.193273714"],
+    H: ["entry.359293673", "entry.1759869016", "entry.1666080658", "entry.1015790480"],
+    I: ["entry.1658235281", "entry.1371108546", "entry.2078959857", "entry.2043590436"],
+    J: ["entry.455748744", "entry.1643493314", "entry.1589000941", "entry.1911364374"],
+    K: ["entry.1902048207", "entry.1843571484", "entry.1615511871", "entry.1746272915"],
+    L: ["entry.1697639453", "entry.1258859198", "entry.457313052", "entry.944660583"]
 };
 const best3rdEntryMap = ["entry.1890187648", "entry.1403467225", "entry.1421677021", "entry.749664101", "entry.902754881", "entry.1166866820", "entry.204131709", "entry.1121353374"];
 const bracketEntryMap = {
-    m1: "entry.591087345", m2: "entry.260921692", m3: "entry.1067838277", m4: "entry.994980619", m5: "entry.762175629", m6: "entry.1428076437", m7: "entry.894576017", m8: "entry.971506036",
-    m9: "entry.1203991421", m10: "entry.931468007", m11: "entry.1971202550", m12: "entry.456804677", m13: "entry.1727601354", m14: "entry.1218773621", m15: "entry.370683018", m16: "entry.230336667",
-    m17: "entry.1338788740", m18: "entry.705496516", m19: "entry.857338773", m20: "entry.280165127", m21: "entry.1457106823", m22: "entry.1808289531", m23: "entry.1362985760", m24: "entry.1557282388",
-    m25: "entry.2140351824", m26: "entry.1912498434", m27: "entry.171457254", m28: "entry.1697220318", m29: "entry.938084117", m30: "entry.255342969", mf: "entry.1521005291"
+    m1: "entry.591087345", m2: "entry.260921692", m3: "entry.1067838277", m4: "entry.994980619", m5: "entry.762175629", m6: "entry.1428076437", m7: "entry.894576017", m8: "entry.971506036",
+    m9: "entry.1203991421", m10: "entry.931468007", m11: "entry.1971202550", m12: "entry.456804677", m13: "entry.1727601354", m14: "entry.1218773621", m15: "entry.370683018", m16: "entry.230336667",
+    m17: "entry.1338788740", m18: "entry.705496516", m19: "entry.857338773", m20: "entry.280165127", m21: "entry.1457106823", m22: "entry.1808289531", m23: "entry.1362985760", m24: "entry.1557282388",
+    m25: "entry.2140351824", m26: "entry.1912498434", m27: "entry.171457254", m28: "entry.1697220318", m29: "entry.938084117", m30: "entry.255342969", mf: "entry.1521005291"
 };
 
 const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
@@ -294,209 +288,209 @@ function closeLeaderboardOnBg(e) { if (e.target.id === 'leaderboard-modal') clos
 function updateSignature(val) { document.getElementById('bracket-signature').innerText = val; }
 
 function prepareForSnapshot() {
-    const bracketNameInput = document.getElementById('bracket-name-input').value;
-    const bracketName = bracketNameInput || "Anonymous JULBOL Bracket";
-    const formData = new FormData();
-    formData.append(ENTRY_NAME, bracketName);
+    const bracketNameInput = document.getElementById('bracket-name-input').value;
+    const bracketName = bracketNameInput || "Anonymous JULBOL Bracket";
+    const formData = new FormData();
+    formData.append(ENTRY_NAME, bracketName);
 
-    Object.keys(groupEntryMap).forEach(g => {
-        const teamsList = [...document.getElementById(`list_${g}`).querySelectorAll('.draggable-team')];
-        teamsList.forEach((el, index) => {
-            formData.append(groupEntryMap[g][index], el.getAttribute('data-team'));
-        });
-    });
+    Object.keys(groupEntryMap).forEach(g => {
+        const teamsList = [...document.getElementById(`list_${g}`).querySelectorAll('.draggable-team')];
+        teamsList.forEach((el, index) => {
+            formData.append(groupEntryMap[g][index], el.getAttribute('data-team'));
+        });
+    });
 
-    const thirdPlaceList = [...document.getElementById('list_3rd').querySelectorAll('.draggable-team')];
-    best3rdEntryMap.forEach((entryID, index) => {
-        if (thirdPlaceList[index]) {
-            formData.append(entryID, thirdPlaceList[index].getAttribute('data-team'));
-        }
-    });
+    const thirdPlaceList = [...document.getElementById('list_3rd').querySelectorAll('.draggable-team')];
+    best3rdEntryMap.forEach((entryID, index) => {
+        if (thirdPlaceList[index]) {
+            formData.append(entryID, thirdPlaceList[index].getAttribute('data-team'));
+        }
+    });
 
-    Object.keys(bracketEntryMap).forEach(mID => {
-        const matchup = document.getElementById(mID);
-        if (matchup) {
-            const winner = matchup.querySelector('.team.winner');
-            if (winner) {
-                const teamName = (mID === 'mf') ? document.getElementById('champion-name').innerText.trim() : winner.innerText.trim();
-                formData.append(bracketEntryMap[mID], teamName);
-            }
-        }
-    });
+    Object.keys(bracketEntryMap).forEach(mID => {
+        const matchup = document.getElementById(mID);
+        if (matchup) {
+            const winner = matchup.querySelector('.team.winner');
+            if (winner) {
+                const teamName = (mID === 'mf') ? document.getElementById('champion-name').innerText.trim() : winner.innerText.trim();
+                formData.append(bracketEntryMap[mID], teamName);
+            }
+        }
+    });
 
-    fetch(`https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/formResponse`, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: formData
-    });
+    fetch(`https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/formResponse`, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData
+    });
 
-    document.body.classList.add('snapshot-view');
-    document.getElementById('snapshot-modal').style.display = 'flex';
-    document.querySelectorAll('.is-editing').forEach(box => box.classList.remove('is-editing'));
-    setTimeout(drawAllLines, 50);
+    document.body.classList.add('snapshot-view');
+    document.getElementById('snapshot-modal').style.display = 'flex';
+    document.querySelectorAll('.is-editing').forEach(box => box.classList.remove('is-editing'));
+    setTimeout(drawAllLines, 50);
 }
 
 function exitSnapshot() {
-    document.body.classList.remove('snapshot-view');
-    document.getElementById('snapshot-modal').style.display = 'none';
+    document.body.classList.remove('snapshot-view');
+    document.getElementById('snapshot-modal').style.display = 'none';
 }
 
 function playAgain() {
-    document.querySelectorAll('.team').forEach(el => {
-        if (el.id === 'champion-name') el.innerHTML = "";
-        else if (!el.id.startsWith('s_') || el.id.startsWith('slot_3rd')) { 
-            el.innerHTML = el.id.startsWith('slot_3rd') ? "3rd #" + el.id.split('_').pop() : "...";
-            el.classList.add('empty'); 
-        }
-        el.classList.remove('winner');
-    });
-    document.getElementById('bracket-signature').innerText = "";
-    document.getElementById('bracket-name-input').value = "";
-    document.getElementById('list_3rd').innerHTML = "";
-    init();
+    document.querySelectorAll('.team').forEach(el => {
+        if (el.id === 'champion-name') el.innerHTML = "";
+        else if (!el.id.startsWith('s_') || el.id.startsWith('slot_3rd')) { 
+            el.innerHTML = el.id.startsWith('slot_3rd') ? "3rd #" + el.id.split('_').pop() : "...";
+            el.classList.add('empty'); 
+        }
+        el.classList.remove('winner');
+    });
+    document.getElementById('bracket-signature').innerText = "";
+    document.getElementById('bracket-name-input').value = "";
+    document.getElementById('list_3rd').innerHTML = "";
+    init();
 }
 
 function closeModalOnBg(e) { if (e.target.id === 'snapshot-modal') exitSnapshot(); }
 
 function enterEditMode(el, e) {
-    e.stopPropagation();
-    if (document.body.classList.contains('snapshot-view')) return;
-    document.querySelectorAll('.is-editing').forEach(box => box.classList.remove('is-editing'));
-    el.classList.add('is-editing');
+    e.stopPropagation();
+    if (document.body.classList.contains('snapshot-view')) return;
+    document.querySelectorAll('.is-editing').forEach(box => box.classList.remove('is-editing'));
+    el.classList.add('is-editing');
 }
 
 function handleGlobalClick(e) {
-    if (!e.target.closest('.group-box') && !e.target.closest('.best-3rd-container')) {
-        document.querySelectorAll('.is-editing').forEach(box => box.classList.remove('is-editing'));
-    }
+    if (!e.target.closest('.group-box') && !e.target.closest('.best-3rd-container')) {
+        document.querySelectorAll('.is-editing').forEach(box => box.classList.remove('is-editing'));
+    }
 }
 
 function init() {
-    const r1 = document.getElementById('row-1'); const r2 = document.getElementById('row-2'); const r3 = document.getElementById('row-3');
-    r1.innerHTML = ""; r2.innerHTML = ""; r3.innerHTML = "";
-    Object.keys(teams).forEach((g, idx) => {
-        const sorted = [...teams[g]].sort((a,b) => (fifaRanks[a] || 99) - (fifaRanks[b] || 99));
-        let h = `<div class="group-box" data-group="${g}" onclick="enterEditMode(this, event)"><h4>GROUP ${g}</h4><div class="team-list" id="list_${g}">`;
-        sorted.forEach((t, i) => { h += `<div class="draggable-team" draggable="true" data-team="${t}" data-rank="${i+1}º">${flags[t]} ${codes[t]}</div>`; });
-        h += `</div></div>`;
-        if (idx < 4) r1.innerHTML += h; else if (idx < 8) r2.innerHTML += h; else r3.innerHTML += h;
-    });
-    setupDragEvents(); syncAllGroupsToBracket(); setTimeout(drawAllLines, 200);
+    const r1 = document.getElementById('row-1'); const r2 = document.getElementById('row-2'); const r3 = document.getElementById('row-3');
+    r1.innerHTML = ""; r2.innerHTML = ""; r3.innerHTML = "";
+    Object.keys(teams).forEach((g, idx) => {
+        const sorted = [...teams[g]].sort((a,b) => (fifaRanks[a] || 99) - (fifaRanks[b] || 99));
+        let h = `<div class="group-box" data-group="${g}" onclick="enterEditMode(this, event)"><h4>GROUP ${g}</h4><div class="team-list" id="list_${g}">`;
+        sorted.forEach((t, i) => { h += `<div class="draggable-team" draggable="true" data-team="${t}" data-rank="${i+1}º">${flags[t]} ${codes[t]}</div>`; });
+        h += `</div></div>`;
+        if (idx < 4) r1.innerHTML += h; else if (idx < 8) r2.innerHTML += h; else r3.innerHTML += h;
+    });
+    setupDragEvents(); syncAllGroupsToBracket(); setTimeout(drawAllLines, 200);
 }
 
 function setupDragEvents() {
-    document.querySelectorAll('.team-list').forEach(list => {
-        list.addEventListener('dragstart', e => { 
-            if (!list.parentElement.classList.contains('is-editing')) { e.preventDefault(); return; }
-            if (e.target.classList.contains('draggable-team')) e.target.classList.add('dragging');
-        });
-        list.addEventListener('dragend', e => { e.target.classList.remove('dragging'); syncAllGroupsToBracket(); });
-        list.addEventListener('dragover', e => {
-            const draggingEl = document.querySelector('.dragging'); if (!draggingEl) return;
-            if (list.id !== draggingEl.parentElement.id) return;
-            e.preventDefault(); const afterElement = getDragAfterElement(list, e.clientY);
-            if (afterElement == null) list.appendChild(draggingEl); else list.insertBefore(draggingEl, afterElement);
-            updateVisualRanks(list);
-        });
-    });
+    document.querySelectorAll('.team-list').forEach(list => {
+        list.addEventListener('dragstart', e => { 
+            if (!list.parentElement.classList.contains('is-editing')) { e.preventDefault(); return; }
+            if (e.target.classList.contains('draggable-team')) e.target.classList.add('dragging');
+        });
+        list.addEventListener('dragend', e => { e.target.classList.remove('dragging'); syncAllGroupsToBracket(); });
+        list.addEventListener('dragover', e => {
+            const draggingEl = document.querySelector('.dragging'); if (!draggingEl) return;
+            if (list.id !== draggingEl.parentElement.id) return;
+            e.preventDefault(); const afterElement = getDragAfterElement(list, e.clientY);
+            if (afterElement == null) list.appendChild(draggingEl); else list.insertBefore(draggingEl, afterElement);
+            updateVisualRanks(list);
+        });
+    });
 }
 
 function getDragAfterElement(container, y) {
-    const draggableElements = [...container.querySelectorAll('.draggable-team:not(.dragging)')];
-    return draggableElements.reduce((closest, child) => {
-        const box = child.getBoundingClientRect(); const offset = y - box.top - box.height / 2;
-        if (offset < 0 && offset > closest.offset) return { offset: offset, element: child }; else return closest;
-    }, { offset: Number.NEGATIVE_INFINITY }).element;
+    const draggableElements = [...container.querySelectorAll('.draggable-team:not(.dragging)')];
+    return draggableElements.reduce((closest, child) => {
+        const box = child.getBoundingClientRect(); const offset = y - box.top - box.height / 2;
+        if (offset < 0 && offset > closest.offset) return { offset: offset, element: child }; else return closest;
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
 }
 
 function updateVisualRanks(list) {
-    list.querySelectorAll('.draggable-team').forEach((item, index) => {
-        item.setAttribute('data-rank', (index + 1) + "º");
-    });
+    list.querySelectorAll('.draggable-team').forEach((item, index) => {
+        item.setAttribute('data-rank', (index + 1) + "º");
+    });
 }
 
 function syncAllGroupsToBracket() {
-    const groups = document.querySelectorAll('.group-box');
-    const thirdPlacePool = [];
-    groups.forEach(box => {
-        const group = box.getAttribute('data-group');
-        const teamsInOrder = [...box.querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team'));
-        [1, 2].forEach(rank => {
-            const team = teamsInOrder[rank-1]; const slotId = `s_${group}${rank}`; const slotEl = document.getElementById(slotId);
-            const newContent = `${flags[team]} ${codes[team]}`;
-            if (slotEl && slotEl.innerHTML !== newContent) { clearBranch(slotId); slotEl.innerHTML = newContent; slotEl.classList.remove('winner', 'empty'); }
-        });
-        thirdPlacePool.push(teamsInOrder[2]);
-    });
-    const thirdList = document.getElementById('list_3rd');
-    const existingInList = [...thirdList.querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team'));
-    if (JSON.stringify(thirdPlacePool.sort()) !== JSON.stringify(existingInList.sort())) {
-        const newOrder = existingInList.filter(t => thirdPlacePool.includes(t));
-        thirdPlacePool.forEach(t => { if(!newOrder.includes(t)) newOrder.push(t); });
-        if(existingInList.length === 0) newOrder.sort((a,b) => (fifaRanks[a] || 99) - (fifaRanks[b] || 99));
-        thirdList.innerHTML = ""; newOrder.forEach((t, i) => { thirdList.innerHTML += `<div class="draggable-team" draggable="true" data-team="${t}" data-rank="${i+1}º">${flags[t]} ${codes[t]}</div>`; });
-        updateVisualRanks(thirdList);
-    }
-    const qualifiers = [...thirdList.querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team')).slice(0, 8);
-    qualifiers.forEach((team, i) => {
-        const slotId = `slot_3rd_${i+1}`; const slotEl = document.getElementById(slotId);
-        const newContent = `${flags[team]} ${codes[team]}`;
-        if (slotEl && slotEl.innerHTML !== newContent) { clearBranch(slotId); slotEl.innerHTML = newContent; slotEl.classList.remove('winner', 'empty'); }
-    });
-    for (let i = qualifiers.length; i < 8; i++) {
-        const slotId = `slot_3rd_${i+1}`; const slotEl = document.getElementById(slotId);
-        if (slotEl && slotEl.innerHTML !== `3rd #${i+1}`) { clearBranch(slotId); slotEl.innerHTML = `3rd #${i+1}`; slotEl.classList.add('empty'); }
-    }
-    drawAllLines();
+    const groups = document.querySelectorAll('.group-box');
+    const thirdPlacePool = [];
+    groups.forEach(box => {
+        const group = box.getAttribute('data-group');
+        const teamsInOrder = [...box.querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team'));
+        [1, 2].forEach(rank => {
+            const team = teamsInOrder[rank-1]; const slotId = `s_${group}${rank}`; const slotEl = document.getElementById(slotId);
+            const newContent = `${flags[team]} ${codes[team]}`;
+            if (slotEl && slotEl.innerHTML !== newContent) { clearBranch(slotId); slotEl.innerHTML = newContent; slotEl.classList.remove('winner', 'empty'); }
+        });
+        thirdPlacePool.push(teamsInOrder[2]);
+    });
+    const thirdList = document.getElementById('list_3rd');
+    const existingInList = [...thirdList.querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team'));
+    if (JSON.stringify(thirdPlacePool.sort()) !== JSON.stringify(existingInList.sort())) {
+        const newOrder = existingInList.filter(t => thirdPlacePool.includes(t));
+        thirdPlacePool.forEach(t => { if(!newOrder.includes(t)) newOrder.push(t); });
+        if(existingInList.length === 0) newOrder.sort((a,b) => (fifaRanks[a] || 99) - (fifaRanks[b] || 99));
+        thirdList.innerHTML = ""; newOrder.forEach((t, i) => { thirdList.innerHTML += `<div class="draggable-team" draggable="true" data-team="${t}" data-rank="${i+1}º">${flags[t]} ${codes[t]}</div>`; });
+        updateVisualRanks(thirdList);
+    }
+    const qualifiers = [...thirdList.querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team')).slice(0, 8);
+    qualifiers.forEach((team, i) => {
+        const slotId = `slot_3rd_${i+1}`; const slotEl = document.getElementById(slotId);
+        const newContent = `${flags[team]} ${codes[team]}`;
+        if (slotEl && slotEl.innerHTML !== newContent) { clearBranch(slotId); slotEl.innerHTML = newContent; slotEl.classList.remove('winner', 'empty'); }
+    });
+    for (let i = qualifiers.length; i < 8; i++) {
+        const slotId = `slot_3rd_${i+1}`; const slotEl = document.getElementById(slotId);
+        if (slotEl && slotEl.innerHTML !== `3rd #${i+1}`) { clearBranch(slotId); slotEl.innerHTML = `3rd #${i+1}`; slotEl.classList.add('empty'); }
+    }
+    drawAllLines();
 }
 
 function clearBranch(startId) {
-    let nextId = nextMap[startId]; if (!nextId) return;
-    const targetSlot = document.getElementById(nextId);
-    if (targetSlot) {
-        if (nextId !== 'champion-name') { targetSlot.innerHTML = "..."; targetSlot.classList.add('empty'); } 
-        else { targetSlot.innerHTML = ""; }
-        Array.from(targetSlot.parentElement.children).forEach(s => s.classList.remove('winner'));
-        clearBranch(nextId);
-    }
+    let nextId = nextMap[startId]; if (!nextId) return;
+    const targetSlot = document.getElementById(nextId);
+    if (targetSlot) {
+        if (nextId !== 'champion-name') { targetSlot.innerHTML = "..."; targetSlot.classList.add('empty'); } 
+        else { targetSlot.innerHTML = ""; }
+        Array.from(targetSlot.parentElement.children).forEach(s => s.classList.remove('winner'));
+        clearBranch(nextId);
+    }
 }
 
 function adv(el, nId) {
-    if(el.classList.contains('empty') || el.innerHTML.includes("...")) return;
-    clearBranch(el.id); const target = document.getElementById(nId);
-    if (target.innerHTML !== "..." && target.innerHTML !== el.innerHTML) clearBranch(target.id);
-    target.innerHTML = el.innerHTML; target.classList.remove('empty');
-    Array.from(el.parentElement.children).forEach(s => s.classList.remove('winner'));
-    el.classList.add('winner'); drawAllLines();
+    if(el.classList.contains('empty') || el.innerHTML.includes("...")) return;
+    clearBranch(el.id); const target = document.getElementById(nId);
+    if (target.innerHTML !== "..." && target.innerHTML !== el.innerHTML) clearBranch(target.id);
+    target.innerHTML = el.innerHTML; target.classList.remove('empty');
+    Array.from(el.parentElement.children).forEach(s => s.classList.remove('winner'));
+    el.classList.add('winner'); drawAllLines();
 }
 
 function setWinner(el) {
-    if(el.classList.contains('empty') || el.innerHTML.includes("...")) return;
-    clearBranch(el.id); Array.from(el.parentElement.children).forEach(s => s.classList.remove('winner'));
-    el.classList.add('winner'); document.getElementById('champion-name').innerHTML = el.innerHTML; drawAllLines();
+    if(el.classList.contains('empty') || el.innerHTML.includes("...")) return;
+    clearBranch(el.id); Array.from(el.parentElement.children).forEach(s => s.classList.remove('winner'));
+    el.classList.add('winner'); document.getElementById('champion-name').innerHTML = el.innerHTML; drawAllLines();
 }
 
 function drawAllLines() {
-    const svg = document.getElementById('bracket-svg'); const container = document.getElementById('tree-container').getBoundingClientRect();
-    svg.innerHTML = ''; 
-    const connections = [{from: 'm1', to: 'M92_T'}, {from: 'm2', to: 'M92_B'}, {from: 'm3', to: 'M91_T'}, {from: 'm4', to: 'M91_B'},{from: 'm5', to: 'M90_T'}, {from: 'm6', to: 'M90_B'}, {from: 'm7', to: 'M89_T'}, {from: 'm8', to: 'M89_B'},{from: 'm9', to: 'M99_T'}, {from: 'm10', to: 'M99_B'}, {from: 'm11', to: 'M97_T'}, {from: 'm12', to: 'M97_B'},{from: 'm13', to: 'M101_T'}, {from: 'm14', to: 'M101_B'}, {from: 'm15', to: 'FINAL_L'}, {from: 'mf', to: 'champion-display'},{from: 'm16', to: 'FINAL_R'}, {from: 'm17', to: 'M102_T'}, {from: 'm18', to: 'M102_B'},{from: 'm19', to: 'M98_T'}, {from: 'm20', to: 'M98_B'}, {from: 'm21', to: 'M100_T'}, {from: 'm22', to: 'M100_B'},{from: 'm23', to: 'M93_T'}, {from: 'm24', to: 'M93_B'}, {from: 'm25', to: 'M94_T'}, {from: 'm26', to: 'M94_B'},{from: 'm27', to: 'M95_T'}, {from: 'm28', to: 'M95_B'}, {from: 'm29', to: 'M96_T'}, {from: 'm30', to: 'M96_B'}];
-    connections.forEach(conn => {
-        const startEl = document.getElementById(conn.from); const endNodeId = (conn.from === 'mf') ? 'champion-name' : conn.to;
-        const endEl = document.getElementById(endNodeId); const endBox = document.getElementById(conn.to);
-        if(!startEl || !endEl || !endBox) return;
-        const sRect = startEl.getBoundingClientRect(); const eRect = endBox.getBoundingClientRect();
-        const isLeft = startEl.closest('.left-bracket') || startEl.id === 'm15';
-        let x1 = isLeft ? sRect.right : sRect.left; let y1 = sRect.top + sRect.height / 2;
-        let x2 = eRect.left + eRect.width / 2; let y2 = (conn.to.endsWith('_T') || conn.to === 'FINAL_L' || conn.to === 'FINAL_R') ? eRect.top : eRect.bottom;
-        if(conn.to === 'champion-display') y2 = eRect.bottom;
-        x1 -= container.left; y1 -= container.top; x2 -= container.left; y2 -= container.top;
-        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        const d = `M ${x1} ${y1} L ${x2} ${y1} L ${x2} ${y2}`;
-        path.setAttribute("d", d); path.setAttribute("class", "path-line");
-        const winner = startEl.querySelector('.team.winner');
-        if(winner && (endEl.innerHTML === winner.innerHTML)) path.classList.add('active');
-        svg.appendChild(path);
-    });
+    const svg = document.getElementById('bracket-svg'); const container = document.getElementById('tree-container').getBoundingClientRect();
+    svg.innerHTML = ''; 
+    const connections = [{from: 'm1', to: 'M92_T'}, {from: 'm2', to: 'M92_B'}, {from: 'm3', to: 'M91_T'}, {from: 'm4', to: 'M91_B'},{from: 'm5', to: 'M90_T'}, {from: 'm6', to: 'M90_B'}, {from: 'm7', to: 'M89_T'}, {from: 'm8', to: 'M89_B'},{from: 'm9', to: 'M99_T'}, {from: 'm10', to: 'M99_B'}, {from: 'm11', to: 'M97_T'}, {from: 'm12', to: 'M97_B'},{from: 'm13', to: 'M101_T'}, {from: 'm14', to: 'M101_B'}, {from: 'm15', to: 'FINAL_L'}, {from: 'mf', to: 'champion-display'},{from: 'm16', to: 'FINAL_R'}, {from: 'm17', to: 'M102_T'}, {from: 'm18', to: 'M102_B'},{from: 'm19', to: 'M98_T'}, {from: 'm20', to: 'M98_B'}, {from: 'm21', to: 'M100_T'}, {from: 'm22', to: 'M100_B'},{from: 'm23', to: 'M93_T'}, {from: 'm24', to: 'M93_B'}, {from: 'm25', to: 'M94_T'}, {from: 'm26', to: 'M94_B'},{from: 'm27', to: 'M95_T'}, {from: 'm28', to: 'M95_B'}, {from: 'm29', to: 'M96_T'}, {from: 'm30', to: 'M96_B'}];
+    connections.forEach(conn => {
+        const startEl = document.getElementById(conn.from); const endNodeId = (conn.from === 'mf') ? 'champion-name' : conn.to;
+        const endEl = document.getElementById(endNodeId); const endBox = document.getElementById(conn.to);
+        if(!startEl || !endEl || !endBox) return;
+        const sRect = startEl.getBoundingClientRect(); const eRect = endBox.getBoundingClientRect();
+        const isLeft = startEl.closest('.left-bracket') || startEl.id === 'm15';
+        let x1 = isLeft ? sRect.right : sRect.left; let y1 = sRect.top + sRect.height / 2;
+        let x2 = eRect.left + eRect.width / 2; let y2 = (conn.to.endsWith('_T') || conn.to === 'FINAL_L' || conn.to === 'FINAL_R') ? eRect.top : eRect.bottom;
+        if(conn.to === 'champion-display') y2 = eRect.bottom;
+        x1 -= container.left; y1 -= container.top; x2 -= container.left; y2 -= container.top;
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        const d = `M ${x1} ${y1} L ${x2} ${y1} L ${x2} ${y2}`;
+        path.setAttribute("d", d); path.setAttribute("class", "path-line");
+        const winner = startEl.querySelector('.team.winner');
+        if(winner && (endEl.innerHTML === winner.innerHTML)) path.classList.add('active');
+        svg.appendChild(path);
+    });
 }
 window.addEventListener('resize', drawAllLines); init();
 </script>
