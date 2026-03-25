@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>JULBOL 2.2</title>
+    <title>JULBOL 2.3</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -59,22 +59,33 @@
         .winner { background: color-mix(in srgb, var(--accent), black 80%) !important; color: var(--accent) !important; font-weight: bold; }
         .empty { color: #333; font-weight: 400; font-size: 10px; }
 
+        /* SMART TITLE LOGIC */
+        .team[data-title]::before {
+            content: attr(data-title);
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            font-size: 10px;
+            color: #555;
+            letter-spacing: 1px;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .team:not(.empty)::before { opacity: 0; }
+
         .center-stage { display: flex; align-items: center; justify-content: center; gap: 15px; height: 800px; min-width: 240px; position: relative; z-index: 4; }
         .final-column { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; gap: 40px;}
         
         #champion-display, #bronze-display { width: 110px; padding: 8px 8px; border-radius: 10px; background: #000; text-align: center; z-index: 10; }
         #champion-display { border: 2px solid var(--accent); }
-        #bronze-display { border: 2px solid var(--bronze); margin-top: 10px; }
+        #bronze-display { border: 2px solid var(--bronze); }
         
         #champion-display h2 { margin: 0; font-size: 10px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
         #bronze-display h2 { margin: 0; font-size: 10px; color: var(--bronze); text-transform: uppercase; letter-spacing: 1px; }
         
         #champion-name, #bronze-name { font-size: 18px; font-weight: 800; margin-top: 4px; min-height: 24px; color: #fff; }
         
-        /* MATCH TITLE STYLING */
-        .match-title { font-size: 8px; color: #666; text-transform: uppercase; letter-spacing: 1px; padding: 2px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-
-        .final-match { border: 2px solid var(--accent); background: #111; width: 110px; margin: 0; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
+        .final-match { border: 2px solid var(--accent); background: #111; width: var(--box-w); margin: 0; }
         .third-place-match { border: 1px solid var(--bronze); background: #111; width: var(--box-w); margin: 0; }
 
         #bracket-signature { 
@@ -165,15 +176,13 @@
         <div class="final-column">
             <div id="champion-display"><h2>🏆 WORLD CHAMPION</h2><div id="champion-name"></div></div>
             <div class="matchup final-match" id="mf">
-                <div class="match-title">FINAL</div>
-                <div id="FINAL_L" class="team empty" onclick="setWinner(this)">...</div>
-                <div id="FINAL_R" class="team empty" onclick="setWinner(this)">...</div>
+                <div id="FINAL_L" class="team empty" data-title="FINAL" onclick="setWinner(this)">...</div>
+                <div id="FINAL_R" class="team empty" data-title="FINAL" onclick="setWinner(this)">...</div>
             </div>
             
             <div class="matchup third-place-match" id="m31">
-                <div class="match-title">3rd PLACE MATCH</div>
-                <div id="3RD_L" class="team empty" onclick="setBronze(this)">...</div>
-                <div id="3RD_R" class="team empty" onclick="setBronze(this)">...</div>
+                <div id="3RD_L" class="team empty" data-title="3rd PLACE" onclick="setBronze(this)">...</div>
+                <div id="3RD_R" class="team empty" data-title="3rd PLACE" onclick="setBronze(this)">...</div>
             </div>
             <div id="bronze-display"><h2>🥉 3rd PLACE</h2><div id="bronze-name"></div></div>
         </div>
@@ -231,7 +240,7 @@
     <div class="modal-content leaderboard-modal-content" onclick="event.stopPropagation()">
         <h2>🏆 LIVE LEADERBOARD</h2>
         <div class="iframe-container">
-            <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQw9ufqzeyxhwBy_59J6hbwHKK19XkA1Ztw0sldVL37DYiiL4D0n7Fl8-XqWSeg0balSK731LYUpHUH/pubhtml?gid=2134320183&amp;single=true&amp;widget=false&amp;headers=false&amp;chrome=false&amp;rm=minimal"></iframe>
+            <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQw9ufqzeyxhwBy_59J6hbwHKK19XkA1Ztw0sldVL37DYiiL4D0n7Fl8-XqWSeg0balSK731LYUpHUH/pubhtml?gid=2134320183&amp;single=true&amp;widget=false&amp;headers=false&amp;chrome=false"></iframe>
         </div>
         <button class="close-modal-btn" onclick="closeLeaderboard()">CLOSE</button>
     </div>
