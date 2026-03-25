@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>JULBOL 1.8.4</title>
+    <title>JULBOL 1.8.5</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -105,30 +105,29 @@
         .modal-content h2 { color: var(--accent); margin: 0 0 10px 0; font-size: 28px; letter-spacing: 2px; }
         .modal-content p { color: #ccc; line-height: 1.6; margin-bottom: 35px; font-size: 18px; }
         
-        /* UPDATED CENTERING LOGIC */
-.iframe-container { 
-    width: 100%; 
-    height: calc(100% - 70px); 
-    border-radius: 10px; 
-    overflow: hidden; 
-    background: #000; 
-    margin-top: 15px; 
-    position: relative;
-    /* This centers the iframe content itself */
-    display: flex;
-    justify-content: center; 
-    align-items: flex-start;
-}
+        /* UPDATED CENTERING LOGIC + SCROLLBAR FIX */
+        .iframe-container { 
+            width: 100%; 
+            height: calc(100% - 70px); 
+            border-radius: 10px; 
+            overflow-x: hidden; /* REMOVE BOTTOM SCROLLBAR */
+            background: #000; 
+            margin-top: 15px; 
+            position: relative;
+            display: flex;
+            justify-content: center; 
+            align-items: flex-start;
+        }
 
-/* DARK MODE IFRAME FILTER + SCALE */
-.iframe-container iframe { 
-    width: 85%; 
-    height: 100%; 
-    border: none; 
-    filter: invert(0.9) hue-rotate(180deg) brightness(1.1) contrast(1.1);
-    /* Some browsers need this to ensure the internal table respects centering */
-    margin: 0 auto;
-}
+        /* DARK MODE IFRAME FILTER + SCALE */
+        .iframe-container iframe { 
+            width: 85%; 
+            height: 100%; 
+            border: none; 
+            overflow: hidden; /* ADDITIONAL SCROLLBAR PREVENTION */
+            filter: invert(0.9) hue-rotate(180deg) brightness(1.1) contrast(1.1);
+            margin: 0 auto;
+        }
 
         .close-modal-btn { background: var(--accent); color: #000; border: none; padding: 15px 30px; cursor: pointer; border-radius: 5px; text-transform: uppercase; font-family: 'Oswald'; font-weight: bold; font-size: 14px; margin-top: 10px;}
 
@@ -244,7 +243,7 @@
     <div class="modal-content leaderboard-modal-content" onclick="event.stopPropagation()">
         <h2>🏆 LIVE LEADERBOARD</h2>
         <div class="iframe-container">
-            <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQw9ufqzeyxhwBy_59J6hbwHKK19XkA1Ztw0sldVL37DYiiL4D0n7Fl8-XqWSeg0balSK731LYUpHUH/pubhtml?gid=2134320183&amp;single=true&amp;widget=false&amp;headers=false&amp;chrome=false&amp;rm=minimal"></iframe>
+            <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQw9ufqzeyxhwBy_59J6hbwHKK19XkA1Ztw0sldVL37DYiiL4D0n7Fl8-XqWSeg0balSK731LYUpHUH/pubhtml?gid=2134320183&amp;single=true&amp;widget=false&amp;headers=false&amp;chrome=false"></iframe>
         </div>
         <button class="close-modal-btn" onclick="closeLeaderboard()">CLOSE</button>
     </div>
