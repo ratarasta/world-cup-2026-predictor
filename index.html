@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>JULBOL 1.5</title>
+    <title>JULBOL 1.4</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -86,45 +87,14 @@
         .reset-btn { background: var(--reset-red); color: #fff; padding: 8px 30px; font-size: 12px; font-weight: 500; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); width: 100%; cursor: pointer; text-transform: uppercase; font-family: 'Oswald'; }
         .reset-btn:hover { background: #ff0000; }
 
-        /* LEADERBOARD STYLING AT THE BOTTOM */
-       /* UPDATED LEADERBOARD STYLING */
-.leaderboard-section { 
-    width: 100%; 
-    max-width: 700px; /* Slimmer look */
-    margin: 40px auto 100px auto; 
-    padding: 20px; 
-    text-align: center; 
-    position: relative; 
-    z-index: 10;
-}
+        #snapshot-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
+        .modal-content { background: #000; border: 2px solid var(--accent); padding: 50px; border-radius: 20px; text-align: center; max-width: 450px; box-shadow: 0 0 50px rgba(0,0,0,1); }
+        .modal-content h2 { color: var(--accent); margin: 0 0 10px 0; font-size: 28px; letter-spacing: 2px; }
+        .modal-content p { color: #ccc; line-height: 1.6; margin-bottom: 35px; font-size: 18px; }
+        .close-modal-btn { background: var(--accent); color: #000; border: none; padding: 15px 30px; cursor: pointer; border-radius: 5px; text-transform: uppercase; font-family: 'Oswald'; font-weight: bold; font-size: 14px; }
 
-.leaderboard-section h2 { 
-    color: var(--accent); 
-    text-transform: uppercase; 
-    letter-spacing: 8px; 
-    font-size: 28px; 
-    margin-bottom: 20px; 
-    text-shadow: 0 0 15px rgba(0, 255, 136, 0.5); 
-}
-
-.iframe-container { 
-    width: 100%; 
-    height: 450px; 
-    border: 2px solid var(--accent); 
-    border-radius: 15px; 
-    overflow: hidden; 
-    background: #111; /* Dark background so white flash is minimized */
-    box-shadow: 0 0 40px rgba(0, 255, 136, 0.2);
-    position: relative;
-}
-
-/* This creates a "mask" to hide the Google Sheets tabs at the bottom */
-.iframe-container iframe { 
-    width: 100%; 
-    height: calc(100% + 30px); /* Pushes the Google tabs off the bottom */
-    border: none;
-    margin-top: -5px;
-}
+        .snapshot-view .footer-nav, .snapshot-view .header-nav { display: none !important; }
+        .snapshot-view #stadium-backdrop { opacity: 0.05; }
     </style>
 </head>
 <body onclick="handleGlobalClick(event)">
@@ -222,13 +192,6 @@
     </div>
 </div>
 
-<div class="leaderboard-section">
-    <h2>🏆 LIVE SCOREBOARD</h2>
-    <div class="iframe-container">
-        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQw9ufqzeyxhwBy_59J6hbwHKK19XkA1Ztw0sldVL37DYiiL4D0n7Fl8-XqWSeg0balSK731LYUpHUH/pubhtml?widget=true&amp;headers=false&amp;chrome=false&amp;gridlines=false"></iframe>
-    </div>
-</div>
-
 <div id="snapshot-modal" onclick="closeModalOnBg(event)">
     <div class="modal-content" onclick="event.stopPropagation()">
         <h2>BRACKET PREDICTION SAVED</h2>
@@ -264,7 +227,8 @@ const bracketEntryMap = {
     m25: "entry.2140351824", m26: "entry.1912498434", m27: "entry.171457254", m28: "entry.1697220318", m29: "entry.938084117", m30: "entry.255342969", mf: "entry.1521005291"
 };
 
-const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
+// --- FLAGS & CODES (MANUALLY ESCAPED) ---
+const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿"};
 const codes = {"Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czechia":"CZE","Canada":"CAN","Switzerland":"SUI","Qatar":"QAT","Italy":"ITA","Brazil":"BRA","Morocco":"MAR","Haiti":"HTI","Scotland":"SCO","USA":"USA","Paraguay":"PAR","Australia":"AUS","Slovakia":"SVK","Germany":"GER","Curaçao":"CUW","Ivory Coast":"CIV","Ecuador":"ECU","Netherlands":"NED","Japan":"JPN","Tunisia":"TUN","Ukraine":"UKR","Belgium":"BEL","Egypt":"EGY","Iran":"IRN","New Zealand":"NZL","Spain":"ESP","Cape Verde":"CPV","Saudi Arabia":"KSA","Uruguay":"URU","France":"FRA","Senegal":"SEN","Norway":"NOR","Iraq":"IRQ","Argentina":"ARG","Algeria":"DZA","Austria":"AUT","Jordan":"JOR","Portugal":"POR","Uzbekistan":"UZB","Colombia":"COL","Jamaica":"JAM","England":"ENG","Croatia":"CRO","Ghana":"GHA","Panama":"PAN"};
 const teams = {A:["Mexico","South Korea","Czechia","South Africa"], B:["Italy","Switzerland","Canada","Qatar"], C:["Brazil","Morocco","Scotland","Haiti"], D:["USA","Australia","Paraguay","Slovakia"], E:["Germany","Ecuador","Ivory Coast","Curaçao"], F:["Netherlands","Japan","Ukraine","Tunisia"], G:["Belgium","Iran","Egypt","New Zealand"], H:["Spain","Uruguay","Saudi Arabia","Cape Verde"], I:["France","Senegal","Norway","Iraq"], J:["Argentina","Austria","Algeria","Jordan"], K:["Portugal","Colombia","Uzbekistan","Jamaica"], L:["England","Croatia","Ghana","Panama"]};
 const fifaRanks = {"Argentina":1,"France":2,"Belgium":3,"England":4,"Brazil":5,"Portugal":6,"Netherlands":7,"Spain":8,"Italy":9,"Croatia":10,"USA":11,"Colombia":12,"Morocco":13,"Uruguay":14,"Germany":15,"Japan":16,"Switzerland":17,"Senegal":18,"Iran":19,"Mexico":20,"Ukraine":21,"South Korea":22,"Australia":23,"Austria":24,"Ecuador":25,"Algeria":26,"South Africa":27,"Norway":28,"Uzbekistan":29,"Czechia":30,"Saudi Arabia":31,"Ghana":32,"Iraq":33,"Cape Verde":34,"Jamaica":35,"Jordan":36,"Paraguay":37,"Panama":38,"Slovakia":39,"Tunisia":40,"Canada":41,"Haiti":42,"Curaçao":43,"New Zealand":44,"Scotland":45,"Qatar":46};
@@ -278,6 +242,7 @@ function prepareForSnapshot() {
     const formData = new FormData();
     formData.append(ENTRY_NAME, bracketName);
 
+    // 1. Loop and Map Groups A-L Individual Positions
     Object.keys(groupEntryMap).forEach(g => {
         const teamsList = [...document.getElementById(`list_${g}`).querySelectorAll('.draggable-team')];
         teamsList.forEach((el, index) => {
@@ -285,6 +250,7 @@ function prepareForSnapshot() {
         });
     });
 
+    // 2. Loop and Map Best 3rd Place Individual Rankings
     const thirdPlaceList = [...document.getElementById('list_3rd').querySelectorAll('.draggable-team')];
     best3rdEntryMap.forEach((entryID, index) => {
         if (thirdPlaceList[index]) {
@@ -292,17 +258,20 @@ function prepareForSnapshot() {
         }
     });
 
+    // 3. Loop and Map Bracket Match Winners Individually
     Object.keys(bracketEntryMap).forEach(mID => {
         const matchup = document.getElementById(mID);
         if (matchup) {
             const winner = matchup.querySelector('.team.winner');
             if (winner) {
+                // Pedestal special case for champion name
                 const teamName = (mID === 'mf') ? document.getElementById('champion-name').innerText.trim() : winner.innerText.trim();
                 formData.append(bracketEntryMap[mID], teamName);
             }
         }
     });
 
+    // Background Submit to Google
     fetch(`https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/formResponse`, {
         method: 'POST',
         mode: 'no-cors',
