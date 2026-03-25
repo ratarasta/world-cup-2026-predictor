@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>JULBOL 2.1</title>
+    <title>JULBOL 2.2</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -31,14 +31,14 @@
         .group-row { display: grid; grid-template-columns: repeat(4, 110px); gap: 15px; }
         .dashboard-divider { width: 1px; background: rgba(255,255,255,0.15); height: 280px; margin: 0 10px; }
 
-        .group-box, .best-3rd-container { background: var(--card); backdrop-filter: blur(10px); padding: 8px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; transition: all 0.3s ease; position: relative; width: 100px; cursor: pointer; }
+        .group-box, .best-3rd-container { background: var(--card); backdrop-filter: blur(10px); padding: 8px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; transition: all 0.3s ease; position: relative; width: 100px; cursor: pointer; }
         .best-3rd-container { width: 120px; padding: 12px; }
 
         .is-editing { background: rgba(255, 255, 255, 0.05) !important; border-color: var(--accent) !important; box-shadow: 0 0 20px var(--accent); transform: scale(1.05); z-index: 100; }
         @keyframes shake { 0% { transform: rotate(0deg); } 25% { transform: rotate(1.2deg); } 75% { transform: rotate(-1.2deg); } 100% { transform: rotate(0deg); } }
         .is-editing .draggable-team { animation: shake 0.35s infinite ease-in-out; }
 
-        .group-box h4, .best-3rd-container h4 { margin: 0 0 8px 0; color: var(--accent); font-size: 10px; text-align: center; border-bottom: 1px solid rgba(255, 255, 255,0.1); padding-bottom: 4px; pointer-events: none;}
+        .group-box h4, .best-3rd-container h4 { margin: 0 0 8px 0; color: var(--accent); font-size: 10px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px; pointer-events: none;}
         .draggable-team { background: rgba(255,255,255,0.05); border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); cursor: grab; display: flex; align-items: center; justify-content: center; gap: 4px; user-select: none; font-size: 16px; font-weight: 500; width: var(--box-w); height: var(--box-h); box-sizing: border-box; transition: background 0.4s ease, color 0.4s ease; overflow: hidden; }
         
         .draggable-team[data-rank="1º"], .draggable-team[data-rank="2º"] { background: color-mix(in srgb, var(--accent), transparent 85%); color: var(--accent); font-weight: 700; border-color: color-mix(in srgb, var(--accent), transparent 70%); }
@@ -71,7 +71,10 @@
         
         #champion-name, #bronze-name { font-size: 18px; font-weight: 800; margin-top: 4px; min-height: 24px; color: #fff; }
         
-        .final-match { border: 2px solid var(--accent); background: #111; width: var(--box-w); margin: 0; }
+        /* MATCH TITLE STYLING */
+        .match-title { font-size: 8px; color: #666; text-transform: uppercase; letter-spacing: 1px; padding: 2px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+        .final-match { border: 2px solid var(--accent); background: #111; width: 110px; margin: 0; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
         .third-place-match { border: 1px solid var(--bronze); background: #111; width: var(--box-w); margin: 0; }
 
         #bracket-signature { 
@@ -95,7 +98,6 @@
         .reset-btn { background: var(--reset-red); color: #fff; padding: 8px 30px; font-size: 12px; font-weight: 500; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); width: 100%; cursor: pointer; text-transform: uppercase; font-family: 'Oswald'; }
         .reset-btn:hover { background: #ff0000; }
 
-        /* MODAL STYLING */
         #snapshot-modal, #leaderboard-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
         .modal-content { background: #000; border: 2px solid var(--accent); padding: 50px; border-radius: 20px; text-align: center; max-width: 450px; box-shadow: 0 0 50px rgba(0,0,0,1); }
         
@@ -162,9 +164,17 @@
         
         <div class="final-column">
             <div id="champion-display"><h2>🏆 WORLD CHAMPION</h2><div id="champion-name"></div></div>
-            <div class="matchup final-match" id="mf"><div id="FINAL_L" class="team empty" onclick="setWinner(this)">...</div><div id="FINAL_R" class="team empty" onclick="setWinner(this)">...</div></div>
+            <div class="matchup final-match" id="mf">
+                <div class="match-title">FINAL</div>
+                <div id="FINAL_L" class="team empty" onclick="setWinner(this)">...</div>
+                <div id="FINAL_R" class="team empty" onclick="setWinner(this)">...</div>
+            </div>
             
-            <div class="matchup third-place-match" id="m31"><div id="3RD_L" class="team empty" onclick="setBronze(this)">...</div><div id="3RD_R" class="team empty" onclick="setBronze(this)">...</div></div>
+            <div class="matchup third-place-match" id="m31">
+                <div class="match-title">3rd PLACE MATCH</div>
+                <div id="3RD_L" class="team empty" onclick="setBronze(this)">...</div>
+                <div id="3RD_R" class="team empty" onclick="setBronze(this)">...</div>
+            </div>
             <div id="bronze-display"><h2>🥉 3rd PLACE</h2><div id="bronze-name"></div></div>
         </div>
 
@@ -221,7 +231,7 @@
     <div class="modal-content leaderboard-modal-content" onclick="event.stopPropagation()">
         <h2>🏆 LIVE LEADERBOARD</h2>
         <div class="iframe-container">
-            <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQw9ufqzeyxhwBy_59J6hbwHKK19XkA1Ztw0sldVL37DYiiL4D0n7Fl8-XqWSeg0balSK731LYUpHUH/pubhtml?gid=2134320183&amp;single=true&amp;widget=false&amp;headers=false&amp;chrome=false"></iframe>
+            <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQw9ufqzeyxhwBy_59J6hbwHKK19XkA1Ztw0sldVL37DYiiL4D0n7Fl8-XqWSeg0balSK731LYUpHUH/pubhtml?gid=2134320183&amp;single=true&amp;widget=false&amp;headers=false&amp;chrome=false&amp;rm=minimal"></iframe>
         </div>
         <button class="close-modal-btn" onclick="closeLeaderboard()">CLOSE</button>
     </div>
@@ -249,7 +259,7 @@ const best3rdEntryMap = ["entry.1890187648", "entry.1403467225", "entry.14216770
 const bracketEntryMap = {
     m1: "entry.591087345", m2: "entry.260921692", m3: "entry.1067838277", m4: "entry.994980619", m5: "entry.762175629", m6: "entry.1428076437", m7: "entry.894576017", m8: "entry.971506036",
     m9: "entry.1203991421", m10: "entry.931468007", m11: "entry.1971202550", m12: "entry.456804677", m13: "entry.1727601354", m14: "entry.1218773621", m15: "entry.370683018", m16: "entry.230336667",
-    m17: "entry.1338788740", m18: "entry.705496516", m19: "entry.857338773", m20: "entry.280165127", m21: "entry.1457106823", m22: "entry.1808289531", m23: "entry.1362985760", m24: "entry.1557282388",
+    m17: "entry.1338788740", m18: "entry.705496516", m19: "entry.857338773", m20: "entry.981887018", m21: "entry.1457106823", m22: "entry.1808289531", m23: "entry.1362985760", m24: "entry.1557282388",
     m25: "entry.2140351824", m26: "entry.1912498434", m27: "entry.171457254", m28: "entry.1697220318", m29: "entry.938084117", m30: "entry.255342969", mf: "entry.1521005291", m31: "entry.905291300"
 };
 
@@ -258,7 +268,6 @@ const codes = {"Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czechia"
 const teams = {A:["Mexico","South Korea","Czechia","South Africa"], B:["Italy","Switzerland","Canada","Qatar"], C:["Brazil","Morocco","Scotland","Haiti"], D:["USA","Australia","Paraguay","Slovakia"], E:["Germany","Ecuador","Ivory Coast","Curaçao"], F:["Netherlands","Japan","Ukraine","Tunisia"], G:["Belgium","Iran","Egypt","New Zealand"], H:["Spain","Uruguay","Saudi Arabia","Cape Verde"], I:["France","Senegal","Norway","Iraq"], J:["Argentina","Austria","Algeria","Jordan"], K:["Portugal","Colombia","Uzbekistan","Jamaica"], L:["England","Croatia","Ghana","Panama"]};
 const fifaRanks = {"Argentina":1,"France":2,"Belgium":3,"England":4,"Brazil":5,"Portugal":6,"Netherlands":7,"Spain":8,"Italy":9,"Croatia":10,"USA":11,"Colombia":12,"Morocco":13,"Uruguay":14,"Germany":15,"Japan":16,"Switzerland":17,"Senegal":18,"Iran":19,"Mexico":20,"Ukraine":21,"South Korea":22,"Australia":23,"Austria":24,"Ecuador":25,"Algeria":26,"South Africa":27,"Norway":28,"Uzbekistan":29,"Czechia":30,"Saudi Arabia":31,"Ghana":32,"Iraq":33,"Cape Verde":34,"Jamaica":35,"Jordan":36,"Paraguay":37,"Panama":38,"Slovakia":39,"Tunisia":40,"Canada":41,"Haiti":42,"Curaçao":43,"New Zealand":44,"Scotland":45,"Qatar":46};
 
-// --- RIPPLE CLEAR MAP ---
 const nextMap = {
     's_A1':'M92_T','slot_3rd_3':'M92_T','s_L1':'M92_B','slot_3rd_4':'M92_B','s_C1':'M91_T','s_F2':'M91_T',
     's_E2':'M91_B','s_I2':'M91_B','s_A2':'M90_T','s_B2':'M90_T','s_F1':'M90_B', 's_C2':'M90_B', 
@@ -513,10 +522,7 @@ function drawAllLines() {
         {from: 'm9', to: 'M99_T'}, {from: 'm10', to: 'M99_B'}, {from: 'm11', to: 'M97_T'}, {from: 'm12', to: 'M97_B'},
         {from: 'm13', to: 'M101_T'}, {from: 'm14', to: 'M101_B'}, {from: 'm15', to: 'FINAL_L'}, {from: 'mf', to: 'champion-display'},
         {from: 'm16', to: 'FINAL_R'}, {from: 'm17', to: 'M102_T'}, {from: 'm18', to: 'M102_B'},
-        {from: 'm19', to: 'M93_T'}, {from: 'm19', to: 'M93_B'}, // Fixed m19 pairs
-        {from: 'm20', to: 'M98_B'}, {from: 'm9', to: 'M99_T'}, // Logic check
-        {from: 'm19', to: 'M98_T'}, {from: 'm20', to: 'M98_B'}, // Transition Round R16 to QF Right
-        {from: 'm21', to: 'M100_T'}, {from: 'm22', to: 'M100_B'}, // Transition Round R16 to QF Right
+        {from: 'm19', to: 'M98_T'}, {from: 'm20', to: 'M98_B'}, {from: 'm21', to: 'M100_T'}, {from: 'm22', to: 'M100_B'},
         {from: 'm23', to: 'M93_T'}, {from: 'm24', to: 'M93_B'}, {from: 'm25', to: 'M94_T'}, {from: 'm26', to: 'M94_B'},
         {from: 'm27', to: 'M95_T'}, {from: 'm28', to: 'M95_B'}, {from: 'm29', to: 'M96_T'}, {from: 'm30', to: 'M96_B'},
         {from: 'm15', to: '3RD_L', loser: true}, {from: 'm16', to: '3RD_R', loser: true}, {from: 'm31', to: 'bronze-display'}
