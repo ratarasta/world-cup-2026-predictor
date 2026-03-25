@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>JULBOL 2.0</title>
+    <title>JULBOL 2.0.1</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -278,17 +278,24 @@ function prepareForSnapshot() {
 
     // 3. Map Bracket Matches (m1 - m31 and Final)
     Object.keys(bracketEntryMap).forEach(mID => {
-        const matchup = document.getElementById(mID);
-        if (matchup) {
-            const winner = matchup.querySelector('.team.winner');
-            if (winner) {
-                let teamName = winner.innerText.trim();
-                // Special Pedestal Checks
-                if (mID === 'mf') teamName = document.getElementById('champion-name').innerText.trim();
-                if (mID === 'm31') teamName = document.getElementById('bronze-name').innerText.trim();
-                
-                formData.append(bracketEntryMap[mID], teamName);
-            }
+        let teamName = "";
+
+        if (mID === 'mf') {
+            // Grab from Champion Pedestal
+            teamName = document.getElementById('champion-name').innerText.trim();
+        } else if (mID === 'm31') {
+            // Grab from Bronze Pedestal
+            teamName = document.getElementById('bronze-name').innerText.trim();
+        } else {
+            // Grab from standard matchup winners
+            const matchup = document.getElementById(mID);
+            const winner = matchup ? matchup.querySelector('.team.winner') : null;
+            if (winner) teamName = winner.innerText.trim();
+        }
+
+        // Only append if we actually found a team name
+        if (teamName && teamName !== "...") {
+            formData.append(bracketEntryMap[mID], teamName);
         }
     });
 
@@ -304,7 +311,6 @@ function prepareForSnapshot() {
     document.querySelectorAll('.is-editing').forEach(box => box.classList.remove('is-editing'));
     setTimeout(drawAllLines, 50);
 }
-
 function exitSnapshot() {
     document.body.classList.remove('snapshot-view');
     document.getElementById('snapshot-modal').style.display = 'none';
