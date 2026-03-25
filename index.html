@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>JULBOL 2.0.2</title>
+    <title>JULBOL 2.1</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -38,7 +38,7 @@
         @keyframes shake { 0% { transform: rotate(0deg); } 25% { transform: rotate(1.2deg); } 75% { transform: rotate(-1.2deg); } 100% { transform: rotate(0deg); } }
         .is-editing .draggable-team { animation: shake 0.35s infinite ease-in-out; }
 
-        .group-box h4, .best-3rd-container h4 { margin: 0 0 8px 0; color: var(--accent); font-size: 10px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px; pointer-events: none;}
+        .group-box h4, .best-3rd-container h4 { margin: 0 0 8px 0; color: var(--accent); font-size: 10px; text-align: center; border-bottom: 1px solid rgba(255, 255, 255,0.1); padding-bottom: 4px; pointer-events: none;}
         .draggable-team { background: rgba(255,255,255,0.05); border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); cursor: grab; display: flex; align-items: center; justify-content: center; gap: 4px; user-select: none; font-size: 16px; font-weight: 500; width: var(--box-w); height: var(--box-h); box-sizing: border-box; transition: background 0.4s ease, color 0.4s ease; overflow: hidden; }
         
         .draggable-team[data-rank="1º"], .draggable-team[data-rank="2º"] { background: color-mix(in srgb, var(--accent), transparent 85%); color: var(--accent); font-weight: 700; border-color: color-mix(in srgb, var(--accent), transparent 70%); }
@@ -95,6 +95,7 @@
         .reset-btn { background: var(--reset-red); color: #fff; padding: 8px 30px; font-size: 12px; font-weight: 500; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); width: 100%; cursor: pointer; text-transform: uppercase; font-family: 'Oswald'; }
         .reset-btn:hover { background: #ff0000; }
 
+        /* MODAL STYLING */
         #snapshot-modal, #leaderboard-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
         .modal-content { background: #000; border: 2px solid var(--accent); padding: 50px; border-radius: 20px; text-align: center; max-width: 450px; box-shadow: 0 0 50px rgba(0,0,0,1); }
         
@@ -220,7 +221,7 @@
     <div class="modal-content leaderboard-modal-content" onclick="event.stopPropagation()">
         <h2>🏆 LIVE LEADERBOARD</h2>
         <div class="iframe-container">
-            <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQw9ufqzeyxhwBy_59J6hbwHKK19XkA1Ztw0sldVL37DYiiL4D0n7Fl8-XqWSeg0balSK731LYUpHUH/pubhtml?gid=2134320183&amp;single=true&amp;widget=false&amp;headers=false&amp;chrome=false&amp;rm=minimal"></iframe>
+            <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQw9ufqzeyxhwBy_59J6hbwHKK19XkA1Ztw0sldVL37DYiiL4D0n7Fl8-XqWSeg0balSK731LYUpHUH/pubhtml?gid=2134320183&amp;single=true&amp;widget=false&amp;headers=false&amp;chrome=false"></iframe>
         </div>
         <button class="close-modal-btn" onclick="closeLeaderboard()">CLOSE</button>
     </div>
@@ -257,6 +258,7 @@ const codes = {"Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czechia"
 const teams = {A:["Mexico","South Korea","Czechia","South Africa"], B:["Italy","Switzerland","Canada","Qatar"], C:["Brazil","Morocco","Scotland","Haiti"], D:["USA","Australia","Paraguay","Slovakia"], E:["Germany","Ecuador","Ivory Coast","Curaçao"], F:["Netherlands","Japan","Ukraine","Tunisia"], G:["Belgium","Iran","Egypt","New Zealand"], H:["Spain","Uruguay","Saudi Arabia","Cape Verde"], I:["France","Senegal","Norway","Iraq"], J:["Argentina","Austria","Algeria","Jordan"], K:["Portugal","Colombia","Uzbekistan","Jamaica"], L:["England","Croatia","Ghana","Panama"]};
 const fifaRanks = {"Argentina":1,"France":2,"Belgium":3,"England":4,"Brazil":5,"Portugal":6,"Netherlands":7,"Spain":8,"Italy":9,"Croatia":10,"USA":11,"Colombia":12,"Morocco":13,"Uruguay":14,"Germany":15,"Japan":16,"Switzerland":17,"Senegal":18,"Iran":19,"Mexico":20,"Ukraine":21,"South Korea":22,"Australia":23,"Austria":24,"Ecuador":25,"Algeria":26,"South Africa":27,"Norway":28,"Uzbekistan":29,"Czechia":30,"Saudi Arabia":31,"Ghana":32,"Iraq":33,"Cape Verde":34,"Jamaica":35,"Jordan":36,"Paraguay":37,"Panama":38,"Slovakia":39,"Tunisia":40,"Canada":41,"Haiti":42,"Curaçao":43,"New Zealand":44,"Scotland":45,"Qatar":46};
 
+// --- RIPPLE CLEAR MAP ---
 const nextMap = {
     's_A1':'M92_T','slot_3rd_3':'M92_T','s_L1':'M92_B','slot_3rd_4':'M92_B','s_C1':'M91_T','s_F2':'M91_T',
     's_E2':'M91_B','s_I2':'M91_B','s_A2':'M90_T','s_B2':'M90_T','s_F1':'M90_B', 's_C2':'M90_B', 
@@ -511,7 +513,10 @@ function drawAllLines() {
         {from: 'm9', to: 'M99_T'}, {from: 'm10', to: 'M99_B'}, {from: 'm11', to: 'M97_T'}, {from: 'm12', to: 'M97_B'},
         {from: 'm13', to: 'M101_T'}, {from: 'm14', to: 'M101_B'}, {from: 'm15', to: 'FINAL_L'}, {from: 'mf', to: 'champion-display'},
         {from: 'm16', to: 'FINAL_R'}, {from: 'm17', to: 'M102_T'}, {from: 'm18', to: 'M102_B'},
-        {from: 'm19', to: 'M93_T'}, {from: 'm20', to: 'M93_B'}, {from: 'm21', to: 'M100_T'}, {from: 'm22', to: 'M100_B'}, // Corrected right side dash
+        {from: 'm19', to: 'M93_T'}, {from: 'm19', to: 'M93_B'}, // Fixed m19 pairs
+        {from: 'm20', to: 'M98_B'}, {from: 'm9', to: 'M99_T'}, // Logic check
+        {from: 'm19', to: 'M98_T'}, {from: 'm20', to: 'M98_B'}, // Transition Round R16 to QF Right
+        {from: 'm21', to: 'M100_T'}, {from: 'm22', to: 'M100_B'}, // Transition Round R16 to QF Right
         {from: 'm23', to: 'M93_T'}, {from: 'm24', to: 'M93_B'}, {from: 'm25', to: 'M94_T'}, {from: 'm26', to: 'M94_B'},
         {from: 'm27', to: 'M95_T'}, {from: 'm28', to: 'M95_B'}, {from: 'm29', to: 'M96_T'}, {from: 'm30', to: 'M96_B'},
         {from: 'm15', to: '3RD_L', loser: true}, {from: 'm16', to: '3RD_R', loser: true}, {from: 'm31', to: 'bronze-display'}
