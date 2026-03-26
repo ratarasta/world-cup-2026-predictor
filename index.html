@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>JULBOL 2.6.1</title>
+    <title>JULBOL 3.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -552,14 +552,12 @@ function drawAllLines() {
         let x2 = eRect.left + eRect.width / 2;
         
         let y2;
-        // LEFT SIDE CUSTOM CALIBRATION
-        if (isLeft && (conn.to.startsWith('FINAL') || conn.to.startsWith('3RD'))) {
-            // Target the center of the MATCHUP parent box, not the individual team slot
+        // APPLYING CENTER-MATCH LOGIC TO BOTH SIDES FOR FINAL COLUMN
+        if (conn.to.startsWith('FINAL') || conn.to.startsWith('3RD')) {
             const parentMatchup = endBox.parentElement.getBoundingClientRect();
             y2 = parentMatchup.top + parentMatchup.height / 2;
         } else {
-            // Right side logic remains untouched (Targets top/bottom perfectly)
-            y2 = (conn.to.endsWith('_T') || conn.to.startsWith('FINAL') || conn.to.startsWith('3RD')) ? eRect.top : eRect.bottom;
+            y2 = (conn.to.endsWith('_T')) ? eRect.top : eRect.bottom;
         }
         
         if(conn.to.includes('display')) y2 = eRect.bottom;
@@ -591,8 +589,7 @@ function drawAllLines() {
         }
         svg.appendChild(path);
     });
-}
-    
+}    
 window.addEventListener('resize', drawAllLines); init();
 </script>
 </body>
