@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>JULBOL 2.5.2</title>
+    <title>JULBOL 2.6</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -550,7 +550,17 @@ function drawAllLines() {
         let x1 = isLeft ? sRect.right : sRect.left;
         let y1 = sRect.top + sRect.height / 2;
         let x2 = eRect.left + eRect.width / 2;
-        let y2 = (conn.to.endsWith('_T') || conn.to.startsWith('FINAL') || conn.to.startsWith('3RD')) ? eRect.top : eRect.bottom;
+        
+        // --- CALIBRATED y2 TARGETING ---
+        let y2;
+        if (isLeft && (conn.to.startsWith('FINAL') || conn.to.startsWith('3RD'))) {
+            // Force left-side lines to enter the vertical center of the final boxes
+            y2 = eRect.top + eRect.height / 2;
+        } else {
+            // Keep your perfect Right side logic untouched
+            y2 = (conn.to.endsWith('_T') || conn.to.startsWith('FINAL') || conn.to.startsWith('3RD')) ? eRect.top : eRect.bottom;
+        }
+        
         if(conn.to.includes('display')) y2 = eRect.bottom;
 
         x1 -= container.left; y1 -= container.top; x2 -= container.left; y2 -= container.top;
@@ -559,7 +569,6 @@ function drawAllLines() {
         
         let d;
         if (conn.to.startsWith('FINAL') || conn.to.startsWith('3RD_')) {
-            // FIXED OFFSET: 25 pixels out from the box before turning
             const offset = 25;
             const midX = isLeft ? x1 + offset : x1 - offset;
             d = `M ${x1} ${y1} L ${midX} ${y1} L ${midX} ${y2} L ${x2} ${y2}`;
