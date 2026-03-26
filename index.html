@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>JULBOL 2.5.3</title>
+    <title>JULBOL 2.5.2</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -550,17 +550,7 @@ function drawAllLines() {
         let x1 = isLeft ? sRect.right : sRect.left;
         let y1 = sRect.top + sRect.height / 2;
         let x2 = eRect.left + eRect.width / 2;
-        
-        // --- FIXED VERTICAL ALIGNMENT LOGIC ---
-        let y2;
-        if (conn.to.startsWith('FINAL') || conn.to.startsWith('3RD')) {
-            // For the Final column, always target the absolute vertical center of the box
-            y2 = eRect.top + eRect.height / 2;
-        } else {
-            // Keep standard top/bottom logic for the rest of the bracket
-            y2 = (conn.to.endsWith('_T')) ? eRect.top : eRect.bottom;
-        }
-        
+        let y2 = (conn.to.endsWith('_T') || conn.to.startsWith('FINAL') || conn.to.startsWith('3RD')) ? eRect.top : eRect.bottom;
         if(conn.to.includes('display')) y2 = eRect.bottom;
 
         x1 -= container.left; y1 -= container.top; x2 -= container.left; y2 -= container.top;
@@ -569,7 +559,8 @@ function drawAllLines() {
         
         let d;
         if (conn.to.startsWith('FINAL') || conn.to.startsWith('3RD_')) {
-            const offset = 25; // Matching your offset preference
+            // FIXED OFFSET: 25 pixels out from the box before turning
+            const offset = 25;
             const midX = isLeft ? x1 + offset : x1 - offset;
             d = `M ${x1} ${y1} L ${midX} ${y1} L ${midX} ${y2} L ${x2} ${y2}`;
         } else {
