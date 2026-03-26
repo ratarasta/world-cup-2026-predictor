@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>JULBOL 2.3</title>
+    <title>JULBOL 2.4</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -31,7 +31,7 @@
         .group-row { display: grid; grid-template-columns: repeat(4, 110px); gap: 15px; }
         .dashboard-divider { width: 1px; background: rgba(255,255,255,0.15); height: 280px; margin: 0 10px; }
 
-        .group-box, .best-3rd-container { background: var(--card); backdrop-filter: blur(10px); padding: 8px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; transition: all 0.3s ease; position: relative; width: 100px; cursor: pointer; }
+        .group-box, .best-3rd-container { background: var(--card); backdrop-filter: blur(10px); padding: 8px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; transition: all 0.3s ease; position: relative; width: 100px; cursor: pointer; }
         .best-3rd-container { width: 120px; padding: 12px; }
 
         .is-editing { background: rgba(255, 255, 255, 0.05) !important; border-color: var(--accent) !important; box-shadow: 0 0 20px var(--accent); transform: scale(1.05); z-index: 100; }
@@ -98,7 +98,7 @@
         .path-line { fill: none; stroke: var(--line-color); stroke-width: 1.5; stroke-dasharray: 5, 4; transition: stroke 0.4s; opacity: 0.6; }
         .path-line.active { stroke: var(--accent); stroke-dasharray: none; stroke-width: 2.5; filter: drop-shadow(0 0 4px var(--accent)); opacity: 1; }
 
-        .footer-nav { padding: 50px 20px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; gap: 20px; position: relative; z-index: 10; background: rgba(0,0,0,0.9); width: 100%; box-sizing: border-box; }
+        .footer-nav { padding: 50px 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; align-items: center; gap: 20px; position: relative; z-index: 10; background: rgba(0,0,0,0.9); width: 100%; box-sizing: border-box; }
         .id-input-group { display: flex; flex-direction: column; align-items: center; gap: 15px; width: 320px; }
         #bracket-name-input { background: #111; border: 1px solid #555; color: #fff; padding: 12px; width: 100%; border-radius: 8px; text-align: center; font-family: 'Oswald'; text-transform: uppercase; letter-spacing: 2px; font-size: 14px; }
         
@@ -268,11 +268,11 @@ const best3rdEntryMap = ["entry.1890187648", "entry.1403467225", "entry.14216770
 const bracketEntryMap = {
     m1: "entry.591087345", m2: "entry.260921692", m3: "entry.1067838277", m4: "entry.994980619", m5: "entry.762175629", m6: "entry.1428076437", m7: "entry.894576017", m8: "entry.971506036",
     m9: "entry.1203991421", m10: "entry.931468007", m11: "entry.1971202550", m12: "entry.456804677", m13: "entry.1727601354", m14: "entry.1218773621", m15: "entry.370683018", m16: "entry.230336667",
-    m17: "entry.1338788740", m18: "entry.705496516", m19: "entry.857338773", m20: "entry.981887018", m21: "entry.1457106823", m22: "entry.1808289531", m23: "entry.1362985760", m24: "entry.1557282388",
+    m17: "entry.1338788740", m18: "entry.705496516", m19: "entry.857338773", m20: "entry.280165127", m21: "entry.1457106823", m22: "entry.1808289531", m23: "entry.1362985760", m24: "entry.1557282388",
     m25: "entry.2140351824", m26: "entry.1912498434", m27: "entry.171457254", m28: "entry.1697220318", m29: "entry.938084117", m30: "entry.255342969", mf: "entry.1521005291", m31: "entry.905291300"
 };
 
-const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
+const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"MAR","Haiti":"HTI","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"TUN","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"CPV","Saudi Arabia":"KSA","Uruguay":"URU","France":"FRA","Senegal":"🇸🇳","Norway":"NOR","Iraq":"IRQ","Argentina":"ARG","Algeria":"DZA","Austria":"AUT","Jordan":"JOR","Portugal":"POR","Uzbekistan":"UZB","Colombia":"COL","Jamaica":"JAM","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"GHA","Panama":"PAN"};
 const codes = {"Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czechia":"CZE","Canada":"CAN","Switzerland":"SUI","Qatar":"QAT","Italy":"ITA","Brazil":"BRA","Morocco":"MAR","Haiti":"HTI","Scotland":"SCO","USA":"USA","Paraguay":"PAR","Australia":"AUS","Slovakia":"SVK","Germany":"GER","Curaçao":"CUW","Ivory Coast":"CIV","Ecuador":"ECU","Netherlands":"NED","Japan":"JPN","Tunisia":"TUN","Ukraine":"UKR","Belgium":"BEL","Egypt":"EGY","Iran":"IRN","New Zealand":"NZL","Spain":"ESP","Cape Verde":"CPV","Saudi Arabia":"KSA","Uruguay":"URU","France":"FRA","Senegal":"SEN","Norway":"NOR","Iraq":"IRQ","Argentina":"ARG","Algeria":"DZA","Austria":"AUT","Jordan":"JOR","Portugal":"POR","Uzbekistan":"UZB","Colombia":"COL","Jamaica":"JAM","England":"ENG","Croatia":"CRO","Ghana":"GHA","Panama":"PAN"};
 const teams = {A:["Mexico","South Korea","Czechia","South Africa"], B:["Italy","Switzerland","Canada","Qatar"], C:["Brazil","Morocco","Scotland","Haiti"], D:["USA","Australia","Paraguay","Slovakia"], E:["Germany","Ecuador","Ivory Coast","Curaçao"], F:["Netherlands","Japan","Ukraine","Tunisia"], G:["Belgium","Iran","Egypt","New Zealand"], H:["Spain","Uruguay","Saudi Arabia","Cape Verde"], I:["France","Senegal","Norway","Iraq"], J:["Argentina","Austria","Algeria","Jordan"], K:["Portugal","Colombia","Uzbekistan","Jamaica"], L:["England","Croatia","Ghana","Panama"]};
 const fifaRanks = {"Argentina":1,"France":2,"Belgium":3,"England":4,"Brazil":5,"Portugal":6,"Netherlands":7,"Spain":8,"Italy":9,"Croatia":10,"USA":11,"Colombia":12,"Morocco":13,"Uruguay":14,"Germany":15,"Japan":16,"Switzerland":17,"Senegal":18,"Iran":19,"Mexico":20,"Ukraine":21,"South Korea":22,"Australia":23,"Austria":24,"Ecuador":25,"Algeria":26,"South Africa":27,"Norway":28,"Uzbekistan":29,"Czechia":30,"Saudi Arabia":31,"Ghana":32,"Iraq":33,"Cape Verde":34,"Jamaica":35,"Jordan":36,"Paraguay":37,"Panama":38,"Slovakia":39,"Tunisia":40,"Canada":41,"Haiti":42,"Curaçao":43,"New Zealand":44,"Scotland":45,"Qatar":46};
@@ -303,21 +303,12 @@ function prepareForSnapshot() {
     const bracketName = bracketNameInput || "Anonymous JULBOL Bracket";
     const formData = new FormData();
     formData.append(ENTRY_NAME, bracketName);
-
     Object.keys(groupEntryMap).forEach(g => {
         const teamsList = [...document.getElementById(`list_${g}`).querySelectorAll('.draggable-team')];
-        teamsList.forEach((el, index) => {
-            formData.append(groupEntryMap[g][index], el.getAttribute('data-team'));
-        });
+        teamsList.forEach((el, index) => { formData.append(groupEntryMap[g][index], el.getAttribute('data-team')); });
     });
-
     const thirdPlaceList = [...document.getElementById('list_3rd').querySelectorAll('.draggable-team')];
-    best3rdEntryMap.forEach((entryID, index) => {
-        if (thirdPlaceList[index]) {
-            formData.append(entryID, thirdPlaceList[index].getAttribute('data-team'));
-        }
-    });
-
+    best3rdEntryMap.forEach((entryID, index) => { if (thirdPlaceList[index]) formData.append(entryID, thirdPlaceList[index].getAttribute('data-team')); });
     Object.keys(bracketEntryMap).forEach(mID => {
         let teamName = "";
         if (mID === 'mf') teamName = document.getElementById('champion-name').innerText.trim();
@@ -327,25 +318,19 @@ function prepareForSnapshot() {
             const winner = matchup ? matchup.querySelector('.team.winner') : null;
             if (winner) teamName = winner.innerText.trim();
         }
-        if (teamName && teamName !== "...") formData.append(bracketEntryMap[mID], teamName);
+        if (teamName && teamName !== "...") {
+            teamName = teamName.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, '').trim();
+            formData.append(bracketEntryMap[mID], teamName);
+        }
     });
-
-    fetch(`https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/formResponse`, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: formData
-    });
-
+    fetch(`https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/formResponse`, { method: 'POST', mode: 'no-cors', body: formData });
     document.body.classList.add('snapshot-view');
     document.getElementById('snapshot-modal').style.display = 'flex';
     document.querySelectorAll('.is-editing').forEach(box => box.classList.remove('is-editing'));
     setTimeout(drawAllLines, 50);
 }
 
-function exitSnapshot() {
-    document.body.classList.remove('snapshot-view');
-    document.getElementById('snapshot-modal').style.display = 'none';
-}
+function exitSnapshot() { document.body.classList.remove('snapshot-view'); document.getElementById('snapshot-modal').style.display = 'none'; }
 
 function playAgain() {
     document.querySelectorAll('.team').forEach(el => {
@@ -363,19 +348,13 @@ function playAgain() {
 }
 
 function closeModalOnBg(e) { if (e.target.id === 'snapshot-modal') exitSnapshot(); }
-
 function enterEditMode(el, e) {
     e.stopPropagation();
     if (document.body.classList.contains('snapshot-view')) return;
     document.querySelectorAll('.is-editing').forEach(box => box.classList.remove('is-editing'));
     el.classList.add('is-editing');
 }
-
-function handleGlobalClick(e) {
-    if (!e.target.closest('.group-box') && !e.target.closest('.best-3rd-container')) {
-        document.querySelectorAll('.is-editing').forEach(box => box.classList.remove('is-editing'));
-    }
-}
+function handleGlobalClick(e) { if (!e.target.closest('.group-box') && !e.target.closest('.best-3rd-container')) document.querySelectorAll('.is-editing').forEach(box => box.classList.remove('is-editing')); }
 
 function init() {
     const r1 = document.getElementById('row-1'); const r2 = document.getElementById('row-2'); const r3 = document.getElementById('row-3');
@@ -406,7 +385,6 @@ function setupDragEvents() {
         });
     });
 }
-
 function getDragAfterElement(container, y) {
     const draggableElements = [...container.querySelectorAll('.draggable-team:not(.dragging)')];
     return draggableElements.reduce((closest, child) => {
@@ -414,12 +392,7 @@ function getDragAfterElement(container, y) {
         if (offset < 0 && offset > closest.offset) return { offset: offset, element: child }; else return closest;
     }, { offset: Number.NEGATIVE_INFINITY }).element;
 }
-
-function updateVisualRanks(list) {
-    list.querySelectorAll('.draggable-team').forEach((item, index) => {
-        item.setAttribute('data-rank', (index + 1) + "º");
-    });
-}
+function updateVisualRanks(list) { list.querySelectorAll('.draggable-team').forEach((item, index) => { item.setAttribute('data-rank', (index + 1) + "º"); }); }
 
 function syncAllGroupsToBracket() {
     const groups = document.querySelectorAll('.group-box');
@@ -458,26 +431,11 @@ function syncAllGroupsToBracket() {
 
 function clearBranch(startId) {
     let nextId = nextMap[startId]; if (!nextId) return;
-    
-    if (startId === 'M101_T' || startId === 'M101_B') {
-        const t3 = document.getElementById('3RD_L');
-        t3.innerHTML = "..."; t3.classList.add('empty'); t3.classList.remove('winner');
-        document.getElementById('bronze-name').innerHTML = "";
-    }
-    if (startId === 'M102_T' || startId === 'M102_B') {
-        const t3 = document.getElementById('3RD_R');
-        t3.innerHTML = "..."; t3.classList.add('empty'); t3.classList.remove('winner');
-        document.getElementById('bronze-name').innerHTML = "";
-    }
-
+    if (startId === 'M101_T' || startId === 'M101_B') { document.getElementById('3RD_L').innerHTML = "..."; document.getElementById('3RD_L').classList.add('empty'); document.getElementById('bronze-name').innerHTML = ""; }
+    if (startId === 'M102_T' || startId === 'M102_B') { document.getElementById('3RD_R').innerHTML = "..."; document.getElementById('3RD_R').classList.add('empty'); document.getElementById('bronze-name').innerHTML = ""; }
     const targetSlot = document.getElementById(nextId);
     if (targetSlot) {
-        if (!['champion-name','bronze-name'].includes(nextId)) { 
-            targetSlot.innerHTML = "..."; 
-            targetSlot.classList.add('empty'); 
-        } else { 
-            targetSlot.innerHTML = ""; 
-        }
+        if (!['champion-name','bronze-name'].includes(nextId)) { targetSlot.innerHTML = "..."; targetSlot.classList.add('empty'); } else { targetSlot.innerHTML = ""; }
         Array.from(targetSlot.parentElement.children).forEach(s => s.classList.remove('winner'));
         clearBranch(nextId);
     }
@@ -495,19 +453,14 @@ function adv(el, nId) {
 function advSemi(el, winId, loseId) {
     if(el.classList.contains('empty') || el.innerHTML.includes("...")) return;
     clearBranch(el.id);
-    const siblings = Array.from(el.parentElement.children);
+    const siblings = Array.from(el.parentElement.children).filter(s => s.classList.contains('team'));
     const loserEl = siblings.find(s => s !== el);
     const targetWin = document.getElementById(winId);
-    targetWin.innerHTML = el.innerHTML;
-    targetWin.classList.remove('empty');
+    targetWin.innerHTML = el.innerHTML; targetWin.classList.remove('empty');
     const targetLose = document.getElementById(loseId);
-    if (loserEl && !loserEl.innerHTML.includes("...")) {
-        targetLose.innerHTML = loserEl.innerHTML;
-        targetLose.classList.remove('empty');
-    }
+    if (loserEl && !loserEl.innerHTML.includes("...")) { targetLose.innerHTML = loserEl.innerHTML; targetLose.classList.remove('empty'); }
     siblings.forEach(s => s.classList.remove('winner'));
-    el.classList.add('winner');
-    drawAllLines();
+    el.classList.add('winner'); drawAllLines();
 }
 
 function setWinner(el) {
@@ -534,33 +487,37 @@ function drawAllLines() {
         {from: 'm19', to: 'M98_T'}, {from: 'm20', to: 'M98_B'}, {from: 'm21', to: 'M100_T'}, {from: 'm22', to: 'M100_B'},
         {from: 'm23', to: 'M93_T'}, {from: 'm24', to: 'M93_B'}, {from: 'm25', to: 'M94_T'}, {from: 'm26', to: 'M94_B'},
         {from: 'm27', to: 'M95_T'}, {from: 'm28', to: 'M95_B'}, {from: 'm29', to: 'M96_T'}, {from: 'm30', to: 'M96_B'},
+        // LOSER PATHS
         {from: 'm15', to: '3RD_L', loser: true}, {from: 'm16', to: '3RD_R', loser: true}, {from: 'm31', to: 'bronze-display'}
     ];
 
     connections.forEach(conn => {
-        const startEl = document.getElementById(conn.from);
-        const endBox = document.getElementById(conn.to);
+        const startEl = document.getElementById(conn.from); const endBox = document.getElementById(conn.to);
         if(!startEl || !endBox) return;
-        const sRect = startEl.getBoundingClientRect();
-        const eRect = endBox.getBoundingClientRect();
+        const sRect = startEl.getBoundingClientRect(); const eRect = endBox.getBoundingClientRect();
         const isLeft = startEl.closest('.left-bracket') || startEl.id === 'm15';
-        let x1 = isLeft ? sRect.right : sRect.left;
-        let y1 = sRect.top + sRect.height / 2;
-        let x2 = eRect.left + eRect.width / 2;
-        let y2 = (conn.to.endsWith('_T') || conn.to.startsWith('FINAL') || conn.to === '3RD_L' || conn.to === '3RD_R') ? eRect.top : eRect.bottom;
+        let x1 = isLeft ? sRect.right : sRect.left; let y1 = sRect.top + sRect.height / 2;
+        let x2 = eRect.left + eRect.width / 2; let y2 = (conn.to.endsWith('_T') || conn.to.startsWith('FINAL') || conn.to.startsWith('3RD')) ? eRect.top : eRect.bottom;
         if(conn.to.includes('display')) y2 = eRect.bottom;
         x1 -= container.left; y1 -= container.top; x2 -= container.left; y2 -= container.top;
+
         const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        const d = `M ${x1} ${y1} L ${x2} ${y1} L ${x2} ${y2}`;
+        let d = `M ${x1} ${y1} L ${x2} ${y1} L ${x2} ${y2}`;
+
+        // NEW T-JUNCTION FORK LOGIC FOR SEMI TO CENTER
+        if (conn.to.startsWith('FINAL') || conn.to.startsWith('3RD_')) {
+            const horizontalGap = Math.abs(x2 - x1);
+            const midX = isLeft ? x1 + (horizontalGap * 0.4) : x1 - (horizontalGap * 0.4);
+            d = `M ${x1} ${y1} L ${midX} ${y1} L ${midX} ${y2} L ${x2} ${y2}`;
+        }
+
         path.setAttribute("d", d); path.setAttribute("class", "path-line");
         const winner = startEl.querySelector('.team.winner');
         const endName = document.getElementById(conn.to.replace('display','name'))?.innerHTML || endBox.innerHTML;
         if (conn.loser) {
             const loserTeam = Array.from(startEl.querySelectorAll('.team')).find(t => t !== winner && !t.classList.contains('empty'));
             if (loserTeam && endBox.innerHTML === loserTeam.innerHTML) path.classList.add('active');
-        } else {
-            if(winner && (endName === winner.innerHTML)) path.classList.add('active');
-        }
+        } else if (winner && (endName === winner.innerHTML)) path.classList.add('active');
         svg.appendChild(path);
     });
 }
