@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>JULBOL 2.5.1</title>
+    <title>JULBOL 2.5.2</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -556,16 +556,13 @@ function drawAllLines() {
 
         const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
         
-        // --- NEW LOGIC: THE "RED DASH" FORK JUNCTION ---
         let d;
         if (conn.to.startsWith('FINAL') || conn.to.startsWith('3RD_')) {
-            // Calculate a meeting point 40% into the gap
-            const gap = x2 - x1;
-            const midX = x1 + (gap * 0.2); 
-            // Shape: Move right/left -> Vertical drop/rise -> Move into box center
+            // FIXED OFFSET: 25 pixels out from the box before turning
+            const offset = 25;
+            const midX = isLeft ? x1 + offset : x1 - offset;
             d = `M ${x1} ${y1} L ${midX} ${y1} L ${midX} ${y2} L ${x2} ${y2}`;
         } else {
-            // Standard L-shape for the rest of the bracket
             d = `M ${x1} ${y1} L ${x2} ${y1} L ${x2} ${y2}`;
         }
 
