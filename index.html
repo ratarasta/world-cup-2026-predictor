@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>JULBOL 2.4</title>
+    <title>JULBOL 2.5</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -561,7 +561,7 @@ function drawAllLines() {
         if (conn.to.startsWith('FINAL') || conn.to.startsWith('3RD_')) {
             // Calculate a meeting point 40% into the gap
             const gap = x2 - x1;
-            const midX = x1 + (gap * 0.4); 
+            const midX = x1 + (gap * 0.5); 
             // Shape: Move right/left -> Vertical drop/rise -> Move into box center
             d = `M ${x1} ${y1} L ${midX} ${y1} L ${midX} ${y2} L ${x2} ${y2}`;
         } else {
