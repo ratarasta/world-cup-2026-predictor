@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>JULBOL 2.5</title>
+    <title>JULBOL 2.6</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -54,17 +54,22 @@
         .round { display: flex; flex-direction: column; justify-content: space-around; min-width: 90px; height: 800px; position: relative; }
         .round h3 { font-size: 10px; color: #444; text-align: center; position: absolute; top: -20px; width: 100%; text-transform: uppercase; letter-spacing: 2px;}
 
-        .matchup { background: var(--card); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(5px); border-radius: 4px; width: var(--box-w); margin: 3px auto; position: relative; z-index: 5; }
-        .team { padding: 6px; cursor: pointer; border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: 0.2s; white-space: nowrap; text-align: center; display: flex; justify-content: center; align-items: center; gap: 4px; height: var(--box-h); box-sizing: border-box; font-weight: 500; font-size: 16px; position: relative;}
+        .matchup { background: var(--card); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(5px); border-radius: 4px; width: var(--box-w); margin: 3px auto; position: relative; z-index: 5; }
+        .team { padding: 6px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s; white-space: nowrap; text-align: center; display: flex; justify-content: center; align-items: center; gap: 4px; height: var(--box-h); box-sizing: border-box; font-weight: 500; font-size: 16px; }
         .winner { background: color-mix(in srgb, var(--accent), black 80%) !important; color: var(--accent) !important; font-weight: bold; }
         .empty { color: #333; font-weight: 400; font-size: 10px; }
 
-        /* TITLE LABEL FOR EMPTY BOXES */
+        /* SMART TITLE LOGIC */
         .team[data-title]::before {
             content: attr(data-title);
-            position: absolute; width: 100%; text-align: center;
-            font-size: 10px; color: #555; letter-spacing: 1px;
-            pointer-events: none; transition: opacity 0.3s;
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            font-size: 10px;
+            color: #555;
+            letter-spacing: 1px;
+            pointer-events: none;
+            transition: opacity 0.3s;
         }
         .team:not(.empty)::before { opacity: 0; }
 
@@ -267,7 +272,7 @@ const bracketEntryMap = {
     m25: "entry.2140351824", m26: "entry.1912498434", m27: "entry.171457254", m28: "entry.1697220318", m29: "entry.938084117", m30: "entry.255342969", mf: "entry.1521005291", m31: "entry.905291300"
 };
 
-const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"MAR","Haiti":"HTI","Scotland":"SCO","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"ECU","Netherlands":"🇳🇱","Japan":"JPN","Tunisia":"TUN","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"JOR","Portugal":"🇵🇹","Uzbekistan":"UZB","Colombia":"COL","Jamaica":"JJAM","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"GHA","Panama":"PAN"};
+const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"MAR","Haiti":"HTI","Scotland":"SCO","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"GHA","Panama":"PAN"};
 const codes = {"Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czechia":"CZE","Canada":"CAN","Switzerland":"SUI","Qatar":"QAT","Italy":"ITA","Brazil":"BRA","Morocco":"MAR","Haiti":"HTI","Scotland":"SCO","USA":"USA","Paraguay":"PAR","Australia":"AUS","Slovakia":"SVK","Germany":"GER","Curaçao":"CUW","Ivory Coast":"CIV","Ecuador":"ECU","Netherlands":"NED","Japan":"JPN","Tunisia":"TUN","Ukraine":"UKR","Belgium":"BEL","Egypt":"EGY","Iran":"IRN","New Zealand":"NZL","Spain":"ESP","Cape Verde":"CPV","Saudi Arabia":"KSA","Uruguay":"URU","France":"FRA","Senegal":"SEN","Norway":"NOR","Iraq":"IRQ","Argentina":"ARG","Algeria":"DZA","Austria":"AUT","Jordan":"JOR","Portugal":"POR","Uzbekistan":"UZB","Colombia":"COL","Jamaica":"JAM","England":"ENG","Croatia":"CRO","Ghana":"GHA","Panama":"PAN"};
 const teams = {A:["Mexico","South Korea","Czechia","South Africa"], B:["Italy","Switzerland","Canada","Qatar"], C:["Brazil","Morocco","Scotland","Haiti"], D:["USA","Australia","Paraguay","Slovakia"], E:["Germany","Ecuador","Ivory Coast","Curaçao"], F:["Netherlands","Japan","Ukraine","Tunisia"], G:["Belgium","Iran","Egypt","New Zealand"], H:["Spain","Uruguay","Saudi Arabia","Cape Verde"], I:["France","Senegal","Norway","Iraq"], J:["Argentina","Austria","Algeria","Jordan"], K:["Portugal","Colombia","Uzbekistan","Jamaica"], L:["England","Croatia","Ghana","Panama"]};
 const fifaRanks = {"Argentina":1,"France":2,"Belgium":3,"England":4,"Brazil":5,"Portugal":6,"Netherlands":7,"Spain":8,"Italy":9,"Croatia":10,"USA":11,"Colombia":12,"Morocco":13,"Uruguay":14,"Germany":15,"Japan":16,"Switzerland":17,"Senegal":18,"Iran":19,"Mexico":20,"Ukraine":21,"South Korea":22,"Australia":23,"Austria":24,"Ecuador":25,"Algeria":26,"South Africa":27,"Norway":28,"Uzbekistan":29,"Czechia":30,"Saudi Arabia":31,"Ghana":32,"Iraq":33,"Cape Verde":34,"Jamaica":35,"Jordan":36,"Paraguay":37,"Panama":38,"Slovakia":39,"Tunisia":40,"Canada":41,"Haiti":42,"Curaçao":43,"New Zealand":44,"Scotland":45,"Qatar":46};
@@ -282,8 +287,7 @@ const nextMap = {
     's_G1':'M94_B', 'slot_3rd_6':'M94_B','s_J1':'M95_T', 's_H2':'M95_T', 's_D2':'M95_B', 
     's_G2':'M95_B','s_B1':'M96_T', 'slot_3rd_7':'M96_T', 's_K1':'M96_B', 'slot_3rd_8':'M96_B',
     'M93_T':'M98_T','M93_B':'M98_T','M94_T':'M98_B','M94_B':'M98_B','M95_T':'M100_T','M95_B':'M100_T',
-    'M96_T':'M100_B','M96_B':'M100_B','M98_T':'M102_T','M98_B':'M102_T','M100_T':'M102_B',
-    'M100_B':'M102_B','M101_T':'FINAL_L','M101_B':'FINAL_L','M102_T':'FINAL_R','M102_B':'FINAL_R',
+    'M96_T':'M100_B','M96_B':'M100_B','M98_T':'M102_T','M98_B':'M102_T','M101_T':'FINAL_L','M101_B':'FINAL_L','M102_T':'FINAL_R','M102_B':'FINAL_R',
     'FINAL_L':'champion-name','FINAL_R':'champion-name',
     '3RD_L':'bronze-name','3RD_R':'bronze-name'
 };
@@ -326,7 +330,9 @@ function prepareForSnapshot() {
     });
 
     fetch(`https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/formResponse`, {
-        method: 'POST', mode: 'no-cors', body: formData
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData
     });
 
     document.body.classList.add('snapshot-view');
@@ -547,11 +553,12 @@ function drawAllLines() {
         const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
         let d = `M ${x1} ${y1} L ${x2} ${y1} L ${x2} ${y2}`;
 
-        // FORK LOGIC FOR SEMI TO CENTER
+        // --- THE FORK/T JUNCTION LOGIC FOR FINAL AND 3RD PLACE MATCHES ---
         if (conn.to.startsWith('FINAL') || conn.to.startsWith('3RD_')) {
             const horizontalGap = Math.abs(x2 - x1);
-            const midX = isLeft ? x1 + (horizontalGap * 0.4) : x1 - (horizontalGap * 0.4);
-            d = `M ${x1} ${y1} L ${midX} ${y1} L ${midX} ${y2} L ${x2} ${y2}`;
+            // Move 40% out horizontally, then drop/climb vertically to the meeting height, then in to the box
+            const forkX = isLeft ? x1 + (horizontalGap * 0.4) : x1 - (horizontalGap * 0.4);
+            d = `M ${x1} ${y1} L ${forkX} ${y1} L ${forkX} ${y2} L ${x2} ${y2}`;
         }
 
         path.setAttribute("d", d); path.setAttribute("class", "path-line");
