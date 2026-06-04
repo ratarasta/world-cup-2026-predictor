@@ -393,7 +393,7 @@ function init() {
     r1.innerHTML = ""; r2.innerHTML = ""; r3.innerHTML = "";
     Object.keys(teams).forEach((g, idx) => {
         const sorted = [...teams[g]].sort((a,b) => (fifaRanks[a] || 99) - (fifaRanks[b] || 99));
-        let h = `<div class="group-box" data-group="${g}" onclick="enterEditMode(this, event)"><h4>GROUP ${g}</h4><div class="team-list" id="list_${g}">`;
+        let h = `<div class="group-box" data-group="${g}" onclick="enterEditMode(this, event)"><h4>GRUPO ${g}</h4><div class="team-list" id="list_${g}">`;
         sorted.forEach((t, i) => { h += `<div class="draggable-team" draggable="true" data-team="${t}" data-rank="${i+1}º">${flags[t] || '🏳️'} ${codes[t] || 'TBD'}</div>`; });
         h += `</div></div>`;
         if (idx < 4) r1.innerHTML += h; else if (idx < 8) r2.innerHTML += h; else r3.innerHTML += h;
