@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>JULBOL 2.3</title>
+    <title>JULBOL 3</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -272,10 +272,10 @@ const bracketEntryMap = {
     m25: "entry.2140351824", m26: "entry.1912498434", m27: "entry.171457254", m28: "entry.1697220318", m29: "entry.938084117", m30: "entry.255342969", mf: "entry.1521005291", m31: "entry.905291300"
 };
 
-const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸🇰","Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"};
-const codes = {"Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czechia":"CZE","Canada":"CAN","Switzerland":"SUI","Qatar":"QAT","Italy":"ITA","Brazil":"BRA","Morocco":"MAR","Haiti":"HTI","Scotland":"SCO","USA":"USA","Paraguay":"PAR","Australia":"AUS","Slovakia":"SVK","Germany":"GER","Curaçao":"CUW","Ivory Coast":"CIV","Ecuador":"ECU","Netherlands":"NED","Japan":"JPN","Tunisia":"TUN","Ukraine":"UKR","Belgium":"BEL","Egypt":"EGY","Iran":"IRN","New Zealand":"NZL","Spain":"ESP","Cape Verde":"CPV","Saudi Arabia":"KSA","Uruguay":"URU","France":"FRA","Senegal":"SEN","Norway":"NOR","Iraq":"IRQ","Argentina":"ARG","Algeria":"DZA","Austria":"AUT","Jordan":"JOR","Portugal":"POR","Uzbekistan":"UZB","Colombia":"COL","Jamaica":"JAM","England":"ENG","Croatia":"CRO","Ghana":"GHA","Panama":"PAN"};
-const teams = {A:["Mexico","South Korea","Czechia","South Africa"], B:["Italy","Switzerland","Canada","Qatar"], C:["Brazil","Morocco","Scotland","Haiti"], D:["USA","Australia","Paraguay","Slovakia"], E:["Germany","Ecuador","Ivory Coast","Curaçao"], F:["Netherlands","Japan","Ukraine","Tunisia"], G:["Belgium","Iran","Egypt","New Zealand"], H:["Spain","Uruguay","Saudi Arabia","Cape Verde"], I:["France","Senegal","Norway","Iraq"], J:["Argentina","Austria","Algeria","Jordan"], K:["Portugal","Colombia","Uzbekistan","Jamaica"], L:["England","Croatia","Ghana","Panama"]};
-const fifaRanks = {"Argentina":1,"France":2,"Belgium":3,"England":4,"Brazil":5,"Portugal":6,"Netherlands":7,"Spain":8,"Italy":9,"Croatia":10,"USA":11,"Colombia":12,"Morocco":13,"Uruguay":14,"Germany":15,"Japan":16,"Switzerland":17,"Senegal":18,"Iran":19,"Mexico":20,"Ukraine":21,"South Korea":22,"Australia":23,"Austria":24,"Ecuador":25,"Algeria":26,"South Africa":27,"Norway":28,"Uzbekistan":29,"Czechia":30,"Saudi Arabia":31,"Ghana":32,"Iraq":33,"Cape Verde":34,"Jamaica":35,"Jordan":36,"Paraguay":37,"Panama":38,"Slovakia":39,"Tunisia":40,"Canada":41,"Haiti":42,"Curaçao":43,"New Zealand":44,"Scotland":45,"Qatar":46};
+const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Qatar":"🇶🇦","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","USA":"🇺🇸","United States":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Slovakia":"🇸鍵","Germany":"🇩🇪","Curaçao":"🇨🇼","Curacao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿","Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Iraq":"🇮🇶","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","Jamaica":"🇯🇲","England":"🏴%20%20%20%20b󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦","Bosnia and Herzegovina":"🇧🇦","Turkey":"🇹🇷","Sweden":"🇸🇪","DR Congo":"🇨🇩"};
+const codes = {"Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czechia":"CZE","Canada":"CAN","Switzerland":"SUI","Qatar":"QAT","Italy":"ITA","Brazil":"BRA","Morocco":"MAR","Haiti":"HTI","Scotland":"SCO","USA":"USA","United States":"USA","Paraguay":"PAR","Australia":"AUS","Slovakia":"SVK","Germany":"GER","Curaçao":"CUW","Curacao":"CUW","Ivory Coast":"CIV","Ecuador":"ECU","Netherlands":"NED","Japan":"JPN","Tunisia":"TUN","Ukraine":"UKR","Belgium":"BEL","Egypt":"EGY","Iran":"IRN","New Zealand":"NZL","Spain":"ESP","Cape Verde":"CPV","Saudi Arabia":"KSA","Uruguay":"URU","France":"FRA","Senegal":"SEN","Norway":"NOR","Iraq":"IRQ","Argentina":"ARG","Algeria":"DZA","Austria":"AUT","Jordan":"JOR","Portugal":"POR","Uzbekistan":"UZB","Colombia":"COL","Jamaica":"JAM","England":"ENG","Croatia":"CRO","Ghana":"GHA","Panama":"PAN","Bosnia and Herzegovina":"BIH","Turkey":"TUR","Sweden":"SWE","DR Congo":"COD"};
+const teams = {A:["Mexico","South Africa","South Korea","Czechia"], B:["Canada","Bosnia and Herzegovina","Qatar","Switzerland"], C:["Brazil","Morocco","Haiti","Scotland"], D:["United States","Paraguay","Australia","Turkey"], E:["Germany","Curacao","Ivory Coast","Ecuador"], F:["Netherlands","Japan","Sweden","Tunisia"], G:["Belgium","Egypt","Iran","New Zealand"], H:["Spain","Cape Verde","Saudi Arabia","Uruguay"], I:["France","Senegal","Iraq","Norway"], J:["Argentina","Algeria","Austria","Jordan"], K:["Portugal","DR Congo","Uzbekistan","Colombia"], L:["England","Croatia","Ghana","Panama"]};
+const fifaRanks = {"Argentina":1,"France":2,"Belgium":3,"England":4,"Brazil":5,"Portugal":6,"Netherlands":7,"Spain":8,"Italy":9,"Croatia":10,"USA":11,"United States":11,"Colombia":12,"Morocco":13,"Uruguay":14,"Germany":15,"Japan":16,"Switzerland":17,"Senegal":18,"Iran":19,"Mexico":20,"Ukraine":21,"South Korea":22,"Australia":23,"Austria":24,"Ecuador":25,"Algeria":26,"South Africa":27,"Norway":28,"Uzbekistan":29,"Czechia":30,"Saudi Arabia":31,"Ghana":32,"Iraq":33,"Cape Verde":34,"Jamaica":35,"Jordan":36,"Paraguay":37,"Panama":38,"Slovakia":39,"Tunisia":40,"Canada":41,"Haiti":42,"Curaçao":43,"Curacao":43,"New Zealand":44,"Scotland":45,"Qatar":46,"Bosnia and Herzegovina":55,"Turkey":26,"Sweden":22,"DR Congo":60};
 
 const nextMap = {
     's_A1':'M92_T','slot_3rd_3':'M92_T','s_L1':'M92_B','slot_3rd_4':'M92_B','s_C1':'M91_T','s_F2':'M91_T',
@@ -383,7 +383,7 @@ function init() {
     Object.keys(teams).forEach((g, idx) => {
         const sorted = [...teams[g]].sort((a,b) => (fifaRanks[a] || 99) - (fifaRanks[b] || 99));
         let h = `<div class="group-box" data-group="${g}" onclick="enterEditMode(this, event)"><h4>GROUP ${g}</h4><div class="team-list" id="list_${g}">`;
-        sorted.forEach((t, i) => { h += `<div class="draggable-team" draggable="true" data-team="${t}" data-rank="${i+1}º">${flags[t]} ${codes[t]}</div>`; });
+        sorted.forEach((t, i) => { h += `<div class="draggable-team" draggable="true" data-team="${t}" data-rank="${i+1}º">${flags[t] || '🏳️'} ${codes[t] || 'TBD'}</div>`; });
         h += `</div></div>`;
         if (idx < 4) r1.innerHTML += h; else if (idx < 8) r2.innerHTML += h; else r3.innerHTML += h;
     });
@@ -429,7 +429,7 @@ function syncAllGroupsToBracket() {
         const teamsInOrder = [...box.querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team'));
         [1, 2].forEach(rank => {
             const team = teamsInOrder[rank-1]; const slotId = `s_${group}${rank}`; const slotEl = document.getElementById(slotId);
-            const newContent = `${flags[team]} ${codes[team]}`;
+            const newContent = `${flags[team] || '🏳️'} ${codes[team] || 'TBD'}`;
             if (slotEl && slotEl.innerHTML !== newContent) { clearBranch(slotId); slotEl.innerHTML = newContent; slotEl.classList.remove('winner', 'empty'); }
         });
         thirdPlacePool.push(teamsInOrder[2]);
@@ -440,13 +440,13 @@ function syncAllGroupsToBracket() {
         const newOrder = existingInList.filter(t => thirdPlacePool.includes(t));
         thirdPlacePool.forEach(t => { if(!newOrder.includes(t)) newOrder.push(t); });
         if(existingInList.length === 0) newOrder.sort((a,b) => (fifaRanks[a] || 99) - (fifaRanks[b] || 99));
-        thirdList.innerHTML = ""; newOrder.forEach((t, i) => { thirdList.innerHTML += `<div class="draggable-team" draggable="true" data-team="${t}" data-rank="${i+1}º">${flags[t]} ${codes[t]}</div>`; });
+        thirdList.innerHTML = ""; newOrder.forEach((t, i) => { thirdList.innerHTML += `<div class="draggable-team" draggable="true" data-team="${t}" data-rank="${i+1}º">${flags[t] || '🏳️'} ${codes[t] || 'TBD'}</div>`; });
         updateVisualRanks(thirdList);
     }
     const qualifiers = [...thirdList.querySelectorAll('.draggable-team')].map(el => el.getAttribute('data-team')).slice(0, 8);
     qualifiers.forEach((team, i) => {
         const slotId = `slot_3rd_${i+1}`; const slotEl = document.getElementById(slotId);
-        const newContent = `${flags[team]} ${codes[team]}`;
+        const newContent = `${flags[team] || '🏳️'} ${codes[team] || 'TBD'}`;
         if (slotEl && slotEl.innerHTML !== newContent) { clearBranch(slotId); slotEl.innerHTML = newContent; slotEl.classList.remove('winner', 'empty'); }
     });
     for (let i = qualifiers.length; i < 8; i++) {
