@@ -125,7 +125,7 @@
 <body onclick="handleGlobalClick(event)">
 
 <div id="stadium-backdrop"></div>
-<div class="header-nav"><h1>TU POLLA</h1></div>
+<div class="header-nav"><h1>FIRMES POR LA PAJA</h1></div>
 
 <div class="dashboard-wrapper">
     <div class="group-stage-wrapper">
@@ -293,8 +293,19 @@ const nextMap = {
     '3RD_L':'bronze-name','3RD_R':'bronze-name'
 };
 
-function openLeaderboard() { document.getElementById('leaderboard-modal').style.display = 'flex'; }
-function closeLeaderboard() { document.getElementById('leaderboard-modal').style.display = 'none'; }
+function openLeaderboard() { 
+    const iframe = document.querySelector('#leaderboard-modal iframe');
+    const baseUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQw9ufqzeyxhwBy_59J6hbwHKK19XkA1Ztw0sldVL37DYiiL4D0n7Fl8-XqWSeg0balSK731LYUpHUH/pubhtml?gid=2134320183&single=true&widget=false&headers=false&chrome=false";
+    iframe.src = baseUrl + "&t=" + new Date().getTime();
+    document.getElementById('leaderboard-modal').style.display = 'flex'; 
+}
+
+function closeLeaderboard() { 
+    document.getElementById('leaderboard-modal').style.display = 'none'; 
+    const iframe = document.querySelector('#leaderboard-modal iframe');
+    iframe.src = "";
+}
+
 function closeLeaderboardOnBg(e) { if (e.target.id === 'leaderboard-modal') closeLeaderboard(); }
 function updateSignature(val) { document.getElementById('bracket-signature').innerText = val; }
 
