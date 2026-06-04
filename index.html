@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>TU POLLA</title>
+    <title>TU POLLA 1</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -125,7 +125,7 @@
 <body onclick="handleGlobalClick(event)">
 
 <div id="stadium-backdrop"></div>
-<div class="header-nav"><h1>LA POLLA DEL MONO</h1></div>
+<div class="header-nav"><h1>TU POLLA</h1></div>
 
 <div class="dashboard-wrapper">
     <div class="group-stage-wrapper">
@@ -135,7 +135,7 @@
     </div>
     <div class="dashboard-divider"></div>
     <div class="best-3rd-container" onclick="enterEditMode(this, event)">
-        <h4>BEST 3rd PLACE RANKINGS</h4>
+        <h4>MEJORES 3ros RANKING</h4>
         <div id="list_3rd" class="team-list"></div>
     </div>
 </div>
@@ -147,14 +147,14 @@
     <div class="bracket-side left-bracket">
         <div class="round">
             <h3>R32</h3>
-            <div class="matchup" id="m1"><div id="s_A1" class="team empty" onclick="adv(this,'M92_T')">1st A</div><div id="slot_3rd_3" class="team empty" onclick="adv(this,'M92_T')">3rd #3</div></div>
-            <div class="matchup" id="m2"><div id="s_L1" class="team empty" onclick="adv(this,'M92_B')">1st L</div><div id="slot_3rd_4" class="team empty" onclick="adv(this,'M92_B')">3rd #4</div></div>
-            <div class="matchup" id="m3"><div id="s_C1" class="team empty" onclick="adv(this,'M91_T')">1st C</div><div id="s_F2" class="team empty" onclick="adv(this,'M91_T')">2nd F</div></div>
-            <div class="matchup" id="m4"><div id="s_E2" class="team empty" onclick="adv(this,'M91_B')">2nd E</div><div id="s_I2" class="team empty" onclick="adv(this,'M91_B')">2nd I</div></div>
-            <div class="matchup" id="m5"><div id="s_A2" class="team empty" onclick="adv(this,'M90_T')">2nd A</div><div id="s_B2" class="team empty" onclick="adv(this,'M90_T')">2nd B</div></div>
-            <div class="matchup" id="m6"><div id="s_F1" class="team empty" onclick="adv(this,'M90_B')">1st F</div><div id="s_C2" class="team empty" onclick="adv(this,'M90_B')">2nd C</div></div>
-            <div class="matchup" id="m7"><div id="slot_3rd_1" class="team empty" onclick="adv(this,'M89_T')">3rd #1</div><div id="s_E1" class="team empty" onclick="adv(this,'M89_T')">1st E</div></div>
-            <div class="matchup" id="m8"><div id="slot_3rd_2" class="team empty" onclick="adv(this,'M89_B')">3rd #2</div><div id="s_I1" class="team empty" onclick="adv(this,'M89_B')">1st I</div></div>
+            <div class="matchup" id="m1"><div id="s_A1" class="team empty" onclick="adv(this,'M92_T')">1ro A</div><div id="slot_3rd_3" class="team empty" onclick="adv(this,'M92_T')">3ro #3</div></div>
+            <div class="matchup" id="m2"><div id="s_L1" class="team empty" onclick="adv(this,'M92_B')">1ro L</div><div id="slot_3rd_4" class="team empty" onclick="adv(this,'M92_B')">3ro #4</div></div>
+            <div class="matchup" id="m3"><div id="s_C1" class="team empty" onclick="adv(this,'M91_T')">1ro C</div><div id="s_F2" class="team empty" onclick="adv(this,'M91_T')">2do F</div></div>
+            <div class="matchup" id="m4"><div id="s_E2" class="team empty" onclick="adv(this,'M91_B')">2do E</div><div id="s_I2" class="team empty" onclick="adv(this,'M91_B')">2do I</div></div>
+            <div class="matchup" id="m5"><div id="s_A2" class="team empty" onclick="adv(this,'M90_T')">2do A</div><div id="s_B2" class="team empty" onclick="adv(this,'M90_T')">2do B</div></div>
+            <div class="matchup" id="m6"><div id="s_F1" class="team empty" onclick="adv(this,'M90_B')">1ro F</div><div id="s_C2" class="team empty" onclick="adv(this,'M90_B')">2do C</div></div>
+            <div class="matchup" id="m7"><div id="slot_3rd_1" class="team empty" onclick="adv(this,'M89_T')">3ro #1</div><div id="s_E1" class="team empty" onclick="adv(this,'M89_T')">1ro E</div></div>
+            <div class="matchup" id="m8"><div id="slot_3rd_2" class="team empty" onclick="adv(this,'M89_B')">3ro #2</div><div id="s_I1" class="team empty" onclick="adv(this,'M89_B')">1ro I</div></div>
         </div>
         <div class="round">
             <h3>R16</h3>
@@ -174,7 +174,7 @@
         <div class="matchup" id="m15"><div id="M101_T" class="team empty" onclick="advSemi(this,'FINAL_L','3RD_L')">...</div><div id="M101_B" class="team empty" onclick="advSemi(this,'FINAL_L','3RD_L')">...</div></div>
         
         <div class="final-column">
-            <div id="champion-display"><h2>🏆 WORLD CHAMPION</h2><div id="champion-name"></div></div>
+            <div id="champion-display"><h2>🏆 CAMPEON DEL MUNDO MUNDIAL</h2><div id="champion-name"></div></div>
             <div class="matchup final-match" id="mf">
                 <div id="FINAL_L" class="team empty" data-title="FINAL" onclick="setWinner(this)">...</div>
                 <div id="FINAL_R" class="team empty" data-title="FINAL" onclick="setWinner(this)">...</div>
@@ -184,7 +184,7 @@
                 <div id="3RD_L" class="team empty" data-title="3rd PLACE" onclick="setBronze(this)">...</div>
                 <div id="3RD_R" class="team empty" data-title="3rd PLACE" onclick="setBronze(this)">...</div>
             </div>
-            <div id="bronze-display"><h2>🥉 3rd PLACE</h2><div id="bronze-name"></div></div>
+            <div id="bronze-display"><h2>🥉 3er LUGAR</h2><div id="bronze-name"></div></div>
         </div>
 
         <div class="matchup" id="m16"><div id="M102_T" class="team empty" onclick="advSemi(this,'FINAL_R','3RD_R')">...</div><div id="M102_B" class="team empty" onclick="advSemi(this,'FINAL_R','3RD_R')">...</div></div>
@@ -205,14 +205,14 @@
         </div>
         <div class="round">
             <h3>R32</h3>
-            <div class="matchup" id="m23"><div id="s_K2" class="team empty" onclick="adv(this,'M93_T')">2nd K</div><div id="s_L2" class="team empty" onclick="adv(this,'M93_T')">2nd L</div></div>
-            <div class="matchup" id="m24"><div id="s_H1" class="team empty" onclick="adv(this,'M93_B')">1st H</div><div id="s_J2" class="team empty" onclick="adv(this,'M93_B')">2nd J</div></div>
-            <div class="matchup" id="m25"><div id="s_D1" class="team empty" onclick="adv(this,'M94_T')">1st D</div><div id="slot_3rd_5" class="team empty" onclick="adv(this,'M94_T')">3rd #5</div></div>
-            <div class="matchup" id="m26"><div id="s_G1" class="team empty" onclick="adv(this,'M94_B')">1st G</div><div id="slot_3rd_6" class="team empty" onclick="adv(this,'M94_B')">3rd #6</div></div>
-            <div class="matchup" id="m27"><div id="s_J1" class="team empty" onclick="adv(this,'M95_T')">1st J</div><div id="s_H2" class="team empty" onclick="adv(this,'M95_T')">2nd H</div></div>
-            <div class="matchup" id="m28"><div id="s_D2" class="team empty" onclick="adv(this,'M95_B')">2nd D</div><div id="s_G2" class="team empty" onclick="adv(this,'M95_B')">2nd G</div></div>
-            <div class="matchup" id="m29"><div id="s_B1" class="team empty" onclick="adv(this,'M96_T')">1st B</div><div id="slot_3rd_7" class="team empty" onclick="adv(this,'M96_T')">3rd #7</div></div>
-            <div class="matchup" id="m30"><div id="s_K1" class="team empty" onclick="adv(this,'M96_B')">1st K</div><div id="slot_3rd_8" class="team empty" onclick="adv(this,'M96_B')">3rd #8</div></div>
+            <div class="matchup" id="m23"><div id="s_K2" class="team empty" onclick="adv(this,'M93_T')">2do K</div><div id="s_L2" class="team empty" onclick="adv(this,'M93_T')">2do L</div></div>
+            <div class="matchup" id="m24"><div id="s_H1" class="team empty" onclick="adv(this,'M93_B')">1ro H</div><div id="s_J2" class="team empty" onclick="adv(this,'M93_B')">2do J</div></div>
+            <div class="matchup" id="m25"><div id="s_D1" class="team empty" onclick="adv(this,'M94_T')">1ro D</div><div id="slot_3rd_5" class="team empty" onclick="adv(this,'M94_T')">3ro #5</div></div>
+            <div class="matchup" id="m26"><div id="s_G1" class="team empty" onclick="adv(this,'M94_B')">1ro G</div><div id="slot_3rd_6" class="team empty" onclick="adv(this,'M94_B')">3ro #6</div></div>
+            <div class="matchup" id="m27"><div id="s_J1" class="team empty" onclick="adv(this,'M95_T')">1ro J</div><div id="s_H2" class="team empty" onclick="adv(this,'M95_T')">2do H</div></div>
+            <div class="matchup" id="m28"><div id="s_D2" class="team empty" onclick="adv(this,'M95_B')">2do D</div><div id="s_G2" class="team empty" onclick="adv(this,'M95_B')">2do G</div></div>
+            <div class="matchup" id="m29"><div id="s_B1" class="team empty" onclick="adv(this,'M96_T')">1ro B</div><div id="slot_3rd_7" class="team empty" onclick="adv(this,'M96_T')">3ro #7</div></div>
+            <div class="matchup" id="m30"><div id="s_K1" class="team empty" onclick="adv(this,'M96_B')">1ro K</div><div id="slot_3rd_8" class="team empty" onclick="adv(this,'M96_B')">3ro #8</div></div>
         </div>
     </div>
 </div>
@@ -221,28 +221,28 @@
     <div class="id-input-group">
         <input type="text" id="bracket-name-input" placeholder="NAME THIS BRACKET" maxlength="25" oninput="updateSignature(this.value)">
         <div class="footer-btns-group">
-            <button class="save-lock-btn" onclick="prepareForSnapshot()">SAVE</button>
-            <button class="leaderboard-btn" onclick="openLeaderboard()">🏆 VIEW SCOREBOARD</button>
-            <button class="reset-btn" onclick="playAgain()">PLAY AGAIN / RESET</button>
+            <button class="save-lock-btn" onclick="prepareForSnapshot()">SALVAR</button>
+            <button class="leaderboard-btn" onclick="openLeaderboard()">🏆 VER PUNTAJES</button>
+            <button class="reset-btn" onclick="playAgain()">PREDICE DE NUEVO / RESETEO</button>
         </div>
     </div>
 </div>
 
 <div id="snapshot-modal" onclick="closeModalOnBg(event)">
     <div class="modal-content" onclick="event.stopPropagation()">
-        <h2>BRACKET PREDICTION SAVED</h2>
-        <p>📸 Make sure to take a snapshot of your bracket before leaving 📸</p>
-        <button class="close-modal-btn" onclick="exitSnapshot()">CLOSE</button>
+        <h2>PREDICION GUARDADA</h2>
+        <p>📸 TOMA UN SNAPSHOT ANTES DE IRTE 📸</p>
+        <button class="close-modal-btn" onclick="exitSnapshot()">CERRAR</button>
     </div>
 </div>
 
 <div id="leaderboard-modal" onclick="closeLeaderboardOnBg(event)">
     <div class="modal-content leaderboard-modal-content" onclick="event.stopPropagation()">
-        <h2>🏆 LIVE LEADERBOARD</h2>
+        <h2>🏆 TABLA DE PUNTAJES</h2>
         <div class="iframe-container">
             <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQw9ufqzeyxhwBy_59J6hbwHKK19XkA1Ztw0sldVL37DYiiL4D0n7Fl8-XqWSeg0balSK731LYUpHUH/pubhtml?gid=2134320183&amp;single=true&amp;widget=false&amp;headers=false&amp;chrome=false"></iframe>
         </div>
-        <button class="close-modal-btn" onclick="closeLeaderboard()">CLOSE</button>
+        <button class="close-modal-btn" onclick="closeLeaderboard()">CERRAR</button>
     </div>
 </div>
 
