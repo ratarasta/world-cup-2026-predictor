@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5">
-    <title>JULBOL 3.0 Official</title>
+    <title>TU POLLA</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -196,7 +196,7 @@
         <div class="round">
             <h3>R16</h3>
             <div class="matchup" id="m19"><div id="M93_T" class="team empty" onclick="adv(this,'M98_T')">...</div><div id="M93_B" class="team empty" onclick="adv(this,'M98_T')">...</div></div>
-            <div class="matchup" id="m20"><div id="M94_T" class="team empty" onclick="adv(this,'M98_B')">...</div><div id="M94_B" class="team empty" onclick="adv(this,'M98_B')">...</div></div>
+            <div class="matchup" id="m20"><div id="M94_T" class="team empty" onclick="adv(this,'M98_B')">...</div><div id="M94_B" class="team empty" onclick="adv(this8,'M98_B')">...</div></div>
             <div class="matchup" id="m21"><div id="M95_T" class="team empty" onclick="adv(this,'M100_T')">...</div><div id="M95_B" class="team empty" onclick="adv(this,'M100_T')">...</div></div>
             <div class="matchup" id="m22"><div id="M96_T" class="team empty" onclick="adv(this,'M100_B')">...</div><div id="M96_B" class="team empty" onclick="adv(this,'M100_B')">...</div></div>
         </div>
@@ -252,23 +252,49 @@ const bracketEntryMap = {
 };
 
 // --- OFFICIAL TEAMS DATA ---
-const flags = {"Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czechia":"🇨🇿","Canada":"🇨🇦","Switzerland":"🇨🇭","Italy":"🇮🇹","Brazil":"🇧🇷","Morocco":"MAR","USA":"🇺🇸","Australia":"🇦🇺","Germany":"🇩🇪","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Netherlands":"🇳🇱","Japan":"🇯🇵","Tunisia":"🇹🇳","Ukraine":"🇺🇦","Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","Spain":"🇪🇸","Uruguay":"🇺🇾","France":"🇫🇷","Senegal":"🇸🇳","Norway":"🇳🇴","Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Portugal":"🇵🇹","Uzbekistan":"🇺🇿","Colombia":"🇨🇴","England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦","Saudi Arabia":"🇸🇦","Japan":"🇯🇵","Poland":"🇵🇱","Denmark":"🇩🇰","Turkey":"🇹🇷","Sweden":"🇸🇪","Chile":"🇨🇱","Peru":"🇵🇪","Cameroon":"🇨🇲","Nigeria":"🇳🇬","Mali":"🇲🇱","Qatar":"🇶🇦"};
-const codes = {"Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czechia":"CZE","Canada":"CAN","Switzerland":"SUI","Italy":"ITA","Brazil":"BRA","Morocco":"MAR","USA":"USA","Australia":"AUS","Germany":"GER","Ivory Coast":"CIV","Ecuador":"ECU","Netherlands":"NED","Japan":"JPN","Tunisia":"TUN","Ukraine":"UKR","Belgium":"BEL","Egypt":"EGY","Iran":"IRN","Spain":"ESP","Uruguay":"URU","France":"FRA","Senegal":"SEN","Norway":"NOR","Argentina":"ARG","Algeria":"DZA","Austria":"AUT","Portugal":"POR","Uzbekistan":"UZB","Colombia":"COL","England":"ENG","Croatia":"CRO","Ghana":"GHA","Panama":"PAN","Saudi Arabia":"KSA","Poland":"POL","Denmark":"DEN","Turkey":"TUR","Sweden":"SWE","Chile":"CHI","Peru":"PER","Cameroon":"CMR","Nigeria":"NGA","Mali":"MLI","Qatar":"QAT"};
-const teams = {
-    A: ["Mexico", "South Africa", "South Korea", "Czechia"],
-    B: ["Italy", "Switzerland", "Canada", "Qatar"],
-    C: ["Brazil", "Morocco", "Cameroon", "Norway"],
-    D: ["USA", "Australia", "Turkey", "Uzbekistan"],
-    E: ["Germany", "Ecuador", "Ivory Coast", "Poland"],
-    F: ["Netherlands", "Japan", "Ukraine", "Tunisia"],
-    G: ["Belgium", "Iran", "Egypt", "Chile"],
-    H: ["Spain", "Uruguay", "Saudi Arabia", "Sweden"],
-    I: ["France", "Senegal", "Denmark", "Mali"],
-    J: ["Argentina", "Austria", "Algeria", "Nigeria"],
-    K: ["Portugal", "Colombia", "Peru", "Panama"],
-    L: ["England", "Croatia", "Ghana", "South Korea"]
+const flags = {
+    "Mexico":"🇲🇽","South Africa":"🇿🇦","South Korea":"🇰🇷","Czech Republic":"🇨🇿",
+    "Canada":"🇨🇦","Bosnia":"🇧🇦","Qatar":"🇶🇦","Switzerland":"🇨🇭",
+    "Brazil":"🇧🇷","Morocco":"🇲🇦","Haiti":"🇭🇹","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+    "USA":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Turkey":"🇹🇷",
+    "Germany":"🇩🇪","Curaçao":"🇨🇼","Ivory Coast":"🇨🇮","Ecuador":"ECU",
+    "Netherlands":"🇳🇱","Japan":"🇯🇵","Sweden":"🇸🇪","Tunisia":"🇹🇳",
+    "Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿",
+    "Spain":"🇪🇸","Cape Verde":"🇨🇻","Saudi Arabia":"🇸🇦","Uruguay":"🇺🇾",
+    "France":"🇫🇷","Senegal":"🇸🇳","Iraq":"🇮🇶","Norway":"🇳🇴",
+    "Argentina":"🇦🇷","Algeria":"🇩🇿","Austria":"🇦🇹","Jordan":"🇯🇴",
+    "Portugal":"🇵🇹","DR Congo":"🇨🇩","Uzbekistan":"🇺🇿","Colombia":"🇨🇴",
+    "England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦"
 };
-const fifaRanks = {"Argentina":1,"France":2,"Belgium":3,"England":4,"Brazil":5,"Portugal":6,"Netherlands":7,"Spain":8,"Italy":9,"Croatia":10,"USA":11,"Colombia":12,"Morocco":13,"Uruguay":14,"Germany":15,"Japan":16,"Switzerland":17,"Senegal":18,"Iran":19,"Mexico":20,"Denmark":21,"South Korea":22,"Australia":23,"Ukraine":24,"Austria":25,"Sweden":26,"Poland":27,"Ecuador":28,"Peru":29,"Chile":30,"Nigeria":31,"Algeria":32,"Egypt":33,"Tunisia":34,"Cameroon":35,"Turkey":36,"Mali":37,"Uzbekistan":38,"South Africa":39,"Czechia":40,"Saudi Arabia":41,"Panama":42,"Ghana":43,"Canada":44,"Ivory Coast":45,"Qatar":46};
+const codes = {
+    "Mexico":"MEX","South Africa":"RSA","South Korea":"KOR","Czech Republic":"CZE",
+    "Canada":"CAN","Bosnia":"BIH","Qatar":"QAT","Switzerland":"SUI",
+    "Brazil":"BRA","Morocco":"MAR","Haiti":"HAI","Scotland":"SCO",
+    "USA":"USA","Paraguay":"PAR","Australia":"AUS","Turkey":"TUR",
+    "Germany":"GER","Curaçao":"CUW","Ivory Coast":"CIV","Ecuador":"ECU",
+    "Netherlands":"NED","Japan":"JPN","Sweden":"SWE","Tunisia":"TUN",
+    "Belgium":"BEL","Egypt":"EGY","Iran":"IRN","New Zealand":"NZL",
+    "Spain":"ESP","Cape Verde":"CPV","Saudi Arabia":"KSA","Uruguay":"URU",
+    "France":"FRA","Senegal":"SEN","Iraq":"IRQ","Norway":"NOR",
+    "Argentina":"ARG","Algeria":"ALG","Austria":"AUT","Jordan":"JOR",
+    "Portugal":"POR","DR Congo":"COD","Uzbekistan":"UZB","Colombia":"COL",
+    "England":"ENG","Croatia":"CRO","Ghana":"GHA","Panama":"PAN"
+};
+const teams = {
+    A: ["Mexico", "South Africa", "South Korea", "Czech Republic"],
+    B: ["Canada", "Bosnia", "Qatar", "Switzerland"],
+    C: ["Brazil", "Morocco", "Haiti", "Scotland"],
+    D: ["USA", "Paraguay", "Australia", "Turkey"],
+    E: ["Germany", "Curaçao", "Ivory Coast", "Ecuador"],
+    F: ["Netherlands", "Japan", "Sweden", "Tunisia"],
+    G: ["Belgium", "Egypt", "Iran", "New Zealand"],
+    H: ["Spain", "Cape Verde", "Saudi Arabia", "Uruguay"],
+    I: ["France", "Senegal", "Iraq", "Norway"],
+    J: ["Argentina", "Algeria", "Austria", "Jordan"],
+    K: ["Portugal", "DR Congo", "Uzbekistan", "Colombia"],
+    L: ["England", "Croatia", "Ghana", "Panama"]
+};
+const fifaRanks = {"Argentina":1,"France":2,"Belgium":3,"England":4,"Brazil":5,"Portugal":6,"Netherlands":7,"Spain":8,"Croatia":10,"USA":11,"Colombia":12,"Morocco":13,"Uruguay":14,"Germany":15,"Japan":16,"Switzerland":17,"Senegal":18,"Iran":19,"Mexico":20,"South Korea":22,"Australia":23,"Austria":25,"Sweden":26,"Ecuador":28,"Algeria":32,"Egypt":33,"Tunisia":34,"Turkey":36,"Uzbekistan":38,"South Africa":39,"Saudi Arabia":41,"Panama":42,"Ghana":43,"Canada":44,"Ivory Coast":45,"Qatar":46,"Czech Republic":47,"Norway":48,"Paraguay":49,"Bosnia":50,"Cape Verde":51,"Iraq":52,"DR Congo":53,"Jordan":54,"Haiti":55,"Scotland":56,"New Zealand":57,"Curaçao":58};
 
 const nextMap = {
     's_A1':'M92_T','slot_3rd_3':'M92_T','s_L1':'M92_B','slot_3rd_4':'M92_B','s_C1':'M91_T','s_F2':'M91_T',
